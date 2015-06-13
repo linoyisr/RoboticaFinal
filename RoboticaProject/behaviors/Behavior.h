@@ -1,7 +1,6 @@
 /*
  * Behavior.h
  *
- *  Created on: Dec 14, 2014
  *      Author: user
  */
 
@@ -29,6 +28,15 @@ public:
 	{
 		//Run over vector and return first true
 		//startCond of the first behavior
+
+		for(size_t i = 0; i < _behVect.size(); i++)
+		{
+			if (_behVect[i]->startCond())
+			{
+				return _behVect[i];
+			}
+		}
+
 		return NULL;
 	}
 

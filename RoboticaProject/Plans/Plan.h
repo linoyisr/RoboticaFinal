@@ -1,8 +1,5 @@
 /*
  * Plan.h
- *
- *  Created on: Dec 21, 2014
- *      Author: user
  */
 
 #ifndef PLAN_H_

@@ -1,8 +1,5 @@
 /*
  * GoForward.cpp
- *
- *  Created on: May 30, 2015
- *      Author: colman
  */
 
 #include "GoForward.h"

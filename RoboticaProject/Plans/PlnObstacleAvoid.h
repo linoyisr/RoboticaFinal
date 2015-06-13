@@ -1,8 +1,5 @@
 /*
  * PlnObstacleAvoid.h
- *
- *  Created on: Dec 21, 2014
- *      Author: user
  */
 
 #ifndef PLNOBSTACLEAVOID_H_

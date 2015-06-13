@@ -1,8 +1,5 @@
 /*
  * GoForward.h
- *
- *  Created on: May 30, 2015
- *      Author: colman
  */
 
 #ifndef GOFORWARD_H_

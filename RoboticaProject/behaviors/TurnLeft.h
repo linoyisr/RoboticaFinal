@@ -1,8 +1,5 @@
 /*
  * TurnLeft.h
- *
- *  Created on: May 30, 2015
- *      Author: colman
  */
 
 #ifndef TURNLEFT_H_

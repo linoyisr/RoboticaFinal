@@ -1,8 +1,5 @@
 /*
  * TurnRight.h
- *
- *  Created on: Dec 14, 2014
- *      Author: user
  */
 
 #ifndef TURNRIGHT_H_

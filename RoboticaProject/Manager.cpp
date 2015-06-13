@@ -1,8 +1,5 @@
 /*
  * Manager.cpp
- *
- *  Created on: Dec 21, 2014
- *      Author: user
  */
 
 #include "Manager.h"
@@ -16,7 +13,7 @@ Manager::Manager(Robot* robot, Plan* pln)
 void Manager::run()
 {
 	_robot->Read();
-	if(!(_curr->startCond()))
+	if((!(_curr->startCond())) || _curr == NULL)
 		return;
 	_curr->action();
 	while(_curr !=NULL)
