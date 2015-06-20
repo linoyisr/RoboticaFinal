@@ -40,10 +40,10 @@ bool Configuration::validLine(const string &line) const
 {
 	string temp = line;
 	temp.erase(0, temp.find_first_not_of("\t "));
-	if (temp[0] == '=')
+	if (temp[0] == ':')
 		return false;
 
-	for (size_t i = temp.find('=') + 1; i < temp.length(); i++)
+	for (size_t i = temp.find(':') + 1; i < temp.length(); i++)
 		if (temp[i] != ' ')
 			return true;
 
@@ -59,8 +59,6 @@ void Configuration::extractKey(string &key, size_t const &sepPos, const string &
 
 void Configuration::extractValue(string &value, size_t const &sepPos, const string &line) const
 {
-
-	// Yarden
 	value = line.substr(sepPos + 1);
 	value.erase(0, value.find_first_not_of("\t "));
 	value.erase(value.find_last_not_of("\t ") + 1);
@@ -70,7 +68,7 @@ void Configuration::extractContents(const string &line)
 {
 	string temp = line;
 	temp.erase(0, temp.find_first_not_of("\t "));
-	size_t sepPos = temp.find('=');
+	size_t sepPos = temp.find(':');
 
 	string key, value;
 	extractKey(key, sepPos, temp);
