@@ -59,6 +59,8 @@ void Configuration::extractKey(string &key, size_t const &sepPos, const string &
 
 void Configuration::extractValue(string &value, size_t const &sepPos, const string &line) const
 {
+
+	// Yarden
 	value = line.substr(sepPos + 1);
 	value.erase(0, value.find_first_not_of("\t "));
 	value.erase(value.find_last_not_of("\t ") + 1);
