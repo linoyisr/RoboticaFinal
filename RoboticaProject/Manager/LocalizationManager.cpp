@@ -16,7 +16,7 @@ LocalizationManager::~LocalizationManager() {
 	// TODO Auto-generated destructor stub
 }
 
-void LocalizationManager::Update(double xDelta, double yDelta, double yawDelta, float* laserScans)
+void LocalizationManager::Update(Location location, float* laserScans)
 {
 }
 

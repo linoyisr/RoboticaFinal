@@ -12,6 +12,14 @@ Manager::Manager(Robot* robot, Plan* pln, LocalizationManager* locManager)
 	_locManager = locManager;
 }
 
+void Manager::getLaserScan(float* laserScans)
+{
+	for (int i = 0; i < 666; i++)
+	{
+		laserScans[i] = _robot->getLaserByIndex(i);
+	}
+}
+
 void Manager::run()
 {
 	_robot->Read();
@@ -24,7 +32,7 @@ void Manager::run()
 
 	while(_currBehavior !=NULL)
 	{
-		/*while(!_currBehavior->stopCond())
+		while(!_currBehavior->stopCond())
 		{
 			_currBehavior->action();
 			_robot->Read();
@@ -32,22 +40,22 @@ void Manager::run()
 			// Every 15 reads make all the calculations and update the particles and their corresponding data
 			if (loopsCounter == 15)
 			{
+				loopsCounter = 0;
 				double deltaX;
 				double deltaY;
 				double deltaYaw;
-				float *laserScans = this->_robot->getLaserScan();
+				// What is 666 ? ask orli/aviram
+				float laserScans[666];
+				getLaserScan(laserScans);
 
-				// Set robot delta values by its odometry
-				this->_robot->SetDeltaValues(deltaX, deltaY, deltaYaw);
-
-				_locManager->Update(deltaX,deltaY, deltaYaw, laserScans);
-
-				loopsCounter = 0;
+				Location location(deltaX, deltaY, deltaYaw);
+				_robot->updateRobotLocation(location);
+				_locManager->Update(location, laserScans);
 			}
 			else
 				loopsCounter++;
 
-		}*/
+		}
 		_currBehavior = _currBehavior->selectNext();
 		_robot->Read();
 	}

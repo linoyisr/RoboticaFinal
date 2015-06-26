@@ -7,6 +7,7 @@
 
 #include <vector>
 #include "../Particle.h"
+#include "../Location.h"
 
 #ifndef LOCALIZATIONMANAGER_H_
 #define LOCALIZATIONMANAGER_H_
@@ -18,7 +19,7 @@ private:
 public:
 	LocalizationManager(Map* map);
 	virtual ~LocalizationManager();
-	void Update(double xDelta, double yDelta, double yawDelta, float* laserScans);
+	void Update(Location location, float* laserScans);
 	void PrintParticles();
 };
 

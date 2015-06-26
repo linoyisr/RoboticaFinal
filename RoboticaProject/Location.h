@@ -12,32 +12,16 @@
 
 class Location {
 public:
-	Location(Point* p, int yaw)
-	{
-		point = p;
-		yawPoint = yaw;
-	}
-	virtual ~Location(){}
+	Location(Point* p, int yaw);
+	Location(int x ,int y, int yaw);
+	virtual ~Location();
 
-	Point* GetPoint()
-	{
-		return point;
-	}
+	Point* GetPoint();
+	int GetYawPoint();
 
-	void SetPoint(Point* p)
-	{
-		point = p;
-	}
-
-	int GetYawPoint()
-	{
-		return yawPoint;
-	}
-
-	void SetYawPoint(int yaw)
-	{
-		yawPoint = yaw;
-	}
+	void SetPoint(Point* p);
+	void SetYawPoint(int yaw);
+	void SetLocation(Location* location);
 
 private:
 	Point* point;

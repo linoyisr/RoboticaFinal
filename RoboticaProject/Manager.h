@@ -10,9 +10,13 @@
 #include "Manager/LocalizationManager.h"
 
 class Manager {
+private:
 	Behavior* _currBehavior;
 	Robot* _robot;
 	LocalizationManager* _locManager;
+
+	void getLaserScan(float* laserScans);
+
 public:
 	Manager(Robot* robot, Plan* pln, LocalizationManager* locManager);
 	void run();
