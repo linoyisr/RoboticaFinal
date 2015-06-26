@@ -16,8 +16,8 @@ class WaypointsManager {
 public:
 	WaypointsManager(vector<Point*> path, double mapResolution);
 	~WaypointsManager();
-
-	void getWaypointsList();
+	void CreateWaypoints();
+	vector<Point*> getWaypointsList();
 
 	vector<Point*> astarPath;
 	vector<Point*> wayPoints;

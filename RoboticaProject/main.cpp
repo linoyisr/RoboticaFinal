@@ -4,6 +4,7 @@
 
 #include "Robot.h"
 #include "Manager.h"
+#include "Location.h"
 #include "Manager/ConfigurationManager.h"
 #include "Plans/PathPlanner.h"
 #include "Plans/PlnObstacleAvoid.h"
@@ -47,7 +48,9 @@ int main()
 
 	xStart = startLocationArray[0];
 	yStart = startLocationArray[1];
+	Point startPoint(xStart, yStart);
 	yawStart = startLocationArray[2];
+	Location loc(&startPoint, yawStart);
 
 	goalString = cfg.getValueOfKey("goal");
 	// convert string with spaces to array
