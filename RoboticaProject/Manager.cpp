@@ -8,24 +8,47 @@
 Manager::Manager(Robot* robot, Plan* pln, LocalizationManager* locManager)
 {
 	_robot = robot;
-	_curr = pln->getStartPoint();
-	_localizationManager = locManager;
+	_currBehavior = pln->getStartBehavior();
+	_locManager = locManager;
 }
 
 void Manager::run()
 {
 	_robot->Read();
-	if((!(_curr->startCond())) || _curr == NULL)
+
+	if((!(_currBehavior->startCond())) || _currBehavior == NULL)
 		return;
-	_curr->action();
-	while(_curr !=NULL)
+
+	_currBehavior->action();
+	int loopsCounter = 1;
+
+	while(_currBehavior !=NULL)
 	{
-		while(_curr->stopCond() == false)
+		/*while(!_currBehavior->stopCond())
 		{
-			_curr->action();
+			_currBehavior->action();
 			_robot->Read();
-		}
-		_curr = _curr->selectNext();
+
+			// Every 15 reads make all the calculations and update the particles and their corresponding data
+			if (loopsCounter == 15)
+			{
+				double deltaX;
+				double deltaY;
+				double deltaYaw;
+				float *laserScans = this->_robot->getLaserScan();
+
+				// Set robot delta values by its odometry
+				this->_robot->SetDeltaValues(deltaX, deltaY, deltaYaw);
+
+				_locManager->Update(deltaX,deltaY, deltaYaw, laserScans);
+
+				loopsCounter = 0;
+			}
+			else
+				loopsCounter++;
+
+		}*/
+		_currBehavior = _currBehavior->selectNext();
 		_robot->Read();
 	}
 }

@@ -10,9 +10,9 @@
 #include "Manager/LocalizationManager.h"
 
 class Manager {
-	Behavior* _curr;
+	Behavior* _currBehavior;
 	Robot* _robot;
-	LocalizationManager* _localizationManager;
+	LocalizationManager* _locManager;
 public:
 	Manager(Robot* robot, Plan* pln, LocalizationManager* locManager);
 	void run();

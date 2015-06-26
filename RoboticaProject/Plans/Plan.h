@@ -12,7 +12,7 @@ protected:
 	Behavior* _start;
 public:
 	Plan(Robot* robot);
-	virtual Behavior* getStartPoint(){return _start;}
+	virtual Behavior* getStartBehavior(){return _start;}
 	virtual ~Plan();
 };
 

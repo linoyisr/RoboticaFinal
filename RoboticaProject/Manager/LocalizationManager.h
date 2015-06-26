@@ -18,6 +18,8 @@ private:
 public:
 	LocalizationManager(Map* map);
 	virtual ~LocalizationManager();
+	void Update(double xDelta, double yDelta, double yawDelta, float* laserScans);
+	void PrintParticles();
 };
 
 #endif /* LOCALIZATIONMANAGER_H_ */
