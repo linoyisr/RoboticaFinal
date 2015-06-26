@@ -16,6 +16,7 @@ private:
 	int _y;
 
 public:
+	Point();
 	Point(int x, int y);
 	virtual ~Point();
 	int GetX();

@@ -5,6 +5,8 @@
 #ifndef ROBOT_H_
 #define ROBOT_H_
 #include <libplayerc++/playerc++.h>
+#include "Point.h"
+
 using namespace PlayerCc;
 
 class Robot {
@@ -19,6 +21,12 @@ public:
 	void setSpeed(float xSpeed, float angularSpeed) {
 		_pp->SetSpeed(xSpeed, angularSpeed);
 	}
+
+	double getLaser(int index)
+	{
+		return (*_lp)[index];
+	}
+
 	bool isRightFree() {
 		if ((*_lp)[50] > 0.5)
 			return true;
@@ -36,6 +44,8 @@ public:
 		else
 			return false;
 	}
+
+	static Point* getObstacleLocation(double xRob, double yRob, double yawRob, double sensorAngle, double distance);
 	virtual ~Robot();
 };
 

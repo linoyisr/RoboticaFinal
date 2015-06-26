@@ -5,68 +5,199 @@
 #include "Map.h"
 #include "LaserHelper.h"
 #include "math.h"
+#include "pngUtil.h"
+#include "lodepng.h"
+
+string blowMapPath = "resources/blowMap.png";
 
 Map::Map()
 {
-	for (int i = 0; i< HEIGHT; i++)
+	pngToVector();
+	blowMap();
+	BlowingMapToGrid();
+	PrintMatrix();
+}
+
+void Map::pngToVector()
+{
+	// Convert png to vector
+	int error = lodepng::decode(pngVector,mapWidth,mapHeight,"resources/roboticLabMap.png");
+
+	//if there's an error, display it
+	if (error)
 	{
-		for (int j = 0; j < WIDTH; j++)
+		cout << "decoder error #" << error << ": " << lodepng_error_text(error) << endl;
+		return;
+	}
+}
+
+void Map::blowMap()
+{
+	//Change size of the vector because each pixel represented by 4 cells (3 for RGB + last one always 255)
+	blowImage.resize(mapWidth * mapHeight * numOfCellsForeachPixel);
+
+	// the really point of the robot is at the center
+	int xPixelsToBlowing = int(robotSizeX / mapResolution) / 2;
+	int yPixelsToBlowing = int(robotSizeY / mapResolution) / 2;
+
+	for (int y = 0; y < mapHeight; y++)
+	{
+		for (int x = 0; x < mapWidth; x++)
 		{
-			this->matrix[i][j] = UNKNOWN;
+			int currPixel = (y * mapWidth * numOfCellsForeachPixel) + (x * numOfCellsForeachPixel);
+
+			if (pngVector[currPixel] == BLACK)
+			{
+				// Move the left and right cells to blowing
+				for (int i = -xPixelsToBlowing; i < xPixelsToBlowing; i++)
+				{
+				// Move the up and down cells to blowing
+					for (int j = -yPixelsToBlowing; j < yPixelsToBlowing; j++)
+					{
+						int offset = ((j * numOfCellsForeachPixel) + ((mapWidth) * i * numOfCellsForeachPixel));
+						//Make sure there is no scope creep from map
+						if (currPixel + offset >= 0 && currPixel + offset + BOFFSET < blowImage.size())
+						{
+							blowImage[currPixel + offset + ROFFSET] = BLACK;
+							blowImage[currPixel + offset + GOFFSET] = BLACK;
+							blowImage[currPixel + offset + BOFFSET] = BLACK;
+						}
+					}
+				}
+			}
+			else
+			{
+				blowImage[currPixel + ROFFSET] = WHITE;
+				blowImage[currPixel + GOFFSET] = WHITE;
+				blowImage[currPixel + BOFFSET] = WHITE;
+			}
+
+			// last pixel is always white
+			blowImage[currPixel + AOFFSET] = WHITE;
+		}
+	}
+
+	saveBlowingMap();
+}
+
+void Map::saveBlowingMap()
+{
+	int encodeError = lodepng::encode(blowMapPath, blowImage, mapWidth, mapHeight);
+
+	if (encodeError)
+	{
+		cout << "encoder error " << encodeError << ": "
+				<< lodepng_error_text(encodeError) << endl;
+	}
+}
+
+// Return map to be original size after blowing
+void Map::BlowingMapToGrid()
+{
+	unsigned char color;
+
+	//Check why mapResolution change to 2
+	int newGridResoultion = (int)(floor(gridResolution/mapResolution));
+
+	gridHeight = (unsigned int)(floor(mapHeight/newGridResoultion));
+	gridWidth = (unsigned int)(floor(mapWidth/newGridResoultion));
+
+	grid.resize(gridHeight * gridWidth * numOfCellsForeachPixel);
+
+	for (unsigned x = 0; x < gridHeight; x++)
+	{
+		for (unsigned y = 0; y < gridWidth; y++)
+		{
+			int currPixel = (x * gridWidth * numOfCellsForeachPixel) + (y * numOfCellsForeachPixel);
+
+			color = getColorOfCell(blowImage, mapWidth, mapHeight, x, y, newGridResoultion);
+
+			grid[currPixel + ROFFSET] = color;
+			grid[currPixel + GOFFSET] = color;
+			grid[currPixel + BOFFSET] = color;
+			grid[currPixel + AOFFSET] = WHITE;
 		}
 	}
 }
 
-Map::~Map()
+vector<vector<int> > Map::getMatrix()
 {
-}
+	vector<vector<int> > matrix(gridHeight, vector<int>(gridWidth));
+	unsigned char color;
 
-void Map::Print() {
-	// TODO Auto-generated constructor stub
-	for (int i = 0; i< HEIGHT; i++){
-		for (int j = 0; j < WIDTH; j++){
-			cout<<this->matrix[i][j];
+	for (unsigned int y = 0; y < gridHeight; y++)
+	{
+		for (unsigned int x = 0; x < gridWidth; x++)
+		{
+			color = getColorOfCell(grid, gridWidth, gridHeight, y, x, 1);
+			switch (color)
+			{
+				case WHITE:
+					matrix[y][x] = FREE;
+					break;
+				case BLACK:
+					matrix[y][x] = OCCUPIED;
+					break;
+				default:
+					matrix[y][x] = UNKNOWN;
+			}
 		}
-		cout<<endl;
 	}
+
+	return matrix;
 }
 
-void Map::SetClearCell(Point pnt)
+unsigned char Map::getColorOfCell(vector<unsigned char> grid,unsigned width, unsigned height, int row, int column, int resolution)
 {
-	this->matrix[pnt.GetX()][pnt.GetY()] = FREE;
+	for (int y = 0; y < resolution; y++)
+	{
+		for (int x = 0; x < resolution; x++)
+		{
+			unsigned char color = pngUtil::getColorOfPixel(grid, width, height, ((row*resolution) + y), ((column*resolution)+ x));
+
+			// If there at least 1 cell black in blowMap, the representing cell in the grid will be black
+			if(color == BLACK)
+			{
+				return color;
+			}
+		}
+	}
+
+	return WHITE;
+}
+
+void Map::PrintMatrix()
+{
+	vector<vector<int> > matrix = getMatrix();
+
+	for (unsigned int y = 0; y < gridHeight; y++)
+		{
+			for (unsigned int x = 0; x < gridWidth; x++)
+			{
+				cout << matrix[y][x];
+			}
+			cout << endl;
+		}
+}
+
+void Map::SetFreeCell(Point pnt)
+{
+	grid[pnt.GetX() * mapWidth + pnt.GetY()] = FREE;
 }
 
 void Map::SetOccupiedCell(Point pnt)
 {
-	this->matrix[pnt.GetX()][pnt.GetY()] = OCCUPIED;
+	grid[pnt.GetX() * mapWidth + pnt.GetY()] = OCCUPIED;
 }
 
 Point* Map::ConvertPositionToPoint(Point position)
 {
-	return (new Point(position.GetX()/RESOLUTION + WIDTH/2,HEIGHT/2 + position.GetY()/RESOLUTION));
-}
-
-int Map::GetCellValue(Point pnt)
-{
-	int a = 0;
-	int x = pnt.GetX();
-	int y = pnt.GetY();
-
-	try
-	{
-		a = matrix[x][y];
-	}
-	catch (exception e)
-	{
-		int b = 0;
-		cout << "I dfkghwesukghwe" << b <<endl;
-	}
-	return a;
-}
-
-Point* Map::RealObstacleLocation(Point p, double yaw, double angle, double dist)
-{
 	return NULL;
+}
+
+int Map::GetCellValue(Point point)
+{
+	return grid[point.GetX() * mapWidth + point.GetY()];
 }
 
 double Map::UpdateMap(double x, double y, double yaw, float* laserArray)
@@ -100,12 +231,12 @@ double Map::UpdateMap(double x, double y, double yaw, float* laserArray)
 				else if (GetCellValue(*pnt) == OCCUPIED)
 				{
 					missCounter++;
-					SetClearCell(*pnt);
+					SetFreeCell(*pnt);
 				}
 				else if (GetCellValue(*pnt) == UNKNOWN)
 				{
 					hitCounter++;
-					SetClearCell(*pnt);
+					SetFreeCell(*pnt);
 				}
 			}
 
@@ -170,25 +301,29 @@ double Map::UpdateMap(double x, double y, double yaw, float* laserArray)
 				else if (GetCellValue(*pnt) == OCCUPIED)
 				{
 					missCounter++;
-					SetClearCell(*pnt);
+					SetFreeCell(*pnt);
 
 				}
 				else if (GetCellValue(*pnt) == UNKNOWN)
 				{
 					hitCounter++;
-					SetClearCell(*pnt);
+					SetFreeCell(*pnt);
 				}
 			}
 		}
 	}
 	//TODO:change!!!
 	cout << "plzzzzzzzzzzzz" << endl;
-	this->Print();
+	this->PrintMatrix();
 	return (float)(hitCounter/(hitCounter + missCounter));
 }
 
 int Map::getValueByResolution(float range)
 {
 	return (int)(floor((range * 100)/5));
+}
+
+Map::~Map()
+{
 }
 

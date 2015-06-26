@@ -1,7 +1,7 @@
 /*
  * main.cpp
  */
-
+#include "Map.h"
 #include "Robot.h"
 #include "Manager.h"
 #include "Location.h"
@@ -126,7 +126,7 @@ int main()
 	}
 */
 
-
+	Map * map = new Map(); //TODO:not sould be here
 	Robot robot("localhost",6665);
 	PlnObstacleAvoid plnOA(&robot);
 	Manager manager(&robot, &plnOA);

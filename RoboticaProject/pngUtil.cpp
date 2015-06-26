@@ -8,10 +8,9 @@
 #include "lodepng.h"
 #include <iostream>
 
-
 //Encode from raw pixels to disk with a single function call
 //The image argument has width * height RGBA pixels or width * height * 4 bytes
-void encodeOneStep(const char* filename, std::vector<unsigned char> image,
+void pngUtil::encodeOneStep(const char* filename, std::vector<unsigned char> image,
 		unsigned width, unsigned height) {
 	//Encode the image
 	unsigned error = lodepng::encode(filename, image, width, height);
@@ -22,7 +21,7 @@ void encodeOneStep(const char* filename, std::vector<unsigned char> image,
 				<< lodepng_error_text(error) << std::endl;
 }
 
-void decodeOneStep(const char* filename) {
+void pngUtil::decodeOneStep(const char* filename) {
 	std::vector<unsigned char> image; //the raw pixels
 	unsigned width, height;
 
@@ -35,8 +34,8 @@ void decodeOneStep(const char* filename) {
 				<< lodepng_error_text(error) << std::endl;
 
 	//the pixels are now in the vector "image", 4 bytes per pixel, ordered RGBARGBA..., use it as texture, draw it, ...
-}
-void ConvertMapBlackToWhiteAndWhiteToBlack(const char* filename) {
+}/*
+void pngUtil::ConvertMapBlackToWhiteAndWhiteToBlack(const char* filename) {
 	std::vector<unsigned char> image; //the raw pixels
 	unsigned width, height;
 	unsigned x, y;
@@ -66,4 +65,25 @@ void ConvertMapBlackToWhiteAndWhiteToBlack(const char* filename) {
 		}
 
 	encodeOneStep("newMap.png", navImage, width, height);
+}*/
+
+unsigned char pngUtil::getColorOfPixel(const std::vector<unsigned char>& grid, unsigned int width, unsigned int height, unsigned int row, unsigned int column)
+{
+	unsigned firstCell = row * width * 4 + column * 4;
+
+	if (grid[firstCell + ROFFSET] == BLACK &&
+		grid[firstCell + GOFFSET] == BLACK &&
+		grid[firstCell + BOFFSET] == BLACK)
+	{
+		return OCCUPIED;
+	}
+	else if (grid[firstCell + ROFFSET] == WHITE &&
+			 grid[firstCell + GOFFSET] == WHITE &&
+			 grid[firstCell + BOFFSET] == WHITE)
+	{
+		return FREE;
+	}
+
+	return UNKNOWN;
+
 }

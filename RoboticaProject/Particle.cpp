@@ -17,8 +17,8 @@
 Particle::Particle()
 {
 	this->map = new Map();
-	this->x = WIDTH/2;
-	this->y = HEIGHT/2;
+	this->x = map->mapWidth/2;
+	this->y = map->mapHeight/2;
 	this->yaw = yaw;
 	this->belief = 1;
 
@@ -110,7 +110,7 @@ void Particle::Update(double delX, double delY, double delYaw, float* laserArray
 
 void Particle::Print()
 {
-	this->map->Print();
+	this->map->PrintMatrix();
 }
 
 
