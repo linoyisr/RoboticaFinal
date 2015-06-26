@@ -5,11 +5,13 @@
 #include "Manager.h"
 
 
-Manager::Manager(Robot* robot, Plan* pln)
+Manager::Manager(Robot* robot, Plan* pln, LocalizationManager* locManager)
 {
 	_robot = robot;
 	_curr = pln->getStartPoint();
+	_localizationManager = locManager;
 }
+
 void Manager::run()
 {
 	_robot->Read();

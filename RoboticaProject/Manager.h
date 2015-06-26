@@ -7,11 +7,14 @@
 #include "Plans/PlnObstacleAvoid.h"
 #include "Robot.h"
 #include "behaviors/Behavior.h"
+#include "Manager/LocalizationManager.h"
+
 class Manager {
 	Behavior* _curr;
 	Robot* _robot;
+	LocalizationManager* _localizationManager;
 public:
-	Manager(Robot* robot, Plan* pln);
+	Manager(Robot* robot, Plan* pln, LocalizationManager* locManager);
 	void run();
 	virtual ~Manager();
 };

@@ -10,24 +10,12 @@
 class GoForward: public Behavior {
 public:
 	GoForward(Robot* robot);
-		bool startCond()
-		{
-			if(_robot->isForwardFree())
-				return true;
-			else
-				return false;
-		}
-		bool stopCond()
-		{
-			//TODO: Until Obstacle
-			return false;
-		}
+	virtual ~GoForward();
 
-		void action()
-		{
-			_robot->setSpeed(0.0, 0.3);
-		}
-		virtual ~GoForward();
-	};
+	bool startCond();
+	bool stopCond();
+	void action();
+	void stopAction();
+};
 
 #endif /* GOFORWARD_H_ */

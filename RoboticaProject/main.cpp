@@ -61,7 +61,8 @@ int main()
 	Map * map = new Map(); //TODO:not sould be here
 	Robot robot("localhost",6665);
 	PlnObstacleAvoid plnOA(&robot);
-	Manager manager(&robot, &plnOA);
+	LocalizationManager locManager(map);
+	Manager manager(&robot, &plnOA, &locManager);
 	manager.run();
 
 	return 0;

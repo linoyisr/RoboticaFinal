@@ -13,3 +13,22 @@ TurnLeft::~TurnLeft() {
 	// TODO Auto-generated destructor stub
 }
 
+bool TurnLeft::startCond()
+{
+	return _robot->isLeftFree();
+}
+bool TurnLeft::stopCond()
+{
+	return _robot->isForwardFree();
+}
+
+void TurnLeft::action()
+{
+	// Fix this number
+	_robot->setSpeed(0.0, 0.3);
+}
+
+void TurnLeft::stopAction()
+{
+	_robot->setSpeed(0.0, 0.0);
+}
