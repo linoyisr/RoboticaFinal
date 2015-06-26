@@ -7,6 +7,7 @@
 #include <math.h>
 #include <cmath>
 #include <stdlib.h>
+using namespace std;
 
 #define RADIUS 1
 #define UNLIKELY_DISTANCE 1
@@ -14,18 +15,12 @@
 #define TRUST_ISSUES 0.3
 #define UNLIKELY_ANGLE M_PI / 2
 
-Particle::Particle()
+const double normalizationFactor = 1.3;
+const double defaultBelief = 1;
+
+Particle::Particle(double x, double y, double yaw, Map* map)
+: Particle::Particle(x, y, yaw, map, defaultBelief)
 {
-	this->map = new Map();
-	this->x = map->mapWidth/2;
-	this->y = map->mapHeight/2;
-	this->yaw = yaw;
-	this->belief = 1;
-
-}
-
-Particle::~Particle() {
-	// TODO Auto-generated destructor stub
 }
 
 Particle::Particle(double x, double y, double yaw, Map* map, double belief)
@@ -37,28 +32,17 @@ Particle::Particle(double x, double y, double yaw, Map* map, double belief)
 	this->belief = belief;
 }
 
-double Particle::getRandomXbyR()
-{
-	return this->x + (rand() % (RADIUS*2) - RADIUS);
-}
-double Particle::getRandomYbyR()
-{
-	return this->y + (rand() % (RADIUS*2) - RADIUS);
-}
-double Particle::getRandomYawByR()
-{
-	return this->yaw + (rand() % MAX_ANGLE);
-}
 double Particle::getBelief()
 {
-	return this->belief;
+	return belief;
 }
 Map* Particle::getMap()
 {
 	return map;
 }
+/*
 
-double Particle::calculateBeliefByDistance(double distance)
+double Particle::calculateBeliefByDistance(double distance, double deltaYaw)
 {
 	if (distance >= UNLIKELY_DISTANCE)
 	{
@@ -81,36 +65,75 @@ double Particle::calculateBeliefByAngle(double angleDelta)
 	{
 		return (UNLIKELY_ANGLE - angleDelta);
 	}
+}*/
+
+void Particle::Update(double deltaX, double deltaY, double deltaYaw, float* laserArray)
+{
+	// Update particle location
+	this->x += deltaX;
+	this->y += deltaY;
+	this->yaw += deltaYaw;
+
+	// Calculate predicted belief by previous belief and probability by move
+	 double predictedBelief = belief * ProbByMove(deltaX, deltaY, deltaYaw);
+
+	// Calculate new belief by normalization, predicted belief and probability by measure
+	double newBelief = normalizationFactor *  predictedBelief * ProbByMeasure(laserArray);
+
+	this->belief = newBelief;
 }
 
-void Particle::Update(double delX, double delY, double delYaw, float* laserArray)
+double Particle::ProbByMove(double deltaX, double deltaY, double deltaYaw)
 {
-	double distance = sqrt(pow(delX,2) + pow(delY,2));
+	//Calculate the distance between delta x and delta y by Pythagoras sentence
+	double distance = sqrt(pow(deltaX, 2) + pow(deltaY, 2));
 
-	cout << "before cala belief" << endl;
-	// Calculate predicted belief
-	double predictedBelief = this->belief * calculateBeliefByDistance(distance) * calculateBeliefByAngle(abs(delYaw));
+	//TODO: need to calc
+	double distanceProbability ;
+	double yawProbability ;
 
-	// Update new location
-	this->x += delX;
-	this->y += delY;
-	this->yaw += delYaw;
 
-	try
-	{
-	predictedBelief = predictedBelief * this->map->UpdateMap(this->x, this->y, this->yaw, laserArray);
-	}
-	catch(exception e)
-	{
-		cout << e.what() << endl;
-	}
+	return yawProbability * distanceProbability;
+}
 
-	this->belief = predictedBelief;
+//TODO: need to calc
+double Particle::ProbByMeasure(float* laserArray)
+{
+	return 0;
+}
+
+//Create next generation for good particle
+Particle * Particle::genereateNewParticle()
+{
+	int randomX = getRandomXByRadius();
+	int randomY = getRandomYByRadius();
+	int randomYaw = getRandomYawByRadius();
+
+	//Create particle with random position in the radius and same map and belief
+	return new Particle(randomX, randomY, randomYaw,map, belief);
+}
+
+double Particle::getRandomXByRadius()
+{
+	return x + (rand() % (RADIUS*2) - RADIUS);
+}
+double Particle::getRandomYByRadius()
+{
+	return y + (rand() % (RADIUS*2) - RADIUS);
+}
+double Particle::getRandomYawByRadius()
+{
+	return yaw + (rand() % MAX_ANGLE);
 }
 
 void Particle::Print()
 {
 	this->map->PrintMatrix();
+}
+
+Particle::~Particle()
+{
+
 }
 
 

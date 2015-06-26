@@ -17,13 +17,10 @@
 #define OCCUPIED 1
 #define UNKNOWN 2
 
-enum CellOffset
-{
-	ROFFSET = 0,
-	GOFFSET = 1,
-	BOFFSET = 2,
-	AOFFSET = 3
-};
+#define ROFFSET 0
+#define	GOFFSET 1
+#define	BOFFSET 2
+#define	LOFFSET 3
 
 namespace  pngUtil
 {
