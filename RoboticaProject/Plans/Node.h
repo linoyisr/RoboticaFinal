@@ -12,16 +12,17 @@
 #include "../Point.h"
 #define WORLD_SIZE 64
 
+typedef enum
+{
+	First,
+	Goal,
+	Obstacle,
+	None
+}NodeType;
+
 class Node {
 public:
-	Point *m_coords;
-	int m_id;
-	Node *parent;
-	float G;
-	float H;
-
-	Node() : parent(0)
-	{ }
+	Node() : parent(0) {}
 
 	Node(int x, int y, Node *_parent = 0)
 	{
@@ -32,18 +33,28 @@ public:
 		H = 0;
 	}
 
-	float GetF()
-	{
-		return G + H;
-	}
+	float GetF();
+	float ManHattanDistance(Node *nodeEnd);
 
-	float ManHattanDistance(Node *nodeEnd)
-	{
-		float x = (float)(fabs((float)(m_coords->GetX() - nodeEnd->m_coords->GetX())));
-		float y = (float)(fabs((float)(m_coords->GetY() - nodeEnd->m_coords->GetY())));
+	Point* GetPoint();
+	Node* GetParent();
+	int GetNodeID();
+	int GetH();
+	int GetG();
 
-		return x + y;
-	}
+	void setPoint(Point* p);
+	void setParent(Node* p);
+	void setNodeID(int id);
+	void setH(int h);
+	void setG(int g);
+
+private:
+	Point *m_coords;
+	int m_id;
+	Node *parent;
+	float G;
+	float H;
+	NodeType type;
 };
 
 #endif /* NODE_H_ */

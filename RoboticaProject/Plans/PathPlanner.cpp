@@ -41,13 +41,11 @@ void PathPlanner::FindPath(vector<vector<int> > pngGrid, Point currentPos, Point
 
 		// Initialize start
 		Node start;
-		start.m_coords->SetX(currentPos.GetX());
-		start.m_coords->SetY(currentPos.GetY());
+		start.setPoint(&currentPos);
 
 		// Initialize Goal
 		Node goal;
-		goal.m_coords->SetX(targetPos.GetX());
-		goal.m_coords->SetY(targetPos.GetY());
+		goal.setPoint(&targetPos);
 
 		SetStartAndGoal(start, goal);
 		m_pngGrid = pngGrid;
@@ -63,12 +61,13 @@ void PathPlanner::FindPath(vector<vector<int> > pngGrid, Point currentPos, Point
 
 void PathPlanner::SetStartAndGoal(Node start, Node goal)
 {
-	m_startCell = new Node(start.m_coords->GetX(), start.m_coords->GetY(), NULL);
-	m_goalCell = new Node(goal.m_coords->GetX(), goal.m_coords->GetY(), &goal);
 
-	m_startCell->G = 0;
-	m_startCell->H = m_startCell->ManHattanDistance(m_goalCell);
-	m_startCell->parent = 0;
+	m_startCell = new Node(start.GetPoint()->GetX(), start.GetPoint()->GetY(), NULL);
+	m_goalCell = new Node(goal.GetPoint()->GetX(), goal.GetPoint()->GetY(), &goal);
+
+	m_startCell->setG(0);
+	m_startCell->setH(m_startCell->ManHattanDistance(m_goalCell));
+	m_startCell->setParent(0);
 
 	m_openList.push_back(m_startCell);
 }
@@ -108,26 +107,26 @@ void PathPlanner::pathOpened(int x, int z, float newCost, Node *parent)
 	int id = z * WORLD_SIZE + x;
 	for (unsigned int i = 0; i< m_visitedList.size(); i++)
 	{
-		if (id == m_visitedList[i]->m_id)
+		if (id == m_visitedList[i]->GetNodeID())
 		{
 			return;
 		}
 	}
 
 	Node* newChild = new Node(x, z, parent);
-	newChild->G = newCost;
-	newChild->H = newChild->ManHattanDistance(m_goalCell);
+	newChild->setG(newCost);
+	newChild->setH(newChild->ManHattanDistance(m_goalCell));
 
 	for (unsigned int i = 0; i< m_openList.size(); i++)
 	{
-		if (id == m_openList[i]->m_id)
+		if (id == m_openList[i]->GetNodeID())
 		{
-			float newF = newChild->G + newCost + m_openList[i]->H;
+			float newF = newChild->GetG() + newCost + m_openList[i]->GetH();
 
 			if (m_openList[i]->GetF() > newF)
 			{
-				m_openList[i]->G = newChild->G + newCost;
-				m_openList[i]->parent = newChild;
+				m_openList[i]->setG(newChild->GetG() + newCost);
+				m_openList[i]->setParent(newChild);
 			}
 			else
 			{
@@ -148,14 +147,14 @@ void PathPlanner::ContinuePath()
 	}
 
 	Node* currentCell = GetNextCell();
-	if (currentCell->m_id == m_goalCell->m_id)
+	if (currentCell->GetNodeID() == m_goalCell->GetNodeID())
 	{
-		m_goalCell->parent = currentCell->parent;
+		m_goalCell->setParent(currentCell->GetParent());
 		Node* getPath;
 
-		for (getPath = m_goalCell; getPath != NULL; getPath = getPath->parent)
+		for (getPath = m_goalCell; getPath != NULL; getPath = getPath->GetParent())
 		{
-			m_pathToGoal.push_back(new Point(getPath->m_coords->GetX(), getPath->m_coords->GetY()));
+			m_pathToGoal.push_back(new Point(getPath->GetPoint()->GetX(), getPath->GetPoint()->GetY()));
 		}
 		reverse(m_pathToGoal.begin(), m_pathToGoal.end());
 
@@ -165,25 +164,25 @@ void PathPlanner::ContinuePath()
 	else
 	{
 		// rightCell
-		pathOpened(currentCell->m_coords->GetX() + 1, currentCell->m_coords->GetY(), currentCell->G + 1, currentCell);
+		pathOpened(currentCell->GetPoint()->GetX() + 1, currentCell->GetPoint()->GetY(), currentCell->GetG() + 1, currentCell);
 		// LeftSide
-		pathOpened(currentCell->m_coords->GetX() - 1, currentCell->m_coords->GetY(), currentCell->G + 1, currentCell);
+		pathOpened(currentCell->GetPoint()->GetX() - 1, currentCell->GetPoint()->GetY(), currentCell->GetG() + 1, currentCell);
 		// UpCell
-		pathOpened(currentCell->m_coords->GetX(), currentCell->m_coords->GetY() + 1, currentCell->G + 1, currentCell);
+		pathOpened(currentCell->GetPoint()->GetX(), currentCell->GetPoint()->GetY() + 1, currentCell->GetG() + 1, currentCell);
 		// downCell
-		pathOpened(currentCell->m_coords->GetX(), currentCell->m_coords->GetY() - 1, currentCell->G + 1, currentCell);
+		pathOpened(currentCell->GetPoint()->GetX(), currentCell->GetPoint()->GetY() - 1, currentCell->GetG() + 1, currentCell);
 		// leftUp
-		pathOpened(currentCell->m_coords->GetX() - 1, currentCell->m_coords->GetY() + 1, currentCell->G + 1.414f, currentCell);
+		pathOpened(currentCell->GetPoint()->GetX() - 1, currentCell->GetPoint()->GetY() + 1, currentCell->GetG() + 1.414f, currentCell);
 		// rightUp
-		pathOpened(currentCell->m_coords->GetX() + 1, currentCell->m_coords->GetY() + 1, currentCell->G + 1.414f, currentCell);
+		pathOpened(currentCell->GetPoint()->GetX() + 1, currentCell->GetPoint()->GetY() + 1, currentCell->GetG() + 1.414f, currentCell);
 		// leftDown
-		pathOpened(currentCell->m_coords->GetX() - 1, currentCell->m_coords->GetY() - 1, currentCell->G + 1.414f, currentCell);
+		pathOpened(currentCell->GetPoint()->GetX() - 1, currentCell->GetPoint()->GetY() - 1, currentCell->GetG() + 1.414f, currentCell);
 		// rightDown
-		pathOpened(currentCell->m_coords->GetX() + 1, currentCell->m_coords->GetY() - 1, currentCell->G + 1.414f, currentCell);
+		pathOpened(currentCell->GetPoint()->GetX() + 1, currentCell->GetPoint()->GetY() - 1, currentCell->GetG() + 1.414f, currentCell);
 
 		for (unsigned int i = 0; i< m_openList.size(); i++)
 		{
-			if (currentCell->m_id == m_openList[i]->m_id)
+			if (currentCell->GetNodeID() == m_openList[i]->GetNodeID())
 			{
 				m_openList.erase(m_openList.begin() + 1);
 			}
