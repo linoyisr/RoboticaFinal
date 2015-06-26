@@ -21,7 +21,29 @@ Map::Map()
 	pngToVector();
 	blowMap();
 	BlowingMapToGrid();
-	PrintMatrix();
+	getMatrix();
+
+	//this code checking converting between image point to grid point
+	//the points i test are black
+	/*
+	Point a = getImageLocationBy(Point(91,4));
+	Point b = getGridLocationBy(a);
+	if (pngVector[a.GetY() * mapWidth * 4 + a.GetX() *4] ==
+			gridVector[b.GetY() * gridWidth * 4 + b.GetX() *4])
+		cout << true <<endl;
+
+	a = getImageLocationBy(Point(78,10));
+	b = getGridLocationBy(a);
+	if (pngVector[a.GetY() * mapWidth * 4 + a.GetX() *4] ==
+			gridVector[b.GetY() * gridWidth * 4 + b.GetX() *4])
+		cout << true <<endl;
+
+	a = getImageLocationBy(Point(69,12));
+	b = getGridLocationBy(a);
+	if (pngVector[a.GetY() * mapWidth * 4 + a.GetX() *4] ==
+			gridVector[b.GetY() * gridWidth * 4 + b.GetX() *4])
+		cout << true <<endl;*/
+
 }
 
 void Map::getConfigValues()
@@ -92,7 +114,7 @@ void Map::pngToVector()
 void Map::blowMap()
 {
 	//Change size of the vector because each pixel represented by 4 cells (3 for RGB + last one always 255)
-	blowImage.resize(mapWidth * mapHeight * numOfCellsForeachPixel);
+	blowMapVector.resize(mapWidth * mapHeight * numOfCellsForeachPixel);
 
 	// the really point of the robot is at the center
 	int xPixelsToBlowing = int(robotWidth / mapResolution) / 2;
@@ -114,24 +136,24 @@ void Map::blowMap()
 					{
 						int offset = ((j * numOfCellsForeachPixel) + ((mapWidth) * i * numOfCellsForeachPixel));
 						//Make sure there is no scope creep from map
-						if (currPixel + offset >= 0 && currPixel + offset + BOFFSET < blowImage.size())
+						if (currPixel + offset >= 0 && currPixel + offset + BOFFSET < blowMapVector.size())
 						{
-							blowImage[currPixel + offset + ROFFSET] = BLACK;
-							blowImage[currPixel + offset + GOFFSET] = BLACK;
-							blowImage[currPixel + offset + BOFFSET] = BLACK;
+							blowMapVector[currPixel + offset + ROFFSET] = BLACK;
+							blowMapVector[currPixel + offset + GOFFSET] = BLACK;
+							blowMapVector[currPixel + offset + BOFFSET] = BLACK;
 						}
 					}
 				}
 			}
 			else
 			{
-				blowImage[currPixel + ROFFSET] = WHITE;
-				blowImage[currPixel + GOFFSET] = WHITE;
-				blowImage[currPixel + BOFFSET] = WHITE;
+				blowMapVector[currPixel + ROFFSET] = WHITE;
+				blowMapVector[currPixel + GOFFSET] = WHITE;
+				blowMapVector[currPixel + BOFFSET] = WHITE;
 			}
 
 			// last pixel is always white
-			blowImage[currPixel + AOFFSET] = WHITE;
+			blowMapVector[currPixel + AOFFSET] = WHITE;
 		}
 	}
 
@@ -140,7 +162,7 @@ void Map::blowMap()
 
 void Map::saveBlowingMap()
 {
-	int encodeError = lodepng::encode(blowMapPath, blowImage, mapWidth, mapHeight);
+	int encodeError = lodepng::encode(blowMapPath, blowMapVector, mapWidth, mapHeight);
 
 	if (encodeError)
 	{
@@ -160,20 +182,20 @@ void Map::BlowingMapToGrid()
 	gridHeight = (unsigned int)(mapHeight/newGridResoultion);
 	gridWidth = (unsigned int)(mapWidth/newGridResoultion);
 
-	grid.resize(gridHeight * gridWidth * numOfCellsForeachPixel);
+	gridVector.resize(gridHeight * gridWidth * numOfCellsForeachPixel);
 
-	for (unsigned x = 0; x < gridHeight; x++)
+	for (unsigned y = 0; y < gridHeight; y++)
 	{
-		for (unsigned y = 0; y < gridWidth; y++)
+		for (unsigned x = 0; x < gridWidth; x++)
 		{
-			int currPixel = (x * gridWidth * numOfCellsForeachPixel) + (y * numOfCellsForeachPixel);
+			int currPixel = (y * gridWidth * numOfCellsForeachPixel) + (x * numOfCellsForeachPixel);
 
-			color = getColorOfCell(blowImage, mapWidth, mapHeight, x, y, newGridResoultion);
+			color = getColorOfCell(blowMapVector, mapWidth, mapHeight, y, x, newGridResoultion);
 
-			grid[currPixel + ROFFSET] = color;
-			grid[currPixel + GOFFSET] = color;
-			grid[currPixel + BOFFSET] = color;
-			grid[currPixel + AOFFSET] = WHITE;
+			gridVector[currPixel + ROFFSET] = color;
+			gridVector[currPixel + GOFFSET] = color;
+			gridVector[currPixel + BOFFSET] = color;
+			gridVector[currPixel + AOFFSET] = WHITE;
 		}
 	}
 }
@@ -187,7 +209,7 @@ vector<vector<int> > Map::getMatrix()
 	{
 		for (unsigned int x = 0; x < gridWidth; x++)
 		{
-			color = getColorOfCell(grid, gridWidth, gridHeight, y, x, 1);
+			color = getColorOfCell(gridVector, gridWidth, gridHeight, y, x, 1);
 			switch (color)
 			{
 				case WHITE:
@@ -202,6 +224,9 @@ vector<vector<int> > Map::getMatrix()
 		}
 	}
 
+	//only for checking
+	//int encodeError = lodepng::encode("resources/gridVector.png", gridVector, gridWidth, gridHeight);
+
 	return matrix;
 }
 
@@ -213,7 +238,7 @@ unsigned char Map::getColorOfCell(vector<unsigned char> grid,unsigned width, uns
 		{
 			unsigned char color = pngUtil::getColorOfPixel(grid, width, height, ((row*resolution) + y), ((column*resolution)+ x));
 
-			// If there at least 1 cell black in blowMap, the representing cell in the grid will be black
+			// If there at least 1 cell black in blowMap, the representing cell in the gridVector will be black
 			if(color == BLACK)
 			{
 				return color;
@@ -238,14 +263,30 @@ void Map::PrintMatrix()
 		}
 }
 
+Point Map::getRealLocationBy(Point gridPoint)
+{
+	//Each cell in grid , pi 10 in the real world
+	return Point(gridPoint.GetX() * gridResolution, gridPoint.GetY() * gridResolution);
+}
+
+Point Map::getImageLocationBy(Point gridPoint)
+{
+	return Point(gridPoint.GetX() * (mapWidth/gridWidth), gridPoint.GetY() * (mapHeight/gridHeight) );
+}
+
+Point Map::getGridLocationBy(Point imagePoint)
+{
+	return Point(imagePoint.GetX() / (mapWidth/gridWidth), imagePoint.GetY() / (mapHeight/gridHeight) );
+}
+
 void Map::SetFreeCell(Point pnt)
 {
-	grid[pnt.GetX() * mapWidth + pnt.GetY()] = FREE;
+	gridVector[pnt.GetX() * mapWidth + pnt.GetY()] = FREE;
 }
 
 void Map::SetOccupiedCell(Point pnt)
 {
-	grid[pnt.GetX() * mapWidth + pnt.GetY()] = OCCUPIED;
+	gridVector[pnt.GetX() * mapWidth + pnt.GetY()] = OCCUPIED;
 }
 
 Point* Map::ConvertPositionToPoint(Point position)
@@ -255,7 +296,7 @@ Point* Map::ConvertPositionToPoint(Point position)
 
 int Map::GetCellValue(Point point)
 {
-	return grid[point.GetX() * mapWidth + point.GetY()];
+	return gridVector[point.GetX() * mapWidth + point.GetY()];
 }
 
 double Map::UpdateMap(double x, double y, double yaw, float* laserArray)

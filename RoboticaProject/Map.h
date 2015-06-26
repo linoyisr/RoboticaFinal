@@ -23,8 +23,8 @@ class Map {
 private:
 
 	int numOfCellsForeachPixel = 4;
-
 	string blowMapPath = "resources/blowMap.png";
+
 	string mapPath;
 	int mapResolution;
 	int gridResolution;
@@ -48,19 +48,21 @@ public:
 	Map();
 	virtual ~Map();
 	std::vector<unsigned char> pngVector;
-	std::vector<unsigned char> mapVector;
-	std::vector<unsigned char> blowImage;
+	std::vector<unsigned char> blowMapVector;
 
-	std::vector<unsigned char> grid;
+	std::vector<unsigned char> gridVector;
 
+	int GetCellValue(Point point);
 	void SetFreeCell(Point ponit);
 	void SetOccupiedCell(Point point);
 	Point* ConvertPositionToPoint(Point position);
 	double UpdateMap(double deltaX, double deltaY, double deltaYaw, float* laserArray);
-	void PrintMatrix();
-	int GetCellValue(Point point);
 
+	void PrintMatrix();
 	std::vector<std::vector<int> > getMatrix();
+	Point getRealLocationBy(Point gridPoint);
+	Point getImageLocationBy(Point gridPoint);
+	Point getGridLocationBy(Point imagePoint);
 };
 
 #endif /* MAP_H_ */
