@@ -4,24 +4,82 @@
 
 #include "Map.h"
 #include "LaserHelper.h"
+#include "Manager/ConfigurationManager.h"
 #include "math.h"
 #include "pngUtil.h"
 #include "lodepng.h"
-
-string blowMapPath = "resources/blowMap.png";
+#include <stdio.h>
+#include <stdlib.h>
+#include <ostream>
+#include <string>
+#include "Location.h"
+typedef basic_stringstream<char> stringstream;
 
 Map::Map()
 {
+	getConfigValues();
 	pngToVector();
 	blowMap();
 	BlowingMapToGrid();
 	PrintMatrix();
 }
 
+void Map::getConfigValues()
+{
+	ConfigurationManager cfg("parameters.txt");
+
+	mapPath = cfg.getValueOfKey("map");
+	string robotSizeString = cfg.getValueOfKey("robotSize");
+	// convert string with spaces to array
+	vector<int> robotSizeArray;
+	stringstream ss3(robotSizeString);
+	int temp3;
+	while (ss3 >> temp3)
+		robotSizeArray.push_back(temp3);
+
+	robotHeight = robotSizeArray[0];
+	robotWidth = robotSizeArray[1];
+
+	mapResolution = atof(cfg.getValueOfKey("MapResolutionCM").c_str());
+	gridResolution = atof(cfg.getValueOfKey("GridResolutionCM").c_str());
+	/*
+		string startLocationString;
+		int xStart;
+		int yStart;
+		int yawStart;
+		string goalString;
+		int xGoal;
+		int yGoal;
+
+		startLocationString = cfg.getValueOfKey("startLocation");
+		// convert string with spaces to array
+		vector<int> startLocationArray;
+		stringstream ss1(startLocationString);
+		int temp1;
+		while (ss1 >> temp1)
+			startLocationArray.push_back(temp1);
+
+		xStart = startLocationArray[0];
+		yStart = startLocationArray[1];
+		Point startPoint(xStart, yStart);
+		yawStart = startLocationArray[2];
+		Location loc(&startPoint, yawStart);
+
+		goalString = cfg.getValueOfKey("goal");
+		// convert string with spaces to array
+		vector<int> goalArray;
+		stringstream ss2(goalString);
+		int temp2;
+		while (ss2 >> temp2)
+			goalArray.push_back(temp2);
+
+		xGoal = goalArray[0];
+		yGoal = goalArray[1];*/
+}
 void Map::pngToVector()
 {
 	// Convert png to vector
-	int error = lodepng::decode(pngVector,mapWidth,mapHeight,"resources/roboticLabMap.png");
+	int error = lodepng::decode(pngVector,mapWidth,mapHeight, mapPath);
 
 	//if there's an error, display it
 	if (error)
@@ -37,8 +95,8 @@ void Map::blowMap()
 	blowImage.resize(mapWidth * mapHeight * numOfCellsForeachPixel);
 
 	// the really point of the robot is at the center
-	int xPixelsToBlowing = int(robotSizeX / mapResolution) / 2;
-	int yPixelsToBlowing = int(robotSizeY / mapResolution) / 2;
+	int xPixelsToBlowing = int(robotWidth / mapResolution) / 2;
+	int yPixelsToBlowing = int(robotHeight / mapResolution) / 2;
 
 	for (int y = 0; y < mapHeight; y++)
 	{
@@ -99,8 +157,8 @@ void Map::BlowingMapToGrid()
 	//Check why mapResolution change to 2
 	int newGridResoultion = (int)(floor(gridResolution/mapResolution));
 
-	gridHeight = (unsigned int)(floor(mapHeight/newGridResoultion));
-	gridWidth = (unsigned int)(floor(mapWidth/newGridResoultion));
+	gridHeight = (unsigned int)(mapHeight/newGridResoultion);
+	gridWidth = (unsigned int)(mapWidth/newGridResoultion);
 
 	grid.resize(gridHeight * gridWidth * numOfCellsForeachPixel);
 

@@ -19,18 +19,19 @@ using namespace std;
 #define MAPPING_START_POINT 5
 #define MAPPING_END_POINT (SAFE_MAX_DISTANCE*100)/RESOLUTION
 
-
-
 class Map {
 private:
 
 	int numOfCellsForeachPixel = 4;
-	//TODO: should be from configuration
-	int mapResolution = 2.5;
-	int gridResolution = 10;
-	unsigned int robotSizeX = 30;
-	unsigned int robotSizeY = 30;
 
+	string blowMapPath = "resources/blowMap.png";
+	string mapPath;
+	int mapResolution;
+	int gridResolution;
+	unsigned int robotWidth;
+	unsigned int robotHeight;
+
+	void getConfigValues();
 	void pngToVector();
 	void blowMap();
 	void saveBlowingMap();
@@ -41,8 +42,8 @@ private:
 public:
 	unsigned int mapHeight; // will initialize to 380
 	unsigned int mapWidth; // will initialize to 550
-	unsigned int gridHeight; // will initialize to 380
-	unsigned int gridWidth; // will initialize to 550
+	unsigned int gridHeight;
+	unsigned int gridWidth;
 
 	Map();
 	virtual ~Map();
