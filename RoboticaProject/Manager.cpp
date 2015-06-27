@@ -54,7 +54,7 @@ void Manager::run()
 
 	_robot->Read();
 
-	if((!(_currBehavior->startCond())) || _currBehavior == NULL)
+	if(_currBehavior == NULL || (!(_currBehavior->startCond())))
 		return;
 
 	_currBehavior->action();
@@ -65,7 +65,6 @@ void Manager::run()
 		while(!_currBehavior->stopCond())
 		{
 			_currBehavior->action();
-			_robot->Read();
 
 			// Every 15 reads make all the calculations and update the particles and their corresponding data
 			if (loopsCounter == 15)
@@ -84,6 +83,8 @@ void Manager::run()
 			}
 			else
 				loopsCounter++;
+
+			_robot->Read();
 
 		}
 		_currBehavior = _currBehavior->selectNext();

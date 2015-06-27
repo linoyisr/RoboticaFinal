@@ -8,12 +8,13 @@
 #include "../behaviors/TurnRight.h"
 #include "../behaviors/TurnLeft.h"
 #include "../behaviors/GoForward.h"
+#include "../behaviors/TurnAround.h"
 #include "../behaviors/Behavior.h"
 #include "Plan.h"
 
 class PlnObstacleAvoid: public Plan
 {
-	Behavior* _behaviors[3];
+	Behavior* _behaviors[4];
 
 public:
 	PlnObstacleAvoid(Robot* robot);

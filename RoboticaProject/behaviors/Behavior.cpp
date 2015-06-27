@@ -10,7 +10,6 @@ Behavior::Behavior(Robot* robot) {
 }
 
 Behavior::~Behavior() {
-	// TODO Auto-generated destructor stub
 }
 
 void Behavior::addBeh(Behavior* next)
