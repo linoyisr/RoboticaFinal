@@ -17,9 +17,10 @@ private:
 	Map *_map;
 	vector<Particle*> _particles;
 public:
-	LocalizationManager(Map* map);
+	LocalizationManager(Location robotLocation, Map* map);
 	virtual ~LocalizationManager();
-	void Update(Location location, float* laserScans);
+	void Update(Location deltaLocation, float* laserScans);
+	vector<Particle*>* getParticles();
 	void PrintParticles();
 };
 

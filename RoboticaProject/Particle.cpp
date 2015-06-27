@@ -25,6 +25,11 @@ const int maxGoodAngle = 5; //if in degrees, else *M_PI/MAX_ANGLE
 const double normalizationFactor = 1.3;
 const double defaultBelief = 1;
 
+Particle::Particle( Map* map)
+: Particle::Particle(map->gridWidth/2, map->gridHeight/2, 0, map, defaultBelief)
+{
+}
+
 Particle::Particle(double x, double y, double yaw, Map* map)
 : Particle::Particle(x, y, yaw, map, defaultBelief)
 {
@@ -48,7 +53,7 @@ Map* Particle::getMap()
 	return map;
 }
 
-void Particle::Update(double deltaX, double deltaY, double deltaYaw, float* laserArray)
+void Particle::Update(double deltaX, double deltaY, double deltaYaw, float* laserScans)
 {
 	// Update particle location
 	x += deltaX;
@@ -59,7 +64,7 @@ void Particle::Update(double deltaX, double deltaY, double deltaYaw, float* lase
 	 double predictedBelief = belief * ProbByMove(deltaX, deltaY, deltaYaw);
 
 	// Calculate new belief by normalization, predicted belief and probability by measure
-	double newBelief = normalizationFactor *  predictedBelief * ProbByMeasure(laserArray);
+	double newBelief = normalizationFactor *  predictedBelief * ProbByMeasure(laserScans);
 
 	belief = newBelief;
 }
@@ -89,7 +94,7 @@ double Particle::ProbByMove(double deltaX, double deltaY, double deltaYaw)
 	return distanceProbability * yawProbability;
 }
 
-double Particle::ProbByMeasure(float* laserArray)
+double Particle::ProbByMeasure(float* laserScans)
 {
 	int numOfErrors = 0;
 	int numOfHits = 0;
@@ -104,14 +109,14 @@ double Particle::ProbByMeasure(float* laserArray)
 		double yForLaser = y + sin(angleForLaser);
 
 		//calculate x,y of the obstacle
-		int obstacleRealY = floor(x + (double((laserArray[currBeam]) * yForLaser)));
-		int obstacleRealX = floor(y + (double((laserArray[currBeam]) * xForLaser)));
+		int obstacleRealY = floor(x + (double((laserScans[currBeam]) * yForLaser)));
+		int obstacleRealX = floor(y + (double((laserScans[currBeam]) * xForLaser)));
 		Point obstacleRealPoint(obstacleRealX, obstacleRealY);
 
 		//Convert real point of the obstacle to grid point
 		Point obastcleGridPoint = map->getRealLocationBy(obstacleRealPoint);
 
-		if(laserArray[currBeam] < BEAM_MAX_DISTANCE)
+		if(laserScans[currBeam] < BEAM_MAX_DISTANCE)
 		{
 			//Make sure there is no creep from map scope
 			if((obastcleGridPoint.GetX() >= 0) && ( obastcleGridPoint.GetX() <= (int)map->gridWidth) &&
@@ -165,11 +170,11 @@ double Particle::getRandomYaw()
 	return (rand() % MAX_ANGLE);
 }
 
-void Particle::Print()
+void Particle::print()
 {
-	this->map->PrintGridMatrix();
+	cout << 'x: ' << x << ' y:' << y << ' yaw: ' << yaw << ' belief: ' << belief;
+	cout << endl;
 }
-
 Particle::~Particle()
 {
 

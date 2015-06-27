@@ -12,7 +12,7 @@ Manager::Manager(Robot* robot)
 	_pathPlanner = new PathPlanner();
 	_obstacleAvoid = new PlnObstacleAvoid(_robot);
 	_currBehavior = _obstacleAvoid->getStartBehavior();
-	_locManager = new LocalizationManager(_map);
+	_locManager = new LocalizationManager(_robot->_robotLocation, _map);
 }
 
 void Manager::getLaserScan(float* laserScans)
@@ -78,9 +78,9 @@ void Manager::run()
 				float laserScans[666];
 				getLaserScan(laserScans);
 
-				Location location(deltaX, deltaY, deltaYaw);
-				_robot->updateRobotLocation(location);
-				_locManager->Update(location, laserScans);
+				Location deltaLocation(deltaX, deltaY, deltaYaw);
+				_robot->updateRobotLocation(deltaLocation);
+				_locManager->Update(deltaLocation, laserScans);
 			}
 			else
 				loopsCounter++;
