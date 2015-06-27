@@ -140,4 +140,15 @@ string ConfigurationManager::getValueOfKey(const string &key)
 	return contents[key];
 }
 
+vector<int> ConfigurationManager::ConvertStringToIntArray(string value)
+{
+	vector<int> array;
+	stringstream ss(value);
+	int temp;
+	while (ss >> temp)
+		array.push_back(temp);
+
+	return array;
+}
+
 

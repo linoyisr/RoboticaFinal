@@ -27,6 +27,7 @@ Map::Map()
 	getMatrix();
 	PrintMatrix();
 
+
 	//this code checking converting between image point to grid point
 	//the points i test are black
 	/*
@@ -56,18 +57,13 @@ void Map::getConfigValues()
 
 	mapPath = cfg.getValueOfKey("map");
 	string robotSizeString = cfg.getValueOfKey("robotSize");
-	// convert string with spaces to array
-	vector<int> robotSizeArray;
-	stringstream ss3(robotSizeString);
-	int temp3;
-	while (ss3 >> temp3)
-		robotSizeArray.push_back(temp3);
-
+	vector<int> robotSizeArray = cfg.ConvertStringToIntArray(robotSizeString);
 	robotHeight = robotSizeArray[0];
 	robotWidth = robotSizeArray[1];
 
 	mapResolution = atof(cfg.getValueOfKey("MapResolutionCM").c_str());
 	gridResolution = atof(cfg.getValueOfKey("GridResolutionCM").c_str());
+
 	/*
 		string startLocationString;
 		int xStart;

@@ -15,6 +15,7 @@
 #include <fstream>
 #include <typeinfo>
 #include <stdlib.h>
+#include <vector>
 
 using namespace std;
 
@@ -47,6 +48,7 @@ public:
 	virtual ~ConfigurationManager();
 	bool keyExists(const string &key) const;
 	string getValueOfKey(const string &key);
+	vector<int> ConvertStringToIntArray(string value);
 };
 
 #endif /* CONFIGURATIONMANAGER_H_ */

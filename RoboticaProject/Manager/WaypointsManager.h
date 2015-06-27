@@ -14,14 +14,13 @@ using namespace std;
 
 class WaypointsManager {
 public:
-	WaypointsManager(vector<Point*> path, double mapResolution);
+	WaypointsManager(vector<Point*> path);
 	~WaypointsManager();
 	void CreateWaypoints();
 	vector<Point*> getWaypointsList();
 
 	vector<Point*> astarPath;
 	vector<Point*> wayPoints;
-	double mapResolution;
 };
 
 #endif /* WAYPOINTSMANAGER_H_ */

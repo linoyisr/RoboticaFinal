@@ -10,6 +10,7 @@
 #include "Point.h"
 #include <iostream>
 #include <vector>
+
 using namespace std;
 
 class Map {
@@ -26,7 +27,7 @@ private:
 	void saveBlowingMap();
 	int getValueByResolution(float range);
 	void BlowingMapToGrid();
-	unsigned char getColorOfCell(std::vector<unsigned char> grid,unsigned width, unsigned height, int row, int col, int res);
+	unsigned char getColorOfCell(vector<unsigned char> grid,unsigned width, unsigned height, int row, int col, int res);
 
 public:
 	unsigned int mapHeight; // will initialize to 380
@@ -36,12 +37,12 @@ public:
 
 	Map();
 	virtual ~Map();
-	std::vector<unsigned char> pngVector;
-	std::vector<unsigned char> blowMapVector;
-	std::vector<unsigned char> gridVector;
+	vector<unsigned char> pngVector;
+	vector<unsigned char> blowMapVector;
+	vector<unsigned char> gridVector;
 
 	void PrintMatrix();
-	std::vector<std::vector<int> > getMatrix();
+	vector<vector<int> > getMatrix();
 	Point getRealLocationBy(Point gridPoint);
 	Point getImageLocationBy(Point gridPoint);
 	Point getGridLocationBy(Point imagePoint);

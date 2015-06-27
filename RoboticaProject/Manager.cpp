@@ -5,11 +5,14 @@
 #include "Manager.h"
 
 
-Manager::Manager(Robot* robot, Plan* pln, LocalizationManager* locManager)
+Manager::Manager(Robot* robot)
 {
+	_map = new Map();
 	_robot = robot;
-	_currBehavior = pln->getStartBehavior();
-	_locManager = locManager;
+	_pathPlanner = new PathPlanner();
+	_obstacleAvoid = new PlnObstacleAvoid(_robot);
+	_currBehavior = _obstacleAvoid->getStartBehavior();
+	_locManager = new LocalizationManager(_map);
 }
 
 void Manager::getLaserScan(float* laserScans)
@@ -20,8 +23,35 @@ void Manager::getLaserScan(float* laserScans)
 	}
 }
 
+void Manager::setStartAndGoal()
+{
+	ConfigurationManager cfg("parameters.txt");
+
+	string startString = cfg.getValueOfKey("startLocation");
+	vector<int> startArray = cfg.ConvertStringToIntArray(startString);
+
+	int xStart = startArray[0];
+	int yStart = startArray[1];
+	Point startPoint(xStart, yStart);
+	_startPoint = startPoint;
+	int yawStart = startArray[2];
+	Location loc(&_startPoint, yawStart);
+	_location = &loc;
+
+	string goalString = cfg.getValueOfKey("goal");
+	vector<int> goalArray = cfg.ConvertStringToIntArray(goalString);
+
+	int xGoal = goalArray[0];
+	int yGoal = goalArray[1];
+	Point goalPoint(xGoal, yGoal);
+	_goalPoint = goalPoint;
+}
+
 void Manager::run()
 {
+	_pathPlanner->FindPath(_map->getMatrix(), _startPoint, _goalPoint);
+	_waypointsManager = new WaypointsManager(_pathPlanner->GetPathToGoal());
+
 	_robot->Read();
 
 	if((!(_currBehavior->startCond())) || _currBehavior == NULL)

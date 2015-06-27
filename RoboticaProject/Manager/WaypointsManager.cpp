@@ -7,10 +7,10 @@
 
 #include "WaypointsManager.h"
 
-WaypointsManager::WaypointsManager(vector<Point*> path, double resolution)
+WaypointsManager::WaypointsManager(vector<Point*> path)
 {
 	astarPath = path;
-	mapResolution = resolution;
+	CreateWaypoints();
 }
 
 vector<Point*> WaypointsManager::getWaypointsList()
@@ -20,13 +20,13 @@ vector<Point*> WaypointsManager::getWaypointsList()
 
 void WaypointsManager::CreateWaypoints()
 {
-	int jumps = 3;
+	int numOfJumps = 3;
 
-	for(unsigned i=0; i< astarPath.size(); i += jumps){
+	for(unsigned i=0; i< astarPath.size(); i += numOfJumps){
 		this->wayPoints.push_back(astarPath[i]);
 	}
 
-	if ((astarPath.size() % jumps) != 0){
+	if ((astarPath.size() % numOfJumps) != 0){
 		this->wayPoints.push_back(astarPath[astarPath.size() -1]);
 	}
 
