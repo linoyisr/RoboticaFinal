@@ -189,6 +189,7 @@ vector<vector<int> > Map::getBlowGridMatrix()
 			}
 		}
 	}
+	return matrix;
 }
 
 
