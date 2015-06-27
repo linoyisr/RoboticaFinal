@@ -63,40 +63,6 @@ void Map::getConfigValues()
 
 	mapResolution = atof(cfg.getValueOfKey("MapResolutionCM").c_str());
 	gridResolution = atof(cfg.getValueOfKey("GridResolutionCM").c_str());
-
-	/*
-		string startLocationString;
-		int xStart;
-		int yStart;
-		int yawStart;
-		string goalString;
-		int xGoal;
-		int yGoal;
-
-		startLocationString = cfg.getValueOfKey("startLocation");
-		// convert string with spaces to array
-		vector<int> startLocationArray;
-		stringstream ss1(startLocationString);
-		int temp1;
-		while (ss1 >> temp1)
-			startLocationArray.push_back(temp1);
-
-		xStart = startLocationArray[0];
-		yStart = startLocationArray[1];
-		Point startPoint(xStart, yStart);
-		yawStart = startLocationArray[2];
-		Location loc(&startPoint, yawStart);
-
-		goalString = cfg.getValueOfKey("goal");
-		// convert string with spaces to array
-		vector<int> goalArray;
-		stringstream ss2(goalString);
-		int temp2;
-		while (ss2 >> temp2)
-			goalArray.push_back(temp2);
-
-		xGoal = goalArray[0];
-		yGoal = goalArray[1];*/
 }
 void Map::pngToVector()
 {
