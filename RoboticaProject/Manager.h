@@ -9,6 +9,7 @@
 #include "behaviors/Behavior.h"
 #include "Manager/LocalizationManager.h"
 #include "Manager/ConfigurationManager.h"
+#include "Manager/WaypointsManager.h"
 #include "Plans/PathPlanner.h"
 #include "Point.h"
 #include <vector>
