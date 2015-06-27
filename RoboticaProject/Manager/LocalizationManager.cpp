@@ -26,6 +26,11 @@ LocalizationManager::~LocalizationManager()
 {
 }
 
+vector<Particle*>* LocalizationManager::getParticles()
+{
+	return _particles;
+}
+
 void LocalizationManager::Update(Location deltaLocation, float* laserScans)
 {
 	for(unsigned int i = 0; i < _particles.size(); i ++)
