@@ -173,7 +173,7 @@ double Particle::getRandomYaw()
 
 void Particle::print()
 {
-	cout << 'x: ' << x << ' y:' << y << ' yaw: ' << yaw << ' belief: ' << belief;
+	cout << "x: " << x << " y:" << y << " yaw: " << yaw << " belief: " << belief;
 	cout << endl;
 }
 Particle::~Particle()
