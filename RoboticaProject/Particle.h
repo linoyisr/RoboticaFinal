@@ -16,9 +16,9 @@ public:
 	double getBelief();
 	Map* getMap();
 	void Update(double delX, double delY, double delYaw, float* laserArray);
-	double getRandomXByRadius();
-	double getRandomYByRadius();
-	double getRandomYawByRadius();
+	double getRandomX();
+	double getRandomY();
+	double getRandomYaw();
 	Particle * genereateNewParticle();
 
 	void Print();

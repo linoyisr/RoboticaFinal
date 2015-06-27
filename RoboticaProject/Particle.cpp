@@ -105,25 +105,28 @@ double Particle::ProbByMeasure(float* laserArray)
 //Create next generation for good particle
 Particle * Particle::genereateNewParticle()
 {
-	int randomX = getRandomXByRadius();
-	int randomY = getRandomYByRadius();
-	int randomYaw = getRandomYawByRadius();
+	int randomX = getRandomX();
+	int randomY = getRandomY();
+	int randomYaw = getRandomYaw();
 
 	//Create particle with random position in the radius and same map and belief
 	return new Particle(randomX, randomY, randomYaw,map, belief);
 }
 
-double Particle::getRandomXByRadius()
+double Particle::getRandomX()
 {
-	return x + (rand() % (RADIUS*2) - RADIUS);
+	//Add to current x number between 0 and 1
+	return x + ((double)(rand() / RAND_MAX)); // +1
 }
-double Particle::getRandomYByRadius()
+double Particle::getRandomY()
 {
-	return y + (rand() % (RADIUS*2) - RADIUS);
+	//Add to current y number between 0 and 1
+	return y+ ((double)(rand() / RAND_MAX));  // +1
 }
-double Particle::getRandomYawByRadius()
+//Return an number between 1 and 360
+double Particle::getRandomYaw()
 {
-	return yaw + (rand() % MAX_ANGLE);
+	return (rand() % MAX_ANGLE);
 }
 
 void Particle::Print()
