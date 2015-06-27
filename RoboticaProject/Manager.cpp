@@ -49,7 +49,7 @@ void Manager::setStartAndGoal()
 
 void Manager::run()
 {
-	_pathPlanner->FindPath(_map->getBlowGridMatrix(), _startPoint, _goalPoint);
+	_pathPlanner->FindPath(_map->getGridMatrix(), _startPoint, _goalPoint);
 	_waypointsManager = new WaypointsManager(_pathPlanner->GetPathToGoal());
 
 	_robot->Read();

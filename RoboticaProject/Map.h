@@ -43,8 +43,8 @@ public:
 
 	void PrintGridMatrix();
 	std::vector<std::vector<int> > getGridMatrix();
-	void PrintBlowGridMatrix();
-	std::vector<std::vector<int> > getBlowGridMatrix();
+	//void PrintBlowGridMatrix();
+	//std::vector<std::vector<int> > getBlowGridMatrix();
 	Point getRealLocationBy(Point gridPoint);
 	Point getImageLocationBy(Point gridPoint);
 	Point getGridLocationBy(Point imagePoint);

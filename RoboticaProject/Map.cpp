@@ -24,9 +24,8 @@ Map::Map()
 	pngToVector();
 	blowMap();
 	BlowingMapToGrid();
-	getGridMatrix();
 	PrintGridMatrix();
-
+	//PrintBlowGridMatrix();
 
 	//this code checking converting between image point to grid point
 	//the points i test are black
@@ -86,9 +85,9 @@ void Map::blowMap()
 	int xPixelsToBlowing = int(robotWidth / mapResolution) / 2;
 	int yPixelsToBlowing = int(robotHeight / mapResolution) / 2;
 
-	for (int y = 0; y < mapHeight; y++)
+	for ( int y = 0; y < mapHeight; y++)
 	{
-		for (int x = 0; x < mapWidth; x++)
+		for ( int x = 0; x < mapWidth; x++)
 		{
 			int currPixel = (y * mapWidth * numOfCellsForeachPixel) + (x * numOfCellsForeachPixel);
 
@@ -164,19 +163,23 @@ void Map::BlowingMapToGrid()
 			gridVector[currPixel + LOFFSET] = WHITE;
 		}
 	}
-}
 
+	//only for checking
+	//lodepng::encode("resources/gridVector.png", gridVector, gridWidth, gridHeight);
+	//odepng::encode("resources/a.png", blowMapVector, mapWidth, mapHeight);
+}
+/*
 vector<vector<int> > Map::getBlowGridMatrix()
 {
-	vector<vector<int> > matrix(mapHeight * numOfCellsForeachPixel / 2, vector<int>(mapWidth * numOfCellsForeachPixel / 2));
+	vector<vector<int> > matrix(mapHeight, vector<int>(mapWidth));
 	unsigned char color;
 
-	for (unsigned int y = 0; y < mapHeight * numOfCellsForeachPixel / 2; y++)
+	for (unsigned int y = 0; y < mapHeight; y++)
 	{
-		for (unsigned int x = 0; x < mapWidth * numOfCellsForeachPixel / 2; x++)
+		for (unsigned int x = 0; x < mapWidth; x++)
 		{
-			color = getColorOfCell(blowMapVector, mapWidth * numOfCellsForeachPixel / 2, mapHeight * numOfCellsForeachPixel / 2, y, x, 1);
-			switch (color)
+			color = getColorOfCell(blowMapVector, mapWidth, mapHeight, y, x, (int)(floor(gridResolution/mapResolution)));
+			switch ((int)color)
 			{
 				case WHITE:
 					matrix[y][x] = FREE;
@@ -190,7 +193,7 @@ vector<vector<int> > Map::getBlowGridMatrix()
 		}
 	}
 	return matrix;
-}
+}*/
 
 
 vector<vector<int> > Map::getGridMatrix()
@@ -216,9 +219,6 @@ vector<vector<int> > Map::getGridMatrix()
 			}
 		}
 	}
-
-	//only for checking
-	//int encodeError = lodepng::encode("resources/gridVector.png", gridVector, gridWidth, gridHeight);
 
 	return matrix;
 }
@@ -256,7 +256,7 @@ void Map::PrintGridMatrix()
 			cout << endl;
 		}
 }
-
+/*
 void Map::PrintBlowGridMatrix()
 {
 	vector<vector<int> > matrix = getBlowGridMatrix();
@@ -269,7 +269,7 @@ void Map::PrintBlowGridMatrix()
 			}
 			cout << endl;
 		}
-}
+}*/
 
 Point Map::getRealLocationBy(Point gridPoint)
 {
