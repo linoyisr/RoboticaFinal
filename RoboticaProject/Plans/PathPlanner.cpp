@@ -17,6 +17,26 @@ PathPlanner::PathPlanner(void)
 PathPlanner::~PathPlanner(void)
 {}
 
+void PathPlanner::ClearOpenList()
+{
+	m_openList.clear();
+}
+
+void PathPlanner::ClearVisitedList()
+{
+	m_visitedList.clear();
+}
+
+void PathPlanner::ClearPathToGoal()
+{
+	m_pathToGoal.clear();
+}
+
+vector<Point*> PathPlanner::GetPathToGoal()
+{
+	return m_pathToGoal;
+}
+
 void PathPlanner::FindPath(vector<vector<int> > pngGrid, Point currentPos, Point targetPos)
 {
 	if (!m_initializedStartGoal)
