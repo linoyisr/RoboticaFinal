@@ -12,7 +12,7 @@ Manager::Manager(Robot* robot)
 	_pathPlanner = new PathPlanner();
 	_obstacleAvoid = new PlnObstacleAvoid(_robot);
 	_currBehavior = _obstacleAvoid->getStartBehavior();
-	_locManager = new LocalizationManager(_robot->_robotLocation, _map);
+	_locManager = new LocalizationManager(_robot->getRobotLocation(), _map);
 }
 
 void Manager::getLaserScan(float* laserScans)

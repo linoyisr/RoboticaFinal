@@ -69,6 +69,11 @@ bool Robot::isForwardFree() {
 		return false;
 }
 
+Location* Robot::getRobotLocation()
+{
+	return _robotLocation;
+}
+
 void Robot::updateRobotLocation(Location loc)
 {
 	_robotLocation->SetLocation(&loc);
