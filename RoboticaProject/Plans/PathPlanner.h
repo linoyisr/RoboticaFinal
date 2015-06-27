@@ -22,25 +22,10 @@ public:
 
 	void FindPath(vector<vector<int> > pngGrid, Point currentPos, Point targetPos);
 	Point NextPathPos(Point currentPoint);
-	void ClearOpenList()
-	{
-		m_openList.clear();
-	}
-
-	void ClearVisitedList()
-	{
-		m_visitedList.clear();
-	}
-
-	void ClearPathToGoal()
-	{
-		m_pathToGoal.clear();
-	}
-
-	vector<Point*> GetPathToGoal()
-	{
-		return m_pathToGoal;
-	}
+	void ClearOpenList();
+	void ClearVisitedList();
+	void ClearPathToGoal();
+	vector<Point*> GetPathToGoal();
 
 	bool m_initializedStartGoal;
 	bool m_foundGoal;

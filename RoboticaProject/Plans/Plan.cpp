@@ -5,8 +5,8 @@
 #include "Plan.h"
 
 Plan::Plan(Robot* robot) {
-	_start = NULL;
-
+	_startBehavior = NULL;
+	_robot = robot;
 }
 
 Plan::~Plan() {

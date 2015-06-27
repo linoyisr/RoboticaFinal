@@ -13,11 +13,11 @@
 
 class PlnObstacleAvoid: public Plan
 {
-	Behavior* _beh[3];
+	Behavior* _behaviors[3];
 
 public:
 	PlnObstacleAvoid(Robot* robot);
-	Behavior* getStartPoint(){return _start;}
+	Behavior* getStartPoint(){return _startBehavior;}
 	virtual ~PlnObstacleAvoid();
 };
 
