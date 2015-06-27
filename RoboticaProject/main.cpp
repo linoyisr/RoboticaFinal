@@ -57,7 +57,7 @@ int main()
 		cout << "\n";
 	}
 */
-
+	//Map* _map = new Map();
 	Robot robot("localhost",6665);
 	Manager manager(&robot);
 	manager.run();

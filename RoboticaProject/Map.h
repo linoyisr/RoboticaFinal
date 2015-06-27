@@ -41,11 +41,15 @@ public:
 	vector<unsigned char> blowMapVector;
 	vector<unsigned char> gridVector;
 
-	void PrintMatrix();
-	vector<vector<int> > getMatrix();
+	void PrintGridMatrix();
+	std::vector<std::vector<int> > getGridMatrix();
+	void PrintBlowGridMatrix();
+	std::vector<std::vector<int> > getBlowGridMatrix();
 	Point getRealLocationBy(Point gridPoint);
 	Point getImageLocationBy(Point gridPoint);
 	Point getGridLocationBy(Point imagePoint);
+	int getGridValueAt(Point gridPoint);
+
 };
 
 #endif /* MAP_H_ */

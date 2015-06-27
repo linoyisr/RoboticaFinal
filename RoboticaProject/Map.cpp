@@ -24,8 +24,8 @@ Map::Map()
 	pngToVector();
 	blowMap();
 	BlowingMapToGrid();
-	getMatrix();
-	PrintMatrix();
+	getGridMatrix();
+	PrintGridMatrix();
 
 
 	//this code checking converting between image point to grid point
@@ -200,7 +200,33 @@ void Map::BlowingMapToGrid()
 	}
 }
 
-vector<vector<int> > Map::getMatrix()
+vector<vector<int> > Map::getBlowGridMatrix()
+{
+	vector<vector<int> > matrix(mapHeight * numOfCellsForeachPixel / 2, vector<int>(mapWidth * numOfCellsForeachPixel / 2));
+	unsigned char color;
+
+	for (unsigned int y = 0; y < mapHeight * numOfCellsForeachPixel / 2; y++)
+	{
+		for (unsigned int x = 0; x < mapWidth * numOfCellsForeachPixel / 2; x++)
+		{
+			color = getColorOfCell(blowMapVector, mapWidth * numOfCellsForeachPixel / 2, mapHeight * numOfCellsForeachPixel / 2, y, x, 1);
+			switch (color)
+			{
+				case WHITE:
+					matrix[y][x] = FREE;
+					break;
+				case BLACK:
+					matrix[y][x] = OCCUPIED;
+					break;
+				default:
+					matrix[y][x] = UNKNOWN;
+			}
+		}
+	}
+}
+
+
+vector<vector<int> > Map::getGridMatrix()
 {
 	vector<vector<int> > matrix(gridHeight, vector<int>(gridWidth));
 	unsigned char color;
@@ -230,6 +256,7 @@ vector<vector<int> > Map::getMatrix()
 	return matrix;
 }
 
+
 unsigned char Map::getColorOfCell(vector<unsigned char> grid,unsigned width, unsigned height, int row, int column, int resolution)
 {
 	for (int y = 0; y < resolution; y++)
@@ -249,13 +276,27 @@ unsigned char Map::getColorOfCell(vector<unsigned char> grid,unsigned width, uns
 	return WHITE;
 }
 
-void Map::PrintMatrix()
+void Map::PrintGridMatrix()
 {
-	vector<vector<int> > matrix = getMatrix();
+	vector<vector<int> > matrix = getGridMatrix();
 
 	for (unsigned int y = 0; y < gridHeight; y++)
 		{
 			for (unsigned int x = 0; x < gridWidth; x++)
+			{
+				cout << matrix[y][x];
+			}
+			cout << endl;
+		}
+}
+
+void Map::PrintBlowGridMatrix()
+{
+	vector<vector<int> > matrix = getBlowGridMatrix();
+
+	for (unsigned int y = 0; y < mapHeight; y++)
+		{
+			for (unsigned int x = 0; x < mapWidth; x++)
 			{
 				cout << matrix[y][x];
 			}
@@ -283,3 +324,7 @@ Map::~Map()
 {
 }
 
+int Map::getGridValueAt(Point gridPoint)
+{
+	return getGridMatrix()[gridPoint.GetY()][gridPoint.GetX()];
+}
