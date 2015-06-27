@@ -3,7 +3,7 @@
  */
 
 #include "Manager.h"
-
+#include "LaserHelper.h"
 
 Manager::Manager(Robot* robot)
 {
@@ -17,7 +17,7 @@ Manager::Manager(Robot* robot)
 
 void Manager::getLaserScan(float* laserScans)
 {
-	for (int i = 0; i < 666; i++)
+	for (int i = 0; i < LASERS_NUMBER; i++)
 	{
 		laserScans[i] = _robot->getLaserByIndex(i);
 	}
@@ -75,7 +75,7 @@ void Manager::run()
 				double deltaY;
 				double deltaYaw;
 				// What is 666 ? ask orli/aviram
-				float laserScans[666];
+				float laserScans[LASERS_NUMBER];
 				getLaserScan(laserScans);
 
 				Location deltaLocation(deltaX, deltaY, deltaYaw);
