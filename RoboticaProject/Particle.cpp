@@ -24,6 +24,7 @@ const int maxGoodDistance = 2; //if in the grid, else *10(grid resolution)
 const int maxGoodAngle = 5; //if in degrees, else *M_PI/MAX_ANGLE
 const double normalizationFactor = 1.3;
 const double defaultBelief = 1;
+const int beamsInAngle = (floor(1 / BEAM_FOREACH_ANGLE) + 1); //3
 
 Particle::Particle( Map* map)
 : Particle::Particle(map->gridWidth/2, map->gridHeight/2, 0, map, defaultBelief)
@@ -99,8 +100,8 @@ double Particle::ProbByMeasure(float* laserScans)
 	int numOfErrors = 0;
 	int numOfHits = 0;
 
-	//TODO: Not necessary to move of all the beams,
-	for (int currBeam = 0; currBeam < LASERS_NUMBER; currBeam ++)
+	// Not necessary to move of all the beams, read  all 2 degrees
+	for (int currBeam = 0; currBeam < LASERS_NUMBER; currBeam += (beamsInAngle*2))
 	{
 		//TODO: check if work!!!
 		double angleForLaser = LaserHelper::indexToRad(currBeam) + yaw;
