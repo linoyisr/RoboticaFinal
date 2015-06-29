@@ -73,7 +73,7 @@ void Manager::run()
 				double deltaX;
 				double deltaY;
 				double deltaYaw;
-				// What is 666 ? ask orli/aviram
+
 				float laserScans[LASERS_NUMBER];
 				getLaserScan(laserScans);
 
