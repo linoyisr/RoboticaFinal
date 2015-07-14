@@ -74,6 +74,15 @@ Location* Robot::getRobotLocation()
 	return _robotLocation;
 }
 
+Location Robot::getDeltaLocation()
+{
+	double deltaX = _positionP->GetXPos() - _robotLocation->GetPoint()->GetX();
+	double deltaY = _positionP->GetYPos() - _robotLocation->GetPoint()->GetY();
+	double deltaYaw = _positionP->GetYaw() - _robotLocation->GetYawPoint();
+
+	return Location(deltaX, deltaY, deltaYaw);
+}
+
 void Robot::updateRobotLocation(Location* loc)
 {
 	_robotLocation->SetLocation(loc);

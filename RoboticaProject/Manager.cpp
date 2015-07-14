@@ -69,14 +69,11 @@ void Manager::run()
 			if (loopsCounter == 15)
 			{
 				loopsCounter = 0;
-				double deltaX;
-				double deltaY;
-				double deltaYaw;
+				Location deltaLocation = _robot->getDeltaLocation();
 
 				float laserScans[LASERS_NUMBER];
 				getLaserScan(laserScans);
 
-				Location deltaLocation(deltaX, deltaY, deltaYaw);
 				_robot->updateRobotLocation(&deltaLocation);
 				_locManager->Update(deltaLocation, laserScans);
 			}
