@@ -1,7 +1,7 @@
 /*
  * GoForward.cpp
  */
-
+/*
 #include "GoForward.h"
 
 GoForward::GoForward(Robot* robot):Behavior(robot){
@@ -33,4 +33,4 @@ void GoForward::stopAction()
 {
 	_robot->setSpeed(0.0, 0.0);
 }
-
+*/

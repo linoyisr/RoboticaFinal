@@ -1,7 +1,7 @@
 /*
  * TurnRight.cpp
  */
-
+/*
 #include "TurnRight.h"
 
 TurnRight::TurnRight(Robot* robot):Behavior(robot) {
@@ -32,3 +32,4 @@ void TurnRight::stopAction()
 {
 	_robot->setSpeed(0.0, 0.0);
 }
+*/

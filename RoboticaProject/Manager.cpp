@@ -9,6 +9,7 @@ Manager::Manager(Robot* robot)
 {
 	_map = new Map();
 	_robot = robot;
+	_behavior = new Behavior(_robot);
 	_pathPlanner = new PathPlanner();
 	_obstacleAvoid = new PlnObstacleAvoid(_robot);
 	_currBehavior = _obstacleAvoid->getStartBehavior();
@@ -51,21 +52,19 @@ void Manager::run()
 {
 	_pathPlanner->FindPath(_map->getGridMatrix(), _startPoint, _goalPoint);
 	_waypointsManager = new WaypointsManager(_pathPlanner->GetPathToGoal());
-
+	wayPoints = _waypointsManager->wayPoints;
 	_robot->Read();
 
-	if(_currBehavior == NULL || (!(_currBehavior->startCond())))
-		return;
-
-	_currBehavior->action();
 	int loopsCounter = 1;
 
-	while(_currBehavior !=NULL)
+	for(int i=0; i < wayPoints.size(); i++)
 	{
-		while(!_currBehavior->stopCond())
-		{
-			_currBehavior->action();
+		Point* currentPoint = wayPoints[i];
+		_behavior->SetWayPoint(currentPoint);
+		_behavior->StartMove();
 
+		while(!_behavior->StopCond())
+		{
 			// Every 15 reads make all the calculations and update the particles and their corresponding data
 			if (loopsCounter == 15)
 			{
@@ -78,17 +77,14 @@ void Manager::run()
 				getLaserScan(laserScans);
 
 				Location deltaLocation(deltaX, deltaY, deltaYaw);
-				_robot->updateRobotLocation(deltaLocation);
+				_robot->updateRobotLocation(&deltaLocation);
 				_locManager->Update(deltaLocation, laserScans);
 			}
 			else
 				loopsCounter++;
 
 			_robot->Read();
-
 		}
-		_currBehavior = _currBehavior->selectNext();
-		_robot->Read();
 	}
 }
 

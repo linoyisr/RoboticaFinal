@@ -12,6 +12,44 @@ Behavior::Behavior(Robot* robot) {
 Behavior::~Behavior() {
 }
 
+void Behavior::StartMove()
+{
+	Location* newLoc;
+	Point* robotLoc = _robot->getRobotLocation()->GetPoint();
+	if (robotLoc->GetX() > _wayPoint->GetX() && robotLoc->GetY() > _wayPoint->GetY())
+	{
+		newLoc = new Location(robotLoc->GetX()-1, robotLoc->GetY()-1, 0);
+	}
+	else if (robotLoc->GetX() < _wayPoint->GetX() && robotLoc->GetY() < _wayPoint->GetY())
+	{
+
+	}
+	else if (robotLoc->GetX() > _wayPoint->GetX() && robotLoc->GetY() < _wayPoint->GetY())
+	{
+
+	}
+	else if (robotLoc->GetX() < _wayPoint->GetX() && robotLoc->GetY() > _wayPoint->GetY())
+	{
+
+	}
+	_robot->updateRobotLocation(newLoc);
+}
+
+void Behavior::SetWayPoint(Point* p)
+{
+	_wayPoint = p;
+}
+
+bool Behavior::StopCond()
+{
+	Point* robotLoc = _robot->getRobotLocation()->GetPoint();
+	if (robotLoc->GetX() == _wayPoint->GetX() && robotLoc->GetY() == _wayPoint->GetY())
+		return true;
+	else
+		return false;
+}
+
+/*
 void Behavior::addBeh(Behavior* next)
 {
 	_behVect.push_back(next);
@@ -32,3 +70,4 @@ Behavior* Behavior::selectNext()
 
 	return NULL;
 }
+*/

@@ -74,9 +74,9 @@ Location* Robot::getRobotLocation()
 	return _robotLocation;
 }
 
-void Robot::updateRobotLocation(Location loc)
+void Robot::updateRobotLocation(Location* loc)
 {
-	_robotLocation->SetLocation(&loc);
+	_robotLocation->SetLocation(loc);
 }
 
 

@@ -26,7 +26,7 @@ public:
 	bool isRightFree() ;
 	bool isLeftFree();
 	bool isForwardFree();
-	void updateRobotLocation(Location loc);
+	void updateRobotLocation(Location* loc);
 	Location* getRobotLocation();
 	static Point* getObstacleLocation(double xRob, double yRob, double yawRob, double sensorAngle, double distance);
 	virtual ~Robot();

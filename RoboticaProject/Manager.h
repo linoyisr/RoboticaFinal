@@ -16,6 +16,9 @@
 
 class Manager {
 private:
+	Behavior* _behavior;
+
+
 	Point _startPoint;
 	Point _goalPoint;
 	Location* _location;

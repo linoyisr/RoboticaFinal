@@ -1,7 +1,7 @@
 /*
  * GoForward.h
  */
-
+/*
 #ifndef GOFORWARD_H_
 #define GOFORWARD_H_
 

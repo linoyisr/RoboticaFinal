@@ -6,6 +6,7 @@
 
 PlnObstacleAvoid::PlnObstacleAvoid(Robot* robot) : Plan(robot)
 {
+	/*
 	//Creating Behaviors
 	_behaviors[0] = new TurnRight(robot);
 	_behaviors[1] = new TurnLeft(robot);
@@ -30,6 +31,7 @@ PlnObstacleAvoid::PlnObstacleAvoid(Robot* robot) : Plan(robot)
 	_behaviors[3]->addBeh(_behaviors[2]);
 
 	_startBehavior = _behaviors[0];
+	*/
 }
 
 PlnObstacleAvoid::~PlnObstacleAvoid() {
