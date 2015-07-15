@@ -37,9 +37,9 @@ void Manager::setStartAndGoal()
 	Point startPoint(xStart, yStart);
 	_startPoint = startPoint;
 	int yawStart = startArray[2];
-	Location loc(&_startPoint, yawStart);
-	_location = &loc;
-	_robot->updateRobotLocation(&loc);
+	Location loc(_startPoint, yawStart);
+	_location = loc;
+	_robot->updateRobotLocation(loc);
 
 	string goalString = cfg.getValueOfKey("goal");
 	vector<int> goalArray = cfg.ConvertStringToIntArray(goalString);
@@ -61,7 +61,7 @@ void Manager::run()
 
 	for(int i=0; i < wayPoints.size(); i++)
 	{
-		Point* currentPoint = wayPoints[i];
+		Point currentPoint = wayPoints[i];
 		_behavior->SetWayPoint(currentPoint);
 		_behavior->StartMove();
 
@@ -77,7 +77,7 @@ void Manager::run()
 				float laserScans[LASERS_NUMBER];
 				getLaserScan(laserScans);
 
-				_robot->updateRobotLocation(&deltaLocation);
+				_robot->updateRobotLocation(deltaLocation);
 				_locManager->Update(deltaLocation, laserScans);
 			}
 			else

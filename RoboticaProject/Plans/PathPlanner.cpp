@@ -32,7 +32,7 @@ void PathPlanner::ClearPathToGoal()
 	m_pathToGoal.clear();
 }
 
-vector<Point*> PathPlanner::GetPathToGoal()
+vector<Point> PathPlanner::GetPathToGoal()
 {
 	return m_pathToGoal;
 }
@@ -55,7 +55,7 @@ void PathPlanner::FindPath(vector<vector<int> > pngGrid, Point currentPos, Point
 
 		for (unsigned int i = 0; i<m_pathToGoal.size(); i++)
 		{
-			delete m_pathToGoal[i];
+			delete &m_pathToGoal[i];
 		}
 		m_pathToGoal.clear();
 
@@ -174,7 +174,8 @@ void PathPlanner::ContinuePath()
 
 		for (getPath = m_goalCell; getPath != NULL; getPath = getPath->GetParent())
 		{
-			m_pathToGoal.push_back(new Point(getPath->GetPoint()->GetX(), getPath->GetPoint()->GetY()));
+			Point p(getPath->GetPoint()->GetX(), getPath->GetPoint()->GetY());
+			m_pathToGoal.push_back(p);
 		}
 		reverse(m_pathToGoal.begin(), m_pathToGoal.end());
 

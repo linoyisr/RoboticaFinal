@@ -17,35 +17,35 @@ void Behavior::StartMove()
 	_robot->setSpeed(0.3, 0.0);
 
 	/*Location* newLoc;*/
-	Point* robotLoc = _robot->getRobotLocation()->GetPoint();
-	if (robotLoc->GetX() > _wayPoint->GetX() && robotLoc->GetY() > _wayPoint->GetY())
+	Point robotLoc = _robot->getRobotLocation().GetPoint();
+	if (robotLoc.GetX() > _wayPoint.GetX() && robotLoc.GetY() > _wayPoint.GetY())
 	{
 	/*	newLoc = new Location(robotLoc->GetX()-1, robotLoc->GetY()-1, 0); */
 	}
-	else if (robotLoc->GetX() < _wayPoint->GetX() && robotLoc->GetY() < _wayPoint->GetY())
+	else if (robotLoc.GetX() < _wayPoint.GetX() && robotLoc.GetY() < _wayPoint.GetY())
 	{
 	/*	newLoc = new Location(robotLoc->GetX()+1, robotLoc->GetY()+1, 0);*/
 	}
-	else if (robotLoc->GetX() > _wayPoint->GetX() && robotLoc->GetY() < _wayPoint->GetY())
+	else if (robotLoc.GetX() > _wayPoint.GetX() && robotLoc.GetY() < _wayPoint.GetY())
 	{
 	/*	newLoc = new Location(robotLoc->GetX()-1, robotLoc->GetY()+1, 0);*/
 	}
-	else if (robotLoc->GetX() < _wayPoint->GetX() && robotLoc->GetY() > _wayPoint->GetY())
+	else if (robotLoc.GetX() < _wayPoint.GetX() && robotLoc.GetY() > _wayPoint.GetY())
 	{
 	/*	newLoc = new Location(robotLoc->GetX()+1, robotLoc->GetY()-1, 0);*/
 	}
 	/*_robot->updateRobotLocation(newLoc);*/
 }
 
-void Behavior::SetWayPoint(Point* p)
+void Behavior::SetWayPoint(Point p)
 {
 	_wayPoint = p;
 }
 
 bool Behavior::StopCond()
 {
-	Point* robotLoc = _robot->getRobotLocation()->GetPoint();
-	if (robotLoc->GetX() == _wayPoint->GetX() && robotLoc->GetY() == _wayPoint->GetY())
+	Point robotLoc = _robot->getRobotLocation().GetPoint();
+	if (robotLoc.GetX() == _wayPoint.GetX() && robotLoc.GetY() == _wayPoint.GetY())
 		return true;
 	else
 		return false;

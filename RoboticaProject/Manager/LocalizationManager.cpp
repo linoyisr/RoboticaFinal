@@ -12,12 +12,12 @@
 double const lowerThreshold = 0.3;
 double const upperThreshold = 0.7;
 
-LocalizationManager::LocalizationManager(Location* robotLocation, Map* map)
+LocalizationManager::LocalizationManager(Location robotLocation, Map* map)
 {
 	_map = map;
 
 	//create first particle by robot location
-	Particle first(robotLocation->GetPoint()->GetX(), robotLocation->GetPoint()->GetY(), robotLocation->GetYawPoint(),  _map);
+	Particle first(robotLocation.GetPoint().GetX(), robotLocation.GetPoint().GetY(), robotLocation.GetYawPoint(),  _map);
 	_particles.push_back(&first);
 
 }
@@ -35,7 +35,7 @@ void LocalizationManager::Update(Location deltaLocation, float* laserScans)
 {
 	for(unsigned int i = 0; i < _particles.size(); i ++)
 	{
-		_particles[i]->Update(deltaLocation.GetPoint()->GetX(), deltaLocation.GetPoint()->GetY(), deltaLocation.GetYawPoint(),laserScans);
+		_particles[i]->Update(deltaLocation.GetPoint().GetX(), deltaLocation.GetPoint().GetY(), deltaLocation.GetYawPoint(),laserScans);
 
 		double particleBelief = _particles[i]->getBelief();
 

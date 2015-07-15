@@ -25,7 +25,7 @@ public:
 	void ClearOpenList();
 	void ClearVisitedList();
 	void ClearPathToGoal();
-	vector<Point*> GetPathToGoal();
+	vector<Point> GetPathToGoal();
 
 	bool m_initializedStartGoal;
 	bool m_foundGoal;
@@ -40,7 +40,7 @@ private:
 	Node *m_goalCell;
 	vector<Node*> m_openList;
 	vector<Node*> m_visitedList;
-	vector<Point*> m_pathToGoal;
+	vector<Point> m_pathToGoal;
 
 	vector<vector<int> > m_pngGrid;
 };

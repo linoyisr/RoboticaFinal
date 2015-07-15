@@ -15,7 +15,7 @@ private:
 	PlayerClient*_player;
 	Position2dProxy* _positionP;
 	LaserProxy* _laserP;
-	Location* _robotLocation;
+	Location _robotLocation;
 
 public:
 	Robot(char* ip, int port);
@@ -26,10 +26,10 @@ public:
 	bool isRightFree() ;
 	bool isLeftFree();
 	bool isForwardFree();
-	void updateRobotLocation(Location* loc);
-	Location* getRobotLocation();
+	void updateRobotLocation(Location loc);
+	Location getRobotLocation();
 	Location getDeltaLocation();
-	static Point* getObstacleLocation(double xRob, double yRob, double yawRob, double sensorAngle, double distance);
+	static Point getObstacleLocation(double xRob, double yRob, double yawRob, double sensorAngle, double distance);
 	virtual ~Robot();
 };
 

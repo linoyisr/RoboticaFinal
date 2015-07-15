@@ -7,7 +7,10 @@
 
 #include "Location.h"
 
-Location::Location(Point* p, int yaw)
+Location::Location()
+{
+}
+Location::Location(Point p, int yaw)
 {
 	point = p;
 	yawPoint = yaw;
@@ -23,12 +26,12 @@ Location::~Location()
 {
 }
 
-Point* Location::GetPoint()
+Point Location::GetPoint()
 {
 	return point;
 }
 
-void Location::SetPoint(Point* p)
+void Location::SetPoint(Point p)
 {
 	point = p;
 }
@@ -43,9 +46,9 @@ void Location::SetYawPoint(int yaw)
 	yawPoint = yaw;
 }
 
-void Location::SetLocation(Location* location)
+void Location::SetLocation(Location location)
 {
-	point->SetX(location->GetPoint()->GetX());
-	point->SetY(location->GetPoint()->GetY());
-	yawPoint = location->yawPoint;
+	point.SetX(location.GetPoint().GetX());
+	point.SetY(location.GetPoint().GetY());
+	yawPoint = location.yawPoint;
 }

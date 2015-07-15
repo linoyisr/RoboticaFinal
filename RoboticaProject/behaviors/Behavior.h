@@ -14,7 +14,7 @@ using namespace std;
 
 class Behavior {
 	vector<Behavior*> _behVect;
-	Point* _wayPoint;
+	Point _wayPoint;
 
 protected:
 	Robot* _robot;
@@ -30,7 +30,7 @@ public:
 */
 	bool StopCond();
 	void StartMove();
-	void SetWayPoint(Point* p);
+	void SetWayPoint(Point p);
 
 
 };

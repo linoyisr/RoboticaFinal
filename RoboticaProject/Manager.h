@@ -17,11 +17,9 @@
 class Manager {
 private:
 	Behavior* _behavior;
-
-
 	Point _startPoint;
 	Point _goalPoint;
-	Location* _location;
+	Location _location;
 	Behavior* _currBehavior;
 	Map* _map;
 	Robot* _robot;
@@ -29,7 +27,7 @@ private:
 	PlnObstacleAvoid* _obstacleAvoid;
 	WaypointsManager* _waypointsManager;
 	PathPlanner* _pathPlanner;
-	vector<Point*> wayPoints;
+	vector<Point> wayPoints;
 
 	void getLaserScan(float* laserScans);
 	void setStartAndGoal();

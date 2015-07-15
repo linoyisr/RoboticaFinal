@@ -12,19 +12,20 @@
 
 class Location {
 public:
-	Location(Point* p, int yaw);
+	Location();
+	Location(Point p, int yaw);
 	Location(int x ,int y, int yaw);
 	virtual ~Location();
 
-	Point* GetPoint();
+	Point GetPoint();
 	int GetYawPoint();
 
-	void SetPoint(Point* p);
+	void SetPoint(Point p);
 	void SetYawPoint(int yaw);
-	void SetLocation(Location* location);
+	void SetLocation(Location location);
 
 private:
-	Point* point;
+	Point point;
 	int yawPoint;
 };
 

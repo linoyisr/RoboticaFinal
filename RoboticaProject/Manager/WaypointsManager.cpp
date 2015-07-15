@@ -7,13 +7,13 @@
 
 #include "WaypointsManager.h"
 
-WaypointsManager::WaypointsManager(vector<Point*> path)
+WaypointsManager::WaypointsManager(vector<Point> path)
 {
 	astarPath = path;
 	CreateWaypoints();
 }
 
-vector<Point*> WaypointsManager::getWaypointsList()
+vector<Point> WaypointsManager::getWaypointsList()
 {
 	return wayPoints;
 }
