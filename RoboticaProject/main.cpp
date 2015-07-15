@@ -57,10 +57,32 @@ int main()
 		cout << "\n";
 	}
 */
-	Map* _map = new Map();
+	//Map* _map = new Map();
 	Robot robot("localhost",6665);
 	Manager manager(&robot);
 	manager.run();
 
+
+
+	/*
+	 *
+	 * if (lp[2] < 0.8)
+		{
+			if(lp[1] < lp[3])
+				pp.SetSpeed(0.8, 1.9);
+			else
+				pp.SetSpeed(0.8, -1.9);
+		}
+		else if (lp[1] < 0.5)
+			pp.SetSpeed(0.8, 0.6);
+		else if (lp[3] < -0.5)
+			pp.SetSpeed(0.8, -0.6);
+		else if (lp[0] < 0.3)
+			pp.SetSpeed(0.8, 0.4);
+		else if (lp[4] < -0.3)
+			pp.SetSpeed(0.8, -0.4);
+		else
+			pp.SetSpeed(0.8, 0.0);
+	 */
 	return 0;
 }
