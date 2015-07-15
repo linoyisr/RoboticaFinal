@@ -14,25 +14,27 @@ Behavior::~Behavior() {
 
 void Behavior::StartMove()
 {
-	Location* newLoc;
+	_robot->setSpeed(0.3, 0.0);
+
+	/*Location* newLoc;*/
 	Point* robotLoc = _robot->getRobotLocation()->GetPoint();
 	if (robotLoc->GetX() > _wayPoint->GetX() && robotLoc->GetY() > _wayPoint->GetY())
 	{
-		newLoc = new Location(robotLoc->GetX()-1, robotLoc->GetY()-1, 0);
+	/*	newLoc = new Location(robotLoc->GetX()-1, robotLoc->GetY()-1, 0); */
 	}
 	else if (robotLoc->GetX() < _wayPoint->GetX() && robotLoc->GetY() < _wayPoint->GetY())
 	{
-		newLoc = new Location(robotLoc->GetX()+1, robotLoc->GetY()+1, 0);
+	/*	newLoc = new Location(robotLoc->GetX()+1, robotLoc->GetY()+1, 0);*/
 	}
 	else if (robotLoc->GetX() > _wayPoint->GetX() && robotLoc->GetY() < _wayPoint->GetY())
 	{
-		newLoc = new Location(robotLoc->GetX()-1, robotLoc->GetY()+1, 0);
+	/*	newLoc = new Location(robotLoc->GetX()-1, robotLoc->GetY()+1, 0);*/
 	}
 	else if (robotLoc->GetX() < _wayPoint->GetX() && robotLoc->GetY() > _wayPoint->GetY())
 	{
-		newLoc = new Location(robotLoc->GetX()+1, robotLoc->GetY()-1, 0);
+	/*	newLoc = new Location(robotLoc->GetX()+1, robotLoc->GetY()-1, 0);*/
 	}
-	_robot->updateRobotLocation(newLoc);
+	/*_robot->updateRobotLocation(newLoc);*/
 }
 
 void Behavior::SetWayPoint(Point* p)

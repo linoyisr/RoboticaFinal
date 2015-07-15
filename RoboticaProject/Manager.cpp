@@ -9,6 +9,7 @@ Manager::Manager(Robot* robot)
 {
 	_map = new Map();
 	_robot = robot;
+	setStartAndGoal();
 	_behavior = new Behavior(_robot);
 	_pathPlanner = new PathPlanner();
 	_obstacleAvoid = new PlnObstacleAvoid(_robot);
@@ -38,6 +39,7 @@ void Manager::setStartAndGoal()
 	int yawStart = startArray[2];
 	Location loc(&_startPoint, yawStart);
 	_location = &loc;
+	_robot->updateRobotLocation(&loc);
 
 	string goalString = cfg.getValueOfKey("goal");
 	vector<int> goalArray = cfg.ConvertStringToIntArray(goalString);
@@ -65,6 +67,7 @@ void Manager::run()
 
 		while(!_behavior->StopCond())
 		{
+			_behavior->StartMove();
 			// Every 15 reads make all the calculations and update the particles and their corresponding data
 			if (loopsCounter == 15)
 			{
