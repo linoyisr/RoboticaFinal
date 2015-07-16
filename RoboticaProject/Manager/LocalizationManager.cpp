@@ -52,6 +52,21 @@ void LocalizationManager::Update(Location deltaLocation, float* laserScans)
 	}
 }
 
+Location LocalizationManager::GetBestLocation()
+{
+	int bestBelief = 0;
+	Location bestLocation(0,0,0);
+	for(unsigned int i = 0; i < _particles.size(); i ++)
+		{
+			if (_particles[i]->getBelief() > bestBelief)
+			{
+				bestBelief = _particles[i]->getBelief();
+				bestLocation = _particles[i]->getLocation();
+			}
+		}
+
+	return bestLocation;
+}
 void LocalizationManager::PrintParticles()
 {
 	for(unsigned int i = 0; i < _particles.size(); i ++)

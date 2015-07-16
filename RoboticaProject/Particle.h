@@ -6,7 +6,7 @@
 #define PARTICLE_H_
 
 #include "Map.h"
-
+#include "Location.h"
 class Particle
 {
 public:
@@ -20,6 +20,7 @@ public:
 	double getRandomXInRadius();
 	double getRandomYInRadius();
 	double getRandomYaw();
+	Location getLocation();
 	Particle * genereateNewParticle();
 
 	void print();

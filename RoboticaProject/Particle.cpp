@@ -171,6 +171,11 @@ double Particle::getRandomYaw()
 	return (rand() % MAX_ANGLE);
 }
 
+Location Particle::getLocation()
+{
+	return Location(x,y,yaw);
+}
+
 void Particle::print()
 {
 	cout << "x: " << x << " y:" << y << " yaw: " << yaw << " belief: " << belief;
