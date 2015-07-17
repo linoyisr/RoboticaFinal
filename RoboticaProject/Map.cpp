@@ -271,18 +271,18 @@ void Map::PrintBlowGridMatrix()
 		}
 }*/
 
-Point Map::getRealLocationBy(Point gridPoint)
+Point Map::getRealPointBy(Point gridPoint)
 {
 	//Each cell in grid , pi 10 in the real world
 	return Point(gridPoint.GetX() * gridResolution, gridPoint.GetY() * gridResolution);
 }
 
-Point Map::getImageLocationBy(Point gridPoint)
+Point Map::getImagePointBy(Point gridPoint)
 {
 	return Point(gridPoint.GetX() * (mapWidth/gridWidth), gridPoint.GetY() * (mapHeight/gridHeight) );
 }
 
-Point Map::getGridLocationBy(Point imagePoint)
+Point Map::getGridPointBy(Point imagePoint)
 {
 	return Point(imagePoint.GetX() / (mapWidth/gridWidth), imagePoint.GetY() / (mapHeight/gridHeight) );
 }

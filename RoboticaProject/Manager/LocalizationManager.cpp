@@ -67,6 +67,15 @@ Location LocalizationManager::GetBestLocation()
 
 	return bestLocation;
 }
+
+Location LocalizationManager::GetGridBestLocation()
+{
+	Location bestLocation = GetBestLocation();
+	Point gridPoint = _map->getGridPointBy(bestLocation.GetPoint());
+
+	return Location(gridPoint, bestLocation.GetYawPoint());
+}
+
 void LocalizationManager::PrintParticles()
 {
 	for(unsigned int i = 0; i < _particles.size(); i ++)

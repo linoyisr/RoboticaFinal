@@ -115,7 +115,7 @@ double Particle::ProbByMeasure(float* laserScans)
 		Point obstacleRealPoint(obstacleRealX, obstacleRealY);
 
 		//Convert real point of the obstacle to grid point
-		Point obastcleGridPoint = map->getRealLocationBy(obstacleRealPoint);
+		Point obastcleGridPoint = map->getRealPointBy(obstacleRealPoint);
 
 		if(laserScans[currBeam] < BEAM_MAX_DISTANCE)
 		{

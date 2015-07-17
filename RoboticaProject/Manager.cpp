@@ -65,6 +65,8 @@ void Manager::run()
 		_behavior->SetWayPoint(currentPoint);
 		_behavior->StartMove();
 
+		_robot->Read();
+
 		while(!_behavior->StopCond())
 		{
 			_behavior->StartMove();
@@ -79,7 +81,6 @@ void Manager::run()
 
 				//_robot->updateRobotLocation(deltaLocation);
 				_locManager->Update(deltaLocation, laserScans);
-				_robot->updateRobotLocation(_locManager->GetBestLocation());
 			}
 			else
 				loopsCounter++;

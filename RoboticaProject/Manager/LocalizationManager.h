@@ -22,6 +22,7 @@ public:
 	void Update(Location deltaLocation, float* laserScans);
 	vector<Particle*> getParticles();
 	Location GetBestLocation();
+	Location GetGridBestLocation();
 	void PrintParticles();
 };
 
