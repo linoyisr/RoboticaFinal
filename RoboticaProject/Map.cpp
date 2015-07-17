@@ -24,12 +24,14 @@ Map::Map()
 	pngToVector();
 	blowMap();
 	BlowingMapToGrid();
+	setGridMatrix();
+	setBlowMapMatrix();
 	PrintGridMatrix();
-	//PrintBlowGridMatrix();
-
+	PrintBlowMapMatrix();
+/*
 	//this code checking converting between image point to grid point
 	//the points i test are black
-	/*
+
 	Point a = getImageLocationBy(Point(91,4));
 	Point b = getGridLocationBy(a);
 	if (pngVector[a.GetY() * mapWidth * 4 + a.GetX() *4] ==
@@ -85,9 +87,9 @@ void Map::blowMap()
 	int xPixelsToBlowing = int(robotWidth / mapResolution) / 2;
 	int yPixelsToBlowing = int(robotHeight / mapResolution) / 2;
 
-	for ( int y = 0; y < mapHeight; y++)
+	for (unsigned int y = 0; y < mapHeight; y++)
 	{
-		for ( int x = 0; x < mapWidth; x++)
+		for (unsigned int x = 0; x < mapWidth; x++)
 		{
 			int currPixel = (y * mapWidth * numOfCellsForeachPixel) + (x * numOfCellsForeachPixel);
 
@@ -99,7 +101,7 @@ void Map::blowMap()
 				// Move the up and down cells to blowing
 					for (int j = -yPixelsToBlowing; j < yPixelsToBlowing; j++)
 					{
-						int offset = ((j * numOfCellsForeachPixel) + ((mapWidth) * i * numOfCellsForeachPixel));
+						unsigned int offset = ((j * numOfCellsForeachPixel) + ((mapWidth) * i * numOfCellsForeachPixel));
 						//Make sure there is no scope creep from map
 						if (currPixel + offset >= 0 && currPixel + offset + BOFFSET < blowMapVector.size())
 						{
@@ -141,7 +143,7 @@ void Map::BlowingMapToGrid()
 {
 	unsigned char color;
 
-	//Check why mapResolution change to 2
+	//TODO:Check why mapResolution change to 2
 	int newGridResoultion = (int)(floor(gridResolution/mapResolution));
 
 	gridHeight = (unsigned int)(mapHeight/newGridResoultion);
@@ -168,37 +170,55 @@ void Map::BlowingMapToGrid()
 	//lodepng::encode("resources/gridVector.png", gridVector, gridWidth, gridHeight);
 	//odepng::encode("resources/a.png", blowMapVector, mapWidth, mapHeight);
 }
-/*
-vector<vector<int> > Map::getBlowGridMatrix()
-{
-	vector<vector<int> > matrix(mapHeight, vector<int>(mapWidth));
-	unsigned char color;
 
-	for (unsigned int y = 0; y < mapHeight; y++)
-	{
-		for (unsigned int x = 0; x < mapWidth; x++)
+void Map::setBlowMapMatrix()
+{
+	std::vector<unsigned char> blowMap;
+	unsigned width, height;
+	lodepng::decode(blowMap, width, height, blowMapPath);
+
+	int relativelyResolution = gridResolution / mapResolution;
+	blowMapHeight = height * mapResolution / gridResolution;
+	blowMapWidth = width * mapResolution / gridResolution;
+	bool isAtleastOneIsBlack = false;
+
+	blowMapMatrix =  vector<vector<int> >(blowMapHeight, vector<int>(blowMapWidth));
+
+	for (int y = 0; y < (blowMapHeight * relativelyResolution); y += relativelyResolution)
+		for (int x = 0; x < (blowMapWidth * relativelyResolution); x += relativelyResolution)
 		{
-			color = getColorOfCell(blowMapVector, mapWidth, mapHeight, y, x, (int)(floor(gridResolution/mapResolution)));
-			switch ((int)color)
+			isAtleastOneIsBlack = false;
+			for (int i = y ; (i < y + relativelyResolution)&&(!isAtleastOneIsBlack); i++)
 			{
-				case WHITE:
-					matrix[y][x] = FREE;
-					break;
-				case BLACK:
-					matrix[y][x] = OCCUPIED;
-					break;
-				default:
-					matrix[y][x] = UNKNOWN;
+				for (int j = x ; (j < x + relativelyResolution)&&(!isAtleastOneIsBlack); j++)
+				{
+					if (blowMap[i * width * numOfCellsForeachPixel + j * numOfCellsForeachPixel + ROFFSET] == BLACK
+						|| blowMap[i * width * numOfCellsForeachPixel + j * numOfCellsForeachPixel + GOFFSET] == BLACK
+						|| blowMap[i * width * numOfCellsForeachPixel + j * numOfCellsForeachPixel + BOFFSET] == BLACK)
+					{
+						isAtleastOneIsBlack = true;
+						(blowMapMatrix[y / relativelyResolution][x / relativelyResolution]) = OCCUPIED;
+					}
+				}
+			}
+			if (isAtleastOneIsBlack == false)
+			{
+				(blowMapMatrix[y / relativelyResolution][x / relativelyResolution]) = FREE;
 			}
 		}
-	}
-	return matrix;
-}*/
+}
 
 
-vector<vector<int> > Map::getGridMatrix()
+//Return blow map matrix that smaller than original size
+vector<vector<int> > Map::getBlowMapMatrix()
 {
-	vector<vector<int> > matrix(gridHeight, vector<int>(gridWidth));
+		return blowMapMatrix;
+}
+
+
+void Map::setGridMatrix()
+{
+	mapMatrix = vector<vector<int> >(gridHeight, vector<int>(gridWidth));
 	unsigned char color;
 
 	for (unsigned int y = 0; y < gridHeight; y++)
@@ -209,20 +229,23 @@ vector<vector<int> > Map::getGridMatrix()
 			switch (color)
 			{
 				case WHITE:
-					matrix[y][x] = FREE;
+					mapMatrix[y][x] = FREE;
 					break;
 				case BLACK:
-					matrix[y][x] = OCCUPIED;
+					mapMatrix[y][x] = OCCUPIED;
 					break;
 				default:
-					matrix[y][x] = UNKNOWN;
+					mapMatrix[y][x] = UNKNOWN;
 			}
 		}
 	}
-
-	return matrix;
 }
 
+
+vector<vector<int> > Map::getMapMatrix()
+{
+		return mapMatrix;
+}
 
 unsigned char Map::getColorOfCell(vector<unsigned char> grid,unsigned width, unsigned height, int row, int column, int resolution)
 {
@@ -245,31 +268,27 @@ unsigned char Map::getColorOfCell(vector<unsigned char> grid,unsigned width, uns
 
 void Map::PrintGridMatrix()
 {
-	vector<vector<int> > matrix = getGridMatrix();
-
 	for (unsigned int y = 0; y < gridHeight; y++)
 		{
 			for (unsigned int x = 0; x < gridWidth; x++)
 			{
-				cout << matrix[y][x];
+				cout << mapMatrix[y][x];
 			}
 			cout << endl;
 		}
 }
-/*
-void Map::PrintBlowGridMatrix()
-{
-	vector<vector<int> > matrix = getBlowGridMatrix();
 
-	for (unsigned int y = 0; y < mapHeight; y++)
+void Map::PrintBlowMapMatrix()
+{
+	for ( int y = 0; y < blowMapHeight; y++)
+	{
+		for ( int x = 0; x < blowMapWidth; x++)
 		{
-			for (unsigned int x = 0; x < mapWidth; x++)
-			{
-				cout << matrix[y][x];
-			}
-			cout << endl;
+			cout << blowMapMatrix[y][x];
 		}
-}*/
+		cout << endl;
+	}
+}
 
 Point Map::getRealPointBy(Point gridPoint)
 {
@@ -293,5 +312,5 @@ Map::~Map()
 
 int Map::getGridValueAt(Point gridPoint)
 {
-	return getGridMatrix()[gridPoint.GetY()][gridPoint.GetX()];
+	return getMapMatrix()[gridPoint.GetY()][gridPoint.GetX()];
 }

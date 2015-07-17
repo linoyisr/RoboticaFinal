@@ -28,23 +28,29 @@ private:
 	int getValueByResolution(float range);
 	void BlowingMapToGrid();
 	unsigned char getColorOfCell(vector<unsigned char> grid,unsigned width, unsigned height, int row, int col, int res);
+	void setBlowMapMatrix();
+	void setGridMatrix();
 
 public:
 	unsigned int mapHeight; // will initialize to 380
 	unsigned int mapWidth; // will initialize to 550
 	unsigned int gridHeight;
 	unsigned int gridWidth;
+	int blowMapHeight;
+	int blowMapWidth;
 
 	Map();
 	virtual ~Map();
 	vector<unsigned char> pngVector;
 	vector<unsigned char> blowMapVector;
 	vector<unsigned char> gridVector;
+	std::vector<std::vector<int> > mapMatrix;
+	std::vector<std::vector<int> > blowMapMatrix;
 
 	void PrintGridMatrix();
-	std::vector<std::vector<int> > getGridMatrix();
-	//void PrintBlowGridMatrix();
-	//std::vector<std::vector<int> > getBlowGridMatrix();
+	std::vector<std::vector<int> > getMapMatrix();
+	std::vector<std::vector<int> > getBlowMapMatrix();
+	void PrintBlowMapMatrix();
 	Point getRealPointBy(Point gridPoint);
 	Point getImagePointBy(Point gridPoint);
 	Point getGridPointBy(Point imagePoint);
