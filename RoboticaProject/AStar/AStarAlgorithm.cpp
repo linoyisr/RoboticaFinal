@@ -4,7 +4,7 @@
  *  Created on: Jun 20, 2015
  *      Author: colman
  */
-
+/*
 #include "AStarAlgorithm.h"
 
 
@@ -102,9 +102,9 @@ void AStarAlgorithm::pathOpened(int x, int z, float newCost, Node *parent)
 	/*if (CELL_BLOCKED)
 	{ // אם זה קיר
 		return;
-	}*/
+	}
 
-	int id = z * WORLD_SIZE + x;
+	int id = z * 64 + x;
 	for(unsigned int i; i< m_visitedList.size(); i++)
 	{
 		if (id == m_visitedList[i]->m_id)
@@ -189,7 +189,7 @@ void AStarAlgorithm::ContinuePath()
 	}
 
 }
-/*
+
 Point AStarAlgorithm::NextPathPos(Point currentPoint)
 {
 	int index = 1;

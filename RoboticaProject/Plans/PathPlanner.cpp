@@ -179,6 +179,11 @@ void PathPlanner::ContinuePath()
 		}
 		reverse(m_pathToGoal.begin(), m_pathToGoal.end());
 
+		for (unsigned int i = 0; i< m_pathToGoal.size(); i++)
+		{
+			m_pathToGoal[i].PrintPoint();
+		}
+
 		m_foundGoal = true;
 		return;
 	}

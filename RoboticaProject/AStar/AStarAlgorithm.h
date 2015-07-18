@@ -4,7 +4,7 @@
  *  Created on: Jun 20, 2015
  *      Author: colman
  */
-
+/*
 #ifndef ASTARALGORITHM_H_
 #define ASTARALGORITHM_H_
 

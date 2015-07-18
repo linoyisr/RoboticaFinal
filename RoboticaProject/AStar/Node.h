@@ -4,12 +4,12 @@
  *  Created on: Jun 20, 2015
  *      Author: colman
  */
-
+/*
 #ifndef NODE_H_
 #define NODE_H_
 
 #include <math.h>
-#define WORLD_SIZE 64
+//#define WORLD_SIZE 4
 
 class Node {
 	public:
@@ -27,7 +27,7 @@ class Node {
 		m_xcoord = x;
 		m_zcoord = z;
 		parent = _parent;
-		m_id = z * WORLD_SIZE + x;
+		m_id = z * 64 + x;
 		G = 0;
 		H = 0;
 	}

@@ -10,7 +10,7 @@
 
 #include <math.h>
 #include "../Point.h"
-#define WORLD_SIZE 64
+#define WORLD_SIZE 4
 
 typedef enum
 {
