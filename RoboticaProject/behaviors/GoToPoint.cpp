@@ -64,23 +64,26 @@
 
 	bool GoToPoint::stopCond()
 	{
+		bool isRangeGood;
+		int absResult;
 		if(isRight)
 		{
-			//return (!(_robot.checkRange(0, diffrence * ONE_DEGREE_INDEXES)) ||
-			return (!(_robot->checkRange(0, diffrence * 2.4667)) ||
-					(abs(_robot->getRobotLocation().GetYawPoint() -
-							//_waypointsManager.currentWayPoint.yaw) <= MAX_YAW_DIFF));
-							_waypointsManager->calc_yaw()) <= 2));
+			// ONE_DEGREE_INDEXES = 2.4667
+			isRangeGood = (_robot->checkRange(0, diffrence * 2.4667));
+			absResult = abs(_robot->getRobotLocation().GetYawPoint() -
+					_waypointsManager->calc_yaw());
 		}
 		else
 		{
-			return(!(_robot->checkRange(_robot->getLaserSpec() -
-					//(diffrence * ONE_DEGREE_INDEXES),_robot.getLaserSpec())) ||
-					(diffrence * 2.4667),_robot->getLaserSpec())) ||
-					(abs(_robot->getRobotLocation().GetYawPoint() -
-//							_waypointsManager.currentWayPoint.yaw) <= MAX_YAW_DIFF));
-							_waypointsManager->calc_yaw()) <= 2));
+			// ONE_DEGREE_INDEXES = 2.4667
+			isRangeGood = _robot->checkRange
+					(_robot->getLaserSpec() - (diffrence * 2.4667),_robot->getLaserSpec());
+			absResult = abs(_robot->getRobotLocation().GetYawPoint() -
+					_waypointsManager->calc_yaw());
 		}
+
+		//absResult <= MAX_YAW_DIFF));
+		return(!isRangeGood || (absResult <= 2));
 	}
 
 	void GoToPoint::action()
