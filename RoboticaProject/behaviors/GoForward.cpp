@@ -17,7 +17,7 @@ bool GoForward::startCond()
 bool GoForward::stopCond()
 {
 	_robot->Read();
-	Point robotLocation = new Point(_robot->getRobotLocation().GetPoint().GetX(),
+	Point robotLocation (_robot->getRobotLocation().GetPoint().GetX(),
 				_robot->getRobotLocation().GetPoint().GetY());
 	vector<Point>::iterator wpoint =
 			find(_waypointsManager->wayPoints.begin(),

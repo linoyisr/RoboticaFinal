@@ -8,6 +8,7 @@
 #include "Behavior.h"
 #include "../Robot.h"
 #include "../Manager/WaypointsManager.h"
+#include <algorithm>
 
 class GoForward: public Behavior {
 
