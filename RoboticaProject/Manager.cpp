@@ -54,6 +54,13 @@ void Manager::setStartAndGoal()
 void Manager::run()
 {
 	wayPoints = _waypointsManager->wayPoints;
+
+	cout << "Way points:" <<endl;
+	for (unsigned int i = 0; i< wayPoints.size(); i++)
+	{
+		wayPoints[i].PrintPoint();
+	}
+
 	_robot->Read();
 
 	double dTeta = _robot->getRobotLocation().GetYawPoint();
