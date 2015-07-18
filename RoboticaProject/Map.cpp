@@ -292,7 +292,7 @@ void Map::PrintBlowMapMatrix()
 Point Map::getRealPointBy(Point gridPoint)
 {
 	//Each cell in grid , pi 10 in the real world
-	return Point(gridPoint.GetX() * gridResolution, gridPoint.GetY() * gridResolution);
+	return Point(gridPoint.GetX() * gridResolution / mapResolution, gridPoint.GetY() * gridResolution / mapResolution);
 }
 
 Point Map::getImagePointBy(Point gridPoint)

@@ -38,7 +38,7 @@ void Manager::setStartAndGoal()
 	Point startPoint(xStart, yStart);
 	_startPoint = startPoint;
 	int yawStart = startArray[2];
-	Location loc(_startPoint, yawStart);
+	Location loc(_map->getGridPointBy(_startPoint), yawStart);
 	_location = loc;
 	_robot->updateRobotLocation(loc);
 
