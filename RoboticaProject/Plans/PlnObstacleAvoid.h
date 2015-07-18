@@ -7,6 +7,7 @@
 
 #include "../behaviors/Behavior.h"
 #include "../behaviors/GoToPoint.h"
+#include "../behaviors/GoForward.h"
 #include "Plan.h"
 
 class PlnObstacleAvoid: public Plan

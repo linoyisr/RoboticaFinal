@@ -9,7 +9,7 @@ PlnObstacleAvoid::PlnObstacleAvoid(Robot* robot, WaypointsManager* waypointsMana
 	//Creating Behaviors
 	_behaviors = new Behavior*[2];
 	_behaviors[0] = new GoToPoint(robot, waypointsManager);
-	//_behaviors[1] = new GoForward(robot, waypointsManager);
+	_behaviors[1] = new GoForward(robot, waypointsManager);
 
 	//Connecting behaviors
 	_behaviors[0]->addNextBehavior(_behaviors[1]);

@@ -24,7 +24,7 @@ Behavior* Behavior::addNextBehavior(Behavior* behavior){
 		behaviors[i] = _nextBehavior[i];
 	}
 
-	behaviors[_behaviorsCount - 1] = behavior;
+	behaviors[_behaviorsCount] = behavior;
 	delete [] _nextBehavior;
 	_behaviorsCount++;
 
