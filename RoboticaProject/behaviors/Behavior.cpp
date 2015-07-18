@@ -4,72 +4,45 @@
 
 #include "Behavior.h"
 
-Behavior::Behavior(Robot* robot) {
+Behavior::Behavior(Robot* robot)
+{
 	_robot = robot;
-
+	_nextBehavior = NULL;
+	_behaviorsCount = 0;
 }
 
-Behavior::~Behavior() {
-}
+Behavior* Behavior::addNextBehavior(Behavior* behavior){
 
-void Behavior::StartMove()
-{
-	_robot->setSpeed(0.3, 0.0);
-
-	/*Location* newLoc;*/
-	Point robotLoc = _robot->getRobotLocation().GetPoint();
-	if (robotLoc.GetX() > _wayPoint.GetX() && robotLoc.GetY() > _wayPoint.GetY())
-	{
-	/*	newLoc = new Location(robotLoc->GetX()-1, robotLoc->GetY()-1, 0); */
-	}
-	else if (robotLoc.GetX() < _wayPoint.GetX() && robotLoc.GetY() < _wayPoint.GetY())
-	{
-	/*	newLoc = new Location(robotLoc->GetX()+1, robotLoc->GetY()+1, 0);*/
-	}
-	else if (robotLoc.GetX() > _wayPoint.GetX() && robotLoc.GetY() < _wayPoint.GetY())
-	{
-	/*	newLoc = new Location(robotLoc->GetX()-1, robotLoc->GetY()+1, 0);*/
-	}
-	else if (robotLoc.GetX() < _wayPoint.GetX() && robotLoc.GetY() > _wayPoint.GetY())
-	{
-	/*	newLoc = new Location(robotLoc->GetX()+1, robotLoc->GetY()-1, 0);*/
-	}
-	/*_robot->updateRobotLocation(newLoc);*/
-}
-
-void Behavior::SetWayPoint(Point p)
-{
-	_wayPoint = p;
-}
-
-bool Behavior::StopCond()
-{
-	Point robotLoc = _robot->getRobotLocation().GetPoint();
-	if (robotLoc.GetX() == _wayPoint.GetX() && robotLoc.GetY() == _wayPoint.GetY())
-		return true;
-	else
-		return false;
-}
-
+	Behavior** behaviors = new Behavior*[_behaviorsCount + 1];
 /*
-void Behavior::addBeh(Behavior* next)
-{
-	_behVect.push_back(next);
+	if (!behaviors) {
+		return NULL;
+	}
+*/
+	for (int i = 0; i < _behaviorsCount; ++i)
+	{
+		behaviors[i] = _nextBehavior[i];
+	}
+
+	behaviors[_behaviorsCount - 1] = behavior;
+	delete [] _nextBehavior;
+	_behaviorsCount++;
+
+	_nextBehavior = behaviors;
+	return this;
 }
 
-Behavior* Behavior::selectNext()
-{
-	//Run over vector and return first true
-	//startCond of the first behavior
+Behavior* Behavior::selectNextBehavior(){
 
-	for(size_t i = 0; i < _behVect.size(); i++)
-	{
-		if (_behVect[i]->startCond())
-		{
-			return _behVect[i];
-		}
-	}
+	int i;
+	for(i=0; i<_behaviorsCount; i++)
+		if(_nextBehavior[i]->startCond())
+			return _nextBehavior[i];
 
 	return NULL;
 }
-*/
+
+Behavior::~Behavior() {
+
+	delete [] _nextBehavior;
+}

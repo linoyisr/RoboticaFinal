@@ -31,6 +31,10 @@ public:
 	Location getDeltaLocation();
 	static Point getObstacleLocation(double xRob, double yRob, double yawRob, double sensorAngle, double distance);
 	virtual ~Robot();
+
+	float getLaserDistance(int index);
+	bool checkRange(int nStart, int nEnd);
+	double getLaserSpec();
 };
 
 #endif /* ROBOT_H_ */

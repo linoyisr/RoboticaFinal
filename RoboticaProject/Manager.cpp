@@ -52,40 +52,53 @@ void Manager::setStartAndGoal()
 
 void Manager::run()
 {
-	_pathPlanner->FindPath(_map->getGridMatrix(), _startPoint, _goalPoint);
+	_pathPlanner->FindPath(_map->getBlowMapMatrix(), _map->getGridPointBy(_startPoint), _map->getGridPointBy(_goalPoint));
 	_waypointsManager = new WaypointsManager(_pathPlanner->GetPathToGoal());
 	wayPoints = _waypointsManager->wayPoints;
 	_robot->Read();
 
-	int loopsCounter = 1;
+	double dTeta = _robot->getRobotLocation().GetYawPoint();
 
-	for(int i=0; i < wayPoints.size(); i++)
+	vector<Point>::iterator it;
+	for (it = (_waypointsManager->wayPoints).begin(); it != (_waypointsManager->wayPoints).end(); ++it)
 	{
-		Point currentPoint = wayPoints[i];
-		_behavior->SetWayPoint(currentPoint);
-		_behavior->StartMove();
-
+		Point currentWayPoint = *it;
 		_robot->Read();
 
-		while(!_behavior->StopCond())
+		_waypointsManager->setNextWayPoint(currentWayPoint);
+		_currBehavior->startCond();
+
+		while (true)
 		{
-			_behavior->StartMove();
-			// Every 15 reads make all the calculations and update the particles and their corresponding data
-			if (loopsCounter == 15)
+			// If the current behavior can't run
+			if(_currBehavior->stopCond())
 			{
-				loopsCounter = 0;
-				Location deltaLocation = _robot->getDeltaLocation();
+				_robot->Read();
+				// Perform the next behavior according to the plan
+				_currBehavior = _currBehavior->selectNextBehavior();
 
-				float laserScans[LASERS_NUMBER];
-				getLaserScan(laserScans);
+				Point robotLocation = new Point(_robot->getRobotLocation().GetPoint().GetX(),
+						 _robot->getRobotLocation().GetPoint().GetY());
+				vector<Point>::iterator wpoint =
+						find(wayPoints.begin(), wayPoints.end(), robotLocation);
 
-				//_robot->updateRobotLocation(deltaLocation);
-				_locManager->Update(deltaLocation, laserScans);
+				// check if robot location is in waypoints list
+				if (wpoint != wayPoints.end())
+					break;
+
+				if (!_currBehavior)
+					break;
 			}
-			else
-				loopsCounter++;
+
+			_currBehavior->action();
 
 			_robot->Read();
+
+			Location deltaLocation = _robot->getDeltaLocation();
+			float laserScans[LASERS_NUMBER];
+			getLaserScan(laserScans);
+			//_robot->updateRobotLocation(deltaLocation);
+			_locManager->Update(deltaLocation, laserScans);
 		}
 	}
 }

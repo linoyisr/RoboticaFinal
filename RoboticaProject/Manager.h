@@ -13,6 +13,7 @@
 #include "Plans/PathPlanner.h"
 #include "Point.h"
 #include <vector>
+#include <iterator>
 
 class Manager {
 private:

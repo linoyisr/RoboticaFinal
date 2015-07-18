@@ -88,4 +88,27 @@ void Robot::updateRobotLocation(Location loc)
 	_robotLocation.SetLocation(loc);
 }
 
+float Robot::getLaserDistance(int index)
+{
+    return _laserP->GetRange(index);
+}
+
+bool Robot::checkRange(int nStart, int nEnd)
+{
+    bool is_dis_Good = true;
+
+    for (int index = nStart; (index <= nEnd) && (is_dis_Good); index++)
+    {
+//    	is_dis_Good = (this->getLaserDistance(index) > DISTANCE_TOLERANCE);
+    	is_dis_Good = (this->getLaserDistance(index) > 0.2);
+    }
+
+    return (is_dis_Good);
+}
+
+double Robot::getLaserSpec()
+{
+	return(((_laserP->GetMaxAngle() * 180 / M_PI) + 120 ) / 0.36);
+}
+
 
