@@ -16,7 +16,7 @@ using namespace std;
 class Map {
 private:
 	string mapPath;
-	int mapResolution;
+	double mapResolution;
 	int gridResolution;
 	unsigned int robotWidth;
 	unsigned int robotHeight;

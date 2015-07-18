@@ -26,7 +26,7 @@ Map::Map()
 	BlowingMapToGrid();
 	setGridMatrix();
 	setBlowMapMatrix();
-	PrintGridMatrix();
+	//PrintGridMatrix();
 	PrintBlowMapMatrix();
 /*
 	//this code checking converting between image point to grid point
@@ -143,7 +143,6 @@ void Map::BlowingMapToGrid()
 {
 	unsigned char color;
 
-	//TODO:Check why mapResolution change to 2
 	int newGridResoultion = (int)(floor(gridResolution/mapResolution));
 
 	gridHeight = (unsigned int)(mapHeight/newGridResoultion);
