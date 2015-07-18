@@ -10,9 +10,10 @@ Manager::Manager(Robot* robot)
 	_map = new Map();
 	_robot = robot;
 	setStartAndGoal();
-	_behavior = new Behavior(_robot);
 	_pathPlanner = new PathPlanner();
-	_obstacleAvoid = new PlnObstacleAvoid(_robot);
+	_pathPlanner->FindPath(_map->getBlowMapMatrix(), _map->getGridPointBy(_startPoint), _map->getGridPointBy(_goalPoint));
+	_waypointsManager = new WaypointsManager(_pathPlanner->GetPathToGoal());
+	_obstacleAvoid = new PlnObstacleAvoid(_robot, _waypointsManager);
 	_currBehavior = _obstacleAvoid->getStartBehavior();
 	_locManager = new LocalizationManager(_robot->getRobotLocation(), _map);
 }
@@ -52,8 +53,6 @@ void Manager::setStartAndGoal()
 
 void Manager::run()
 {
-	_pathPlanner->FindPath(_map->getBlowMapMatrix(), _map->getGridPointBy(_startPoint), _map->getGridPointBy(_goalPoint));
-	_waypointsManager = new WaypointsManager(_pathPlanner->GetPathToGoal());
 	wayPoints = _waypointsManager->wayPoints;
 	_robot->Read();
 
@@ -77,10 +76,20 @@ void Manager::run()
 				// Perform the next behavior according to the plan
 				_currBehavior = _currBehavior->selectNextBehavior();
 
+				/*
 				Point robotLocation = new Point(_robot->getRobotLocation().GetPoint().GetX(),
 						 _robot->getRobotLocation().GetPoint().GetY());
 				vector<Point>::iterator wpoint =
-						find(wayPoints.begin(), wayPoints.end(), robotLocation);
+						find(wayPoints.begin(), wayPoints.end(), robotLocation);*/
+				vector<Point>::iterator wpoint;
+				for (vector<Point>::iterator iter = _waypointsManager->wayPoints.begin(); iter != _waypointsManager->wayPoints.end(); iter++)
+				{//iterate through the vector to look for the correct name
+					if((*iter).GetX() == _robot->getRobotLocation().GetPoint().GetX() &&
+							(*iter).GetY() == _robot->getRobotLocation().GetPoint().GetY())
+					{
+						wpoint = iter;
+					}
+				}
 
 				// check if robot location is in waypoints list
 				if (wpoint != wayPoints.end())

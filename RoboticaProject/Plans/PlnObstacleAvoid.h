@@ -11,11 +11,8 @@
 
 class PlnObstacleAvoid: public Plan
 {
-	Behavior* _behaviors[4];
-
 public:
-	PlnObstacleAvoid(Robot robot, WaypointsManager waypointsManager);
-	Behavior* getStartPoint(){return _startBehavior;}
+	PlnObstacleAvoid(Robot* robot, WaypointsManager* waypointsManager);
 	virtual ~PlnObstacleAvoid();
 };
 

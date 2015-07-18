@@ -59,7 +59,7 @@ int main()
 */
 	//Map* _map = new Map();
 	Robot robot("localhost",6665);
-	Manager manager(robot);
+	Manager manager(&robot);
 	manager.run();
 
 

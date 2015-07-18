@@ -9,10 +9,11 @@
 class Plan {
 
 protected:
-	Robot _robot;
+	Robot* _robot;
 	Behavior* _startBehavior;
+	Behavior** _behaviors;
 public:
-	Plan(Robot robot);
+	Plan(Robot* robot);
 	virtual Behavior* getStartBehavior(){return _startBehavior;}
 	virtual ~Plan();
 };

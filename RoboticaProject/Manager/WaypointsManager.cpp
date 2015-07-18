@@ -13,6 +13,10 @@ WaypointsManager::WaypointsManager(vector<Point> path)
 	CreateWaypoints();
 }
 
+WaypointsManager::WaypointsManager()
+{
+}
+
 vector<Point> WaypointsManager::getWaypointsList()
 {
 	return wayPoints;
@@ -40,8 +44,8 @@ void WaypointsManager::CreateWaypoints()
 
 void WaypointsManager::setNextWayPoint(Point next)
 {
-	currentWayPoint.GetX() = next.GetX();
-	currentWayPoint.GetY() = next.GetY();
+	currentWayPoint.SetX(next.GetX());
+	currentWayPoint.SetY(next.GetY());
 }
 
 double WaypointsManager::calc_yaw()

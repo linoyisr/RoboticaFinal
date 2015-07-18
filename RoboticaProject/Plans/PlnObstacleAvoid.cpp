@@ -4,17 +4,16 @@
 
 #include "PlnObstacleAvoid.h"
 
-PlnObstacleAvoid::PlnObstacleAvoid(Robot robot, WaypointsManager waypointsManager) : Plan(robot)
+PlnObstacleAvoid::PlnObstacleAvoid(Robot* robot, WaypointsManager* waypointsManager) : Plan(robot)
 {
 	//Creating Behaviors
 	_behaviors = new Behavior*[2];
 	_behaviors[0] = new GoToPoint(robot, waypointsManager);
-	_behaviors[1] = new GoForward(robot, waypointsManager);
+	//_behaviors[1] = new GoForward(robot, waypointsManager);
 
 	//Connecting behaviors
 	_behaviors[0]->addNextBehavior(_behaviors[1]);
 	_behaviors[1]->addNextBehavior(_behaviors[0]);
-	//_behaviors[2]->addNextBehavior(_behaviors[0]);
 
 	_startBehavior = _behaviors[0];
 

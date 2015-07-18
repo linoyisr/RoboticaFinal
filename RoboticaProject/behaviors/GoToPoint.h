@@ -9,7 +9,8 @@
 #define GOTOPOINT_H_
 
 #include "Behavior.h"
-#include "../WaypointsManager.h"
+#include "../Manager/WaypointsManager.h"
+#include "../Robot.h"
 
 class GoToPoint: public Behavior {
 public:

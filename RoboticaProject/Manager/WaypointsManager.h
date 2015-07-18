@@ -16,6 +16,7 @@ using namespace std;
 class WaypointsManager {
 public:
 	WaypointsManager(vector<Point> path);
+	WaypointsManager();
 	~WaypointsManager();
 	void CreateWaypoints();
 	vector<Point> getWaypointsList();

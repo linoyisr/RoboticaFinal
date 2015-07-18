@@ -5,10 +5,17 @@
 #ifndef GOFORWARD_H_
 #define GOFORWARD_H_
 
+
 #include "Behavior.h"
 #include "../Robot.h"
 #include "../Manager/WaypointsManager.h"
-#include <algorithm>
+#include <iostream>
+#include <math.h>
+#include "../Point.h"
+#include "../Location.h"
+#include <vector>
+#include <iterator>
+using namespace std;
 
 class GoForward: public Behavior {
 
