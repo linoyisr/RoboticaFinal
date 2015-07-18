@@ -21,6 +21,7 @@ public:
 	virtual ~LocalizationManager();
 	void Update(Location deltaLocation, float* laserScans);
 	vector<Particle> getParticles();
+	Particle GetBestParticle();
 	Location GetBestLocation();
 	Location GetGridBestLocation();
 	void PrintParticles();

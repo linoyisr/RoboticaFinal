@@ -11,7 +11,8 @@ Robot::Robot(char* ip, int port) {
 	_laserP = new LaserProxy(_player);
 
 	_positionP->SetMotorEnable(true);
-	_positionP->SetOdometry(0,0,0);
+	//TODO: ????? it was (0,0,0);
+	_positionP->SetOdometry(90,76,20);
 
 	//For fixing Player's reading BUG - not delete
 	for(int i=0;i<15;i++)

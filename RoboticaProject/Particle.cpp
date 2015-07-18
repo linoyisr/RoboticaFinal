@@ -16,7 +16,7 @@ using namespace std;
 //#define TRUST_ISSUES 0.3
 //#define UNLIKELY_ANGLE M_PI / 2
 
-#define RADIUS 1
+#define RADIUS 4
 #define MAX_ANGLE 360
 #define BEAM_MAX_DISTANCE 3.5
 
@@ -54,7 +54,7 @@ Map* Particle::getMap()
 	return map;
 }
 
-void Particle::Update(double deltaX, double deltaY, double deltaYaw, float* laserScans)
+double Particle::Update(double deltaX, double deltaY, double deltaYaw, float* laserScans)
 {
 	// Update particle location
 	_x += deltaX;
@@ -66,8 +66,12 @@ void Particle::Update(double deltaX, double deltaY, double deltaYaw, float* lase
 
 	// Calculate new belief by normalization, predicted belief and probability by measure
 	double newBelief = normalizationFactor *  predictedBelief * ProbByMeasure(laserScans);
+	if (newBelief > 1)
+		newBelief = 1;
 
 	belief = newBelief;
+
+	return belief;
 }
 
 //As more as the distance is shorter, the yaw is smaller and
@@ -104,18 +108,18 @@ double Particle::ProbByMeasure(float* laserScans)
 	for (int currBeam = 0; currBeam < LASERS_NUMBER; currBeam += (beamsInAngle*2))
 	{
 		//TODO: check if work!!!
-		double angleForLaser = LaserHelper::indexToRad(currBeam) + yaw;
+		double angleForLaser = LaserHelper::indexToRad(currBeam) + _yaw;
 
-		double xForLaser = x + cos(angleForLaser);
-		double yForLaser = y + sin(angleForLaser);
+		double xForLaser = _x + cos(angleForLaser);
+		double yForLaser = _y + sin(angleForLaser);
 
 		//calculate x,y of the obstacle
-		int obstacleRealY = floor(x + (double((laserScans[currBeam]) * yForLaser)));
-		int obstacleRealX = floor(y + (double((laserScans[currBeam]) * xForLaser)));
+		int obstacleRealY = floor(_x + (double((laserScans[currBeam]) * yForLaser)));
+		int obstacleRealX = floor(_y + (double((laserScans[currBeam]) * xForLaser)));
 		Point obstacleRealPoint(obstacleRealX, obstacleRealY);
 
 		//Convert real point of the obstacle to grid point
-		Point obastcleGridPoint = map->getRealPointBy(obstacleRealPoint);
+		Point obastcleGridPoint = map->getGridPointBy(obstacleRealPoint);
 
 		if(laserScans[currBeam] < BEAM_MAX_DISTANCE)
 		{
@@ -139,9 +143,7 @@ double Particle::ProbByMeasure(float* laserScans)
 			}
 		}
 	}
-
-	// Returns the number of hits from the total
-	return (double)(numOfHits/(numOfHits + numOfErrors));*/
+*/
 
 	double numOfErrors = 0;
 	double numOfHits = 0;
@@ -149,7 +151,7 @@ double Particle::ProbByMeasure(float* laserScans)
 	for (int i=0; i< LASERS_NUMBER; i+= (beamsInAngle*2))
 	{
 		double laserAngle = laserIndexToLaserAngle(i);
-		double distanceFromObstacle = laserScans[i];
+		double distanceFromObstacle = laserScans[i] / 4;
 		double obstacleXPos = (_x) + (distanceFromObstacle * cos(_yaw + laserAngle));
 		double obstacleYPos = (_y) + (distanceFromObstacle * sin(_yaw + laserAngle));
 
@@ -173,7 +175,8 @@ double Particle::ProbByMeasure(float* laserScans)
 			}
 		}
 	}
-
+	//TODO:delete
+	return 1;
 	// Returns the number of hits from the total
 	return (numOfHits / (numOfHits + numOfErrors));
 }
@@ -206,13 +209,13 @@ Particle Particle::genereateNewParticle()
 
 double Particle::getRandomXInRadius()
 {
-	//Add to current x number between 0 and radius
-	return _x + ((double)(rand() / RAND_MAX) + RADIUS - 1);
+	//Add to current x number between -radius and radius
+	return _x +(rand() % (2*RADIUS)) - RADIUS;
 }
 double Particle::getRandomYInRadius()
 {
 	//Add to current y number between 0 and radius
-	return _y+ ((double)(rand() / RAND_MAX) + RADIUS - 1);
+	return _y +(rand() % (2*RADIUS)) - RADIUS;
 }
 //Return an number between 1 and 360
 double Particle::getRandomYaw()

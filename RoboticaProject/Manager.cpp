@@ -113,8 +113,9 @@ void Manager::run()
 			Location deltaLocation = _robot->getDeltaLocation();
 			float laserScans[LASERS_NUMBER];
 			getLaserScan(laserScans);
-			//_robot->updateRobotLocation(deltaLocation);
+
 			_locManager->Update(deltaLocation, laserScans);
+			_robot->updateRobotLocation(_locManager->GetBestLocation());
 		}
 	}
 }

@@ -16,7 +16,7 @@ public:
 	virtual ~Particle();
 	double getBelief();
 	Map* getMap();
-	void Update(double delX, double delY, double delYaw, float* laserScans);
+	double Update(double delX, double delY, double delYaw, float* laserScans);
 	double getRandomXInRadius();
 	double getRandomYInRadius();
 	double getRandomYaw();
@@ -26,9 +26,9 @@ public:
 	void print();
 
 private:
-	int _x;
-	int _y;
-	int _yaw;
+	double _x;
+	double _y;
+	double _yaw;
 	double belief;
 	Map * map;
 	double ProbByMove(double deltaX, double deltaY, double deltaYaw);
