@@ -15,29 +15,30 @@
 		// TODO Auto-generated destructor stub
 	}
 
+
 	bool GoToPoint::startCond()
 	{
 		//_robot->Read();
-		double yaw = _robot->getRobotLocation().GetYawPoint();
-		diffrence = _waypointsManager->calc_yaw() - yaw;
+		double robotYaw = _robot->getRobotLocation().GetYawPoint();
+		distanceBetweenYaw = _waypointsManager->calcYaw() - robotYaw;
 
-		if(diffrence == 0)
+		if(distanceBetweenYaw == 0)
 		{
 			return false;
 		}
-		else if(diffrence >= 180)
+		else if(distanceBetweenYaw >= 180)
 		{
 			isRight =  1;
 			//isRight =  0;
-			diffrence = 360 - diffrence;
+			distanceBetweenYaw = 360 - distanceBetweenYaw;
 		}
-		else if (diffrence < -180)
+		else if (distanceBetweenYaw < -180)
 		{
 			isRight = 0;
 	//		isRight = 1;
-			diffrence = 360 + diffrence;
+			distanceBetweenYaw = 360 + distanceBetweenYaw;
 		}
-		else if (diffrence > 0)
+		else if (distanceBetweenYaw > 0)
 		{
 	//		isRight = 1;
 			isRight = 0;
@@ -46,44 +47,41 @@
 		{
 			isRight = 1;
 	//		isRight = 0;
-			diffrence = abs(diffrence);
+			distanceBetweenYaw = abs(distanceBetweenYaw);
 		}
 
 		if(isRight)
 		{
-			//return (_robot.checkRange(0, diffrence * ONE_DEGREE_INDEXES));
-			return (_robot->checkRange(0, diffrence * 2.4667));
+			//return (_robot.checkRange(0, distanceBetweenYaw * ONE_DEGREE_INDEXES));
+			//return (_robot->isRangeClear(0, distanceBetweenYaw * 2.4667));
+			return (_robot->isRangeClear(0, distanceBetweenYaw * 2.775));
 		}
 		else
 		{
 			//return(_robot.checkRange( _robot->getLaserSpec() - (diffrence * ONE_DEGREE_INDEXES),
-			return(_robot->checkRange( _robot->getLaserSpec() - (diffrence * 2.4667),
+			return(_robot->isRangeClear( _robot->getLaserSpec() - (distanceBetweenYaw * 2.775),
 					_robot->getLaserSpec()));
 		}
 	}
 
 	bool GoToPoint::stopCond()
 	{
-		bool isRangeGood;
-		int absResult;
+		bool isRangeClear;
+		int absYawDistance = abs(_robot->getRobotLocation().GetYawPoint() - _waypointsManager->calcYaw());
 		if(isRight)
 		{
 			// ONE_DEGREE_INDEXES = 2.4667
-			isRangeGood = (_robot->checkRange(0, diffrence * 2.4667));
-			absResult = abs(_robot->getRobotLocation().GetYawPoint() -
-					_waypointsManager->calc_yaw());
+			isRangeClear = (_robot->isRangeClear(0, distanceBetweenYaw * 2.775));
 		}
 		else
 		{
 			// ONE_DEGREE_INDEXES = 2.4667
-			isRangeGood = _robot->checkRange
-					(_robot->getLaserSpec() - (diffrence * 2.4667),_robot->getLaserSpec());
-			absResult = abs(_robot->getRobotLocation().GetYawPoint() -
-					_waypointsManager->calc_yaw());
+			isRangeClear = _robot->isRangeClear
+				(_robot->getLaserSpec() - (distanceBetweenYaw * 2.775),_robot->getLaserSpec());
 		}
 
 		//absResult <= MAX_YAW_DIFF));
-		return(!isRangeGood || (absResult <= 2));
+		return(!isRangeClear || (absYawDistance <= 2));
 	}
 
 	void GoToPoint::action()

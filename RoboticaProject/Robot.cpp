@@ -11,7 +11,7 @@ Robot::Robot(char* ip, int port) {
 	_laserP = new LaserProxy(_player);
 
 	_positionP->SetMotorEnable(true);
-	//TODO: ????? it was (0,0,0);
+	//_positionP->SetOdometry(0,0,0);
 	_positionP->SetOdometry(90,76,20);
 
 	//For fixing Player's reading BUG - not delete
@@ -94,22 +94,20 @@ float Robot::getLaserDistance(int index)
     return _laserP->GetRange(index);
 }
 
-bool Robot::checkRange(int nStart, int nEnd)
+bool Robot::isRangeClear(int start, int end)
 {
-    bool is_dis_Good = true;
+    bool rangeClear = true;
 
-    for (int index = nStart; (index <= nEnd) && (is_dis_Good); index++)
+    for (int index = start; (index <= end) && (rangeClear); index++)
     {
 //    	is_dis_Good = (this->getLaserDistance(index) > DISTANCE_TOLERANCE);
-    	is_dis_Good = (this->getLaserDistance(index) > 0.2);
+    	rangeClear = (this->getLaserDistance(index) > 0.15);
     }
 
-    return (is_dis_Good);
+    return (rangeClear);
 }
 
 double Robot::getLaserSpec()
 {
 	return(((_laserP->GetMaxAngle() * 180 / M_PI) + 120 ) / 0.36);
 }
-
-

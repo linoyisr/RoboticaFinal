@@ -23,7 +23,7 @@ public:
 private:
 	WaypointsManager* _waypointsManager;
 	bool isRight;
-	double diffrence;
+	double distanceBetweenYaw;
 };
 
 #endif /* GOTOPOINT_H_ */

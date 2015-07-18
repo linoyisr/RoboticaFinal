@@ -33,7 +33,7 @@ public:
 	virtual ~Robot();
 
 	float getLaserDistance(int index);
-	bool checkRange(int nStart, int nEnd);
+	bool isRangeClear(int start, int end);
 	double getLaserSpec();
 };
 

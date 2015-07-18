@@ -31,7 +31,7 @@ void WaypointsManager::CreateWaypoints()
 		if(i == 0)
 		{
 			currentWayPoint = astarPath[i];
-			nextWayPoint = astarPath[i + 1];
+			nextWayPoint = astarPath[i];
 		}
 		this->wayPoints.push_back(astarPath[i]);
 	}
@@ -44,13 +44,16 @@ void WaypointsManager::CreateWaypoints()
 
 void WaypointsManager::setNextWayPoint(Point next)
 {
-	currentWayPoint.SetX(next.GetX());
-	currentWayPoint.SetY(next.GetY());
+	currentWayPoint.SetX(nextWayPoint.GetX());
+	currentWayPoint.SetY(nextWayPoint.GetY());
+
+	nextWayPoint.SetX(next.GetX());
+	nextWayPoint.SetY(next.GetY());
 }
 
-double WaypointsManager::calc_yaw()
+double WaypointsManager::calcYaw()
 {
-	double m = calc_incline();
+	double m = calcIncline();
 	double angle;
 
 	if(!isVerticle)
@@ -104,7 +107,7 @@ double WaypointsManager::calc_yaw()
 	}
 }
 
-double WaypointsManager::calc_incline()
+double WaypointsManager::calcIncline()
 {
 	isVerticle = 0;
 	if(currentWayPoint.GetX() == nextWayPoint.GetX())

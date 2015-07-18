@@ -23,8 +23,8 @@ public:
 	void setNextWayPoint(Point nextWayPoint);
 	bool isInWayPoint(double x,double y);
 
-	double calc_yaw();
-	double calc_incline();
+	double calcYaw();
+	double calcIncline();
 
 
 	vector<Point> astarPath;

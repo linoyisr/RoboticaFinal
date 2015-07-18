@@ -8,8 +8,7 @@
 bool GoForward::startCond() {
 	/*return (_robot.checkRange(_robot.getLaserSpec() / 2 - LASER_SPEC,
 	 _robot.getLaserSpec() / 2 + LASER_SPEC));*/
-	return (_robot->checkRange(_robot->getLaserSpec() / 2 - 111,
-			_robot->getLaserSpec() / 2 + 111));
+	return (_robot->isRangeClear(_robot->getLaserSpec() / 2 - 111, _robot->getLaserSpec() / 2 + 111));
 }
 
 bool GoForward::stopCond() {
