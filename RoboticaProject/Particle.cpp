@@ -25,11 +25,11 @@ const int maxGoodAngle = 5; //if in degrees, else *M_PI/MAX_ANGLE
 const double normalizationFactor = 1.3;
 const double defaultBelief = 1;
 const int beamsInAngle = (floor(1 / BEAM_FOREACH_ANGLE) + 1); //3
-
+/*
 Particle::Particle( Map* map)
 : Particle::Particle(map->gridWidth/2, map->gridHeight/2, 0, map, defaultBelief)
 {
-}
+}*/
 
 Particle::Particle(double x, double y, double yaw, Map* map)
 : Particle::Particle(x, y, yaw, map, defaultBelief)
@@ -38,9 +38,9 @@ Particle::Particle(double x, double y, double yaw, Map* map)
 
 Particle::Particle(double x, double y, double yaw, Map* map, double belief)
 {
-	this->x = x;
-	this->y = y;
-	this->yaw = yaw;
+	this->_x = x;
+	this->_y = y;
+	this->_yaw = yaw;
 	this->map = map;
 	this->belief = belief;
 }
@@ -57,9 +57,9 @@ Map* Particle::getMap()
 void Particle::Update(double deltaX, double deltaY, double deltaYaw, float* laserScans)
 {
 	// Update particle location
-	x += deltaX;
-	y += deltaY;
-	yaw += deltaYaw;
+	_x += deltaX;
+	_y += deltaY;
+	_yaw += deltaYaw;
 
 	// Calculate predicted belief by previous belief and probability by move
 	 double predictedBelief = belief * ProbByMove(deltaX, deltaY, deltaYaw);
@@ -96,7 +96,7 @@ double Particle::ProbByMove(double deltaX, double deltaY, double deltaYaw)
 }
 
 double Particle::ProbByMeasure(float* laserScans)
-{
+{/*
 	int numOfErrors = 0;
 	int numOfHits = 0;
 
@@ -141,29 +141,78 @@ double Particle::ProbByMeasure(float* laserScans)
 	}
 
 	// Returns the number of hits from the total
-	return (double)(numOfHits/(numOfHits + numOfErrors));
+	return (double)(numOfHits/(numOfHits + numOfErrors));*/
+
+	double numOfErrors = 0;
+	double numOfHits = 0;
+
+	for (int i=0; i< LASERS_NUMBER; i+= (beamsInAngle*2))
+	{
+		double laserAngle = laserIndexToLaserAngle(i);
+		double distanceFromObstacle = laserScans[i];
+		double obstacleXPos = (_x) + (distanceFromObstacle * cos(_yaw + laserAngle));
+		double obstacleYPos = (_y) + (distanceFromObstacle * sin(_yaw + laserAngle));
+
+		//check if it really obstacle
+		int obstacleCellValue = map->getBlowMapMatrix()[obstacleYPos][obstacleXPos];
+
+		// If the distance is tot much big, probably is not really obstacle
+		// If the distance is too much small it can be the robot
+		if (distanceFromObstacle < 5.0 && distanceFromObstacle > 0.5)
+		{
+			switch (obstacleCellValue)
+			{
+				case FREE:
+					numOfErrors ++;
+					break;
+				case OCCUPIED:
+					numOfHits ++;
+					break;
+				default:
+					break;
+			}
+		}
+	}
+
+	// Returns the number of hits from the total
+	return (numOfHits / (numOfHits + numOfErrors));
+}
+
+double Particle::getAngleByIndex(int index)
+{
+	return ((double)index * BEAM_FOREACH_ANGLE - 30);
+}
+
+double Particle::getRadianByIndex(int index)
+{
+	return (getAngleByIndex(index) * M_PI / HALF_CYCLE);
+}
+
+double Particle::laserIndexToLaserAngle(int index)
+{
+	return ((index * 0.36 - 120) / HALF_CYCLE) * M_PI;
 }
 
 //Create next generation for good particle
-Particle * Particle::genereateNewParticle()
+Particle Particle::genereateNewParticle()
 {
 	int randomX = getRandomXInRadius();
 	int randomY = getRandomYInRadius();
 	int randomYaw = getRandomYaw();
 
 	//Create particle with random position in the radius and same map and belief
-	return new Particle(randomX, randomY, randomYaw, map, belief);
+	return Particle(randomX, randomY, randomYaw, map, belief);
 }
 
 double Particle::getRandomXInRadius()
 {
 	//Add to current x number between 0 and radius
-	return x + ((double)(rand() / RAND_MAX) + RADIUS - 1);
+	return _x + ((double)(rand() / RAND_MAX) + RADIUS - 1);
 }
 double Particle::getRandomYInRadius()
 {
 	//Add to current y number between 0 and radius
-	return y+ ((double)(rand() / RAND_MAX) + RADIUS - 1);
+	return _y+ ((double)(rand() / RAND_MAX) + RADIUS - 1);
 }
 //Return an number between 1 and 360
 double Particle::getRandomYaw()
@@ -173,12 +222,12 @@ double Particle::getRandomYaw()
 
 Location Particle::getLocation()
 {
-	return Location(x,y,yaw);
+	return Location(_x,_y,_yaw);
 }
 
 void Particle::print()
 {
-	cout << "x: " << x << " y:" << y << " yaw: " << yaw << " belief: " << belief;
+	cout << "x: " << _x << " y:" <<_y << " yaw: " << _yaw << " belief: " << belief;
 	cout << endl;
 }
 Particle::~Particle()

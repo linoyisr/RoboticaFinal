@@ -21,18 +21,21 @@ public:
 	double getRandomYInRadius();
 	double getRandomYaw();
 	Location getLocation();
-	Particle * genereateNewParticle();
+	Particle genereateNewParticle();
 
 	void print();
 
 private:
-	double x;
-	double y;
-	double yaw;
+	int _x;
+	int _y;
+	int _yaw;
 	double belief;
 	Map * map;
 	double ProbByMove(double deltaX, double deltaY, double deltaYaw);
 	double ProbByMeasure(float* laserScans);
+	double getAngleByIndex(int index);
+	double getRadianByIndex(int index);
+	double laserIndexToLaserAngle(int index);
 };
 
 #endif /* PARTICLE_H_ */
