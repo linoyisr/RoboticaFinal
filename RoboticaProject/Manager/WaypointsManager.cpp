@@ -9,12 +9,14 @@
 
 WaypointsManager::WaypointsManager(vector<Point> path)
 {
+	initPointsFirstTime = true;
 	astarPath = path;
 	CreateWaypoints();
 }
 
 WaypointsManager::WaypointsManager()
 {
+	initPointsFirstTime = true;
 }
 
 vector<Point> WaypointsManager::getWaypointsList()
@@ -44,11 +46,15 @@ void WaypointsManager::CreateWaypoints()
 
 void WaypointsManager::setNextWayPoint(Point next)
 {
-	currentWayPoint.SetX(nextWayPoint.GetX());
-	currentWayPoint.SetY(nextWayPoint.GetY());
+	if (!initPointsFirstTime)
+	{
+		currentWayPoint.SetX(nextWayPoint.GetX());
+		currentWayPoint.SetY(nextWayPoint.GetY());
+	}
 
 	nextWayPoint.SetX(next.GetX());
 	nextWayPoint.SetY(next.GetY());
+	initPointsFirstTime = false;
 }
 
 double WaypointsManager::calcYaw()
@@ -58,9 +64,15 @@ double WaypointsManager::calcYaw()
 	cout << endl <<"next waypoint : " ;
 	nextWayPoint.PrintPoint() ;
 	cout << endl;
-	double m = calcIncline();
+	//double m = calcIncline();
 	double angle;
 
+	angle = atan2(-(nextWayPoint.GetY() - currentWayPoint.GetY()) ,
+			(nextWayPoint.GetX() - currentWayPoint.GetX()));
+
+	return angle *180/M_PI;
+
+/*
 	if(!isVerticle)
 	{
 		angle = 180 * atan(m) / M_PI;
@@ -110,6 +122,7 @@ double WaypointsManager::calcYaw()
 			return (angle);
 		}
 	}
+	*/
 }
 
 double WaypointsManager::calcIncline()

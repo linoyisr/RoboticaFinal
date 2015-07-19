@@ -71,7 +71,7 @@ void Manager::run()
 		_robot->Read();
 
 		if (i < _waypointsManager->wayPoints.size() - 1)
-			_waypointsManager->setNextWayPoint(_waypointsManager->wayPoints[i]);
+			_waypointsManager->setNextWayPoint(_waypointsManager->wayPoints[i + 1]);
 		_currBehavior->startCond();
 
 		while (true)

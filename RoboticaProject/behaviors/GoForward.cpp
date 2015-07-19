@@ -33,7 +33,7 @@ bool GoForward::stopCond() {
 	Point wpoint(99999,99999);
 	for(int i = 0; i < _waypointsManager->wayPoints.size(); i++)
 	{
-		if((_waypointsManager->wayPoints[i]).GetX() == xLoc &&
+		if( (_waypointsManager->wayPoints[i]).GetX() == xLoc &&
 			(_waypointsManager->wayPoints[i]).GetY() == yLoc)
 		{
 			wpoint = _waypointsManager->wayPoints[i];

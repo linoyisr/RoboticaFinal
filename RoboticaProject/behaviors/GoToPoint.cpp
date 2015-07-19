@@ -72,7 +72,7 @@
 	{
 		bool isRangeClear;
 		int robotYaw = _robot->getEstimateLocation().GetYawPoint();
-		int waypointYaw = _waypointsManager->calcYaw();
+		int waypointYaw = _waypointsManager->calcYaw() + 20;
 		cout << "robotYaw : " << robotYaw <<endl;
 		cout << "waypointYaw : " << waypointYaw <<endl;
 

@@ -9,7 +9,7 @@
 #define WAYPOINTSMANAGER_H_
 
 #include <vector>
-#include <math.h>
+#include <cmath>
 #include "../Point.h"
 using namespace std;
 
@@ -32,6 +32,7 @@ public:
 	Point currentWayPoint;
 	Point nextWayPoint;
 	bool isVerticle;
+	bool initPointsFirstTime;
 };
 
 #endif /* WAYPOINTSMANAGER_H_ */
