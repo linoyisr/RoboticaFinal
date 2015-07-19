@@ -94,8 +94,8 @@ Location Robot::getOldOdometryLocation()
 
 Location Robot::getDeltaLocation()
 {
-	double deltaX =(_positionP->GetXPos() - _oldOdometryLocation.GetPoint().GetX())*10;
-	double deltaY =(_positionP->GetYPos() - _oldOdometryLocation.GetPoint().GetY())*10;
+	double deltaX =(_positionP->GetXPos() - _oldOdometryLocation.GetPoint().GetX());
+	double deltaY =-(_positionP->GetYPos() - _oldOdometryLocation.GetPoint().GetY());
 	double deltaYaw = (_positionP->GetYaw()*180/3.14) - (_oldOdometryLocation.GetYawPoint()*180/3.14);
 
 	_oldOdometryLocation.SetLocation(Location(Point(_positionP->GetXPos(), _positionP->GetYPos()), _positionP->GetYaw()));

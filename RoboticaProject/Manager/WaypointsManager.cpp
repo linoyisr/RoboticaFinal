@@ -31,7 +31,7 @@ void WaypointsManager::CreateWaypoints()
 		if(i == 0)
 		{
 			currentWayPoint = astarPath[i];
-			nextWayPoint = astarPath[i];
+			nextWayPoint = astarPath[i + numOfJumps];
 		}
 		this->wayPoints.push_back(astarPath[i]);
 	}
@@ -53,6 +53,11 @@ void WaypointsManager::setNextWayPoint(Point next)
 
 double WaypointsManager::calcYaw()
 {
+	cout << endl <<"current waypoint : " ;
+	currentWayPoint.PrintPoint();
+	cout << endl <<"next waypoint : " ;
+	nextWayPoint.PrintPoint() ;
+	cout << endl;
 	double m = calcIncline();
 	double angle;
 
@@ -118,7 +123,7 @@ double WaypointsManager::calcIncline()
 	}
 	else
 	{
-		return((nextWayPoint.GetY() - currentWayPoint.GetY()) /
+		return(-(nextWayPoint.GetY() - currentWayPoint.GetY()) /
 				(nextWayPoint.GetX() - currentWayPoint.GetX()));
 	}
 }
