@@ -19,7 +19,7 @@ bool GoForward::stopCond() {
 	int xLoc = _robot->getEstimateLocation().GetPoint().GetX();
 	int yLoc = _robot->getEstimateLocation().GetPoint().GetY();
 
-	cout << "GoForward::stopCond , robotLocx: " << xLoc << " robotLocy: " << yLoc;
+	//cout << "GoForward::stopCond , robotLocx: " << xLoc << " robotLocy: " << yLoc;
 /*
 	vector<Point>::iterator wpoint;
 	for (vector<Point>::iterator iter = _waypointsManager->wayPoints.begin(); iter != _waypointsManager->wayPoints.end(); iter++)
@@ -45,7 +45,9 @@ bool GoForward::stopCond() {
 
 	bool isRangeClear = startCond();
 	bool locationInWaypoints = (wpoint.GetX() != 99999 || wpoint.GetY() != 99999);
-	cout << "GoForward::stopCond , isRangeClear: " << isRangeClear << " location In Waypoints: " << locationInWaypoints << endl;;
+	cout << "GoForward::stopCond , isRangeClear: " << isRangeClear << " location In Waypoints: " << locationInWaypoints << endl;
+	cout << "GoForward::stopCond , robotLoc: " << endl;
+	_robot->getEstimateLocation().Print();
 	return (!isRangeClear || locationInWaypoints);
 
 }

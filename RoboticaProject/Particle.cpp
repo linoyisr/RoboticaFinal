@@ -58,12 +58,13 @@ double Particle::Update(double deltaX, double deltaY, double deltaYaw, float* la
 {
 	// Update particle location
 
-	_x = ChangeByLimits(_x + deltaX, 0, (map->mapWidth - 1));
-	_y = ChangeByLimits(_y + deltaY, 0, (map->mapHeight - 1));
+	_x = ChangeByLimits(_x + (deltaX*10), 0, (map->mapWidth - 1));
+	_y = ChangeByLimits(_y + (deltaY*10), 0, (map->mapHeight - 1));
 
 	float currYaw = _yaw + deltaYaw;
 	//change negative yaw to be positive (yaw between -180 to 180 - > yae between 0 to 360)
-	_yaw = (currYaw > 0 ? currYaw : 2 * M_PI + currYaw);
+	//_yaw = (currYaw > 0 ? currYaw : 2 * M_PI + currYaw);
+	_yaw = _yaw + deltaYaw;
 
 	// Calculate predicted belief by previous belief and probability by move
 	 double predictedBelief = belief * ProbByMove(deltaX, deltaY, deltaYaw);

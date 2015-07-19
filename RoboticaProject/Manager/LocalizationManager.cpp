@@ -22,11 +22,11 @@ LocalizationManager::LocalizationManager(Location robotLocation, Map* map)
 
 	// Create all other particles. Each time we create the particle
 	// as the son of the last one we created.
-	for(int i = 1; i < 10; i++)
+	/*for(int i = 1; i < 10; i++)
 	{
 		Particle current = first.genereateNewParticle();
 		_particles.push_back(current);
-	}
+	}*/
 
 	//PrintParticles();
 }
@@ -42,7 +42,15 @@ vector<Particle> LocalizationManager::getParticles()
 
 void LocalizationManager::Update(Location deltaLocation, float* laserScans)
 {
-	double currentBelief;
+	_particles[0].Update
+					(
+							deltaLocation.GetPoint().GetX(),
+							deltaLocation.GetPoint().GetY(),
+							deltaLocation.GetYawPoint(),
+							laserScans
+					);
+
+	/*double currentBelief;
 
 	for(unsigned int i = 0; i < _particles.size(); i ++)
 	{
@@ -65,13 +73,13 @@ void LocalizationManager::Update(Location deltaLocation, float* laserScans)
 			_particles.push_back(newChild);
 		}
 	}
-
+*/
 	//PrintParticles();
 }
 
 Particle LocalizationManager::GetBestParticle()
 {
-	Particle bestParticle = _particles[0];
+	/*Particle bestParticle = _particles[0];
 	for(unsigned int i = 0; i < _particles.size(); i ++)
 		{
 			if (_particles[i].getBelief() > bestParticle.getBelief())
@@ -80,7 +88,9 @@ Particle LocalizationManager::GetBestParticle()
 			}
 		}
 
-	return bestParticle;
+	return bestParticle;*/
+
+	return _particles[0];
 }
 
 Location LocalizationManager::GetBestLocation()

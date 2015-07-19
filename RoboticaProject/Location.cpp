@@ -10,7 +10,7 @@
 Location::Location()
 {
 }
-Location::Location(Point p, int yaw)
+Location::Location(Point p, double yaw)
 {
 	point = p;
 	yawPoint = yaw;
@@ -18,7 +18,8 @@ Location::Location(Point p, int yaw)
 
 Location::Location(double x ,double y, double yaw)
 {
-	Point point(x,y);
+	Point p(x,y);
+	point = p;
 	yawPoint = yaw;
 }
 
@@ -36,12 +37,12 @@ void Location::SetPoint(Point p)
 	point = p;
 }
 
-int Location::GetYawPoint()
+double Location::GetYawPoint()
 {
 	return yawPoint;
 }
 
-void Location::SetYawPoint(int yaw)
+void Location::SetYawPoint(double yaw)
 {
 	yawPoint = yaw;
 }

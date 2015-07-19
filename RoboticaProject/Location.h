@@ -13,21 +13,21 @@
 class Location {
 public:
 	Location();
-	Location(Point p, int yaw);
+	Location(Point p, double yaw);
 	Location(double x ,double y, double yaw);
 	virtual ~Location();
 
 	Point GetPoint();
-	int GetYawPoint();
+	double GetYawPoint();
 
 	void SetPoint(Point p);
-	void SetYawPoint(int yaw);
+	void SetYawPoint(double yaw);
 	void SetLocation(Location location);
 	void Print();
 
 private:
 	Point point;
-	int yawPoint;
+	double yawPoint;
 };
 
 #endif /* LOCATION_H_ */

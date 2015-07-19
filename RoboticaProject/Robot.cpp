@@ -25,6 +25,8 @@ Robot::Robot(char* ip, int port) {
 	//For fixing Player's reading BUG - not delete
 	for(int i=0;i<15;i++)
 			Read();
+
+	_oldOdometryLocation.SetLocation(Location(Point(_positionP->GetXPos(), _positionP->GetYPos()), _positionP->GetYaw()));
 }
 
 static Point getObstacleLocation(double xRob, double yRob, double yawRob, double sensorAngle, double distance)
@@ -44,7 +46,6 @@ Robot::~Robot() {
 
 void Robot::Read()
 {
-	_oldOdometryLocation.SetLocation(Location(Point(_positionP->GetXPos(), _positionP->GetYPos()), _positionP->GetYaw()));
 	_player->Read();
 }
 
@@ -82,7 +83,7 @@ bool Robot::isForwardFree() {
 Location Robot::getCurrentOdometryLocation()
 {
 	Read();
-	return Location(_positionP->GetXPos(), _positionP->GetYPos(), _positionP->GetYaw() * 180 / 3.14);
+	return Location(Point(floor(_positionP->GetXPos() * 10), floor(_positionP->GetYPos()  * 10)), _positionP->GetYaw() * 180 / 3.14);
 }
 
 Location Robot::getOldOdometryLocation()
@@ -93,9 +94,11 @@ Location Robot::getOldOdometryLocation()
 
 Location Robot::getDeltaLocation()
 {
-	double deltaX =_oldOdometryLocation.GetPoint().GetX() - _positionP->GetXPos();
-	double deltaY = _oldOdometryLocation.GetPoint().GetY() - _positionP->GetYPos();
-	double deltaYaw = _oldOdometryLocation.GetYawPoint() - _positionP->GetYaw();
+	double deltaX =(_positionP->GetXPos() - _oldOdometryLocation.GetPoint().GetX())*10;
+	double deltaY =(_positionP->GetYPos() - _oldOdometryLocation.GetPoint().GetY())*10;
+	double deltaYaw = (_positionP->GetYaw()*180/3.14) - (_oldOdometryLocation.GetYawPoint()*180/3.14);
+
+	_oldOdometryLocation.SetLocation(Location(Point(_positionP->GetXPos(), _positionP->GetYPos()), _positionP->GetYaw()));
 
 	return Location(deltaX, deltaY, deltaYaw);
 }
@@ -108,8 +111,8 @@ void Robot::updateRobotEstimateLocation(Location loc)
 Location Robot::getEstimateLocation()
 {
 	Read();
-	//return _robotLocation;
-	return getCurrentOdometryLocation();
+	return _robotLocation;
+	//return getCurrentOdometryLocation();
 }
 
 float Robot::getLaserDistance(int index)
@@ -124,7 +127,7 @@ bool Robot::isRangeClear(int start, int end)
     for (int index = start; (index <= end) && (rangeClear); index++)
     {
 //    	is_dis_Good = (this->getLaserDistance(index) > DISTANCE_TOLERANCE);
-    	rangeClear = (this->getLaserDistance(index) > 0.15);
+    	rangeClear = (this->getLaserDistance(index) > 0.2);
     }
 
     return (rangeClear);
