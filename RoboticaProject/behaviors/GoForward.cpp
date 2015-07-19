@@ -9,8 +9,7 @@ bool GoForward::startCond() {
 	/*return (_robot.checkRange(_robot.getLaserSpec() / 2 - LASER_SPEC,
 	 _robot.getLaserSpec() / 2 + LASER_SPEC));*/
 	bool result = (_robot->isRangeClear(_robot->getLaserSpec() / 2 - 111, _robot->getLaserSpec() / 2 + 111));
-	cout << endl;
-	cout << "GoForward startCond: " <<result << endl;;
+	cout << endl << "GoForward startCond: " <<result << endl;
 	return result;
 }
 
@@ -20,7 +19,7 @@ bool GoForward::stopCond() {
 	int xLoc = _robot->getEstimateLocation().GetPoint().GetX();
 	int yLoc = _robot->getEstimateLocation().GetPoint().GetY();
 
-	cout << "GoForward::stopCond , robotLocx: " << xLoc << " robotLocy: " << yLoc;;
+	cout << "GoForward::stopCond , robotLocx: " << xLoc << " robotLocy: " << yLoc;
 /*
 	vector<Point>::iterator wpoint;
 	for (vector<Point>::iterator iter = _waypointsManager->wayPoints.begin(); iter != _waypointsManager->wayPoints.end(); iter++)

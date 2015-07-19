@@ -19,6 +19,7 @@
 	bool GoToPoint::startCond()
 	{
 		//_robot->Read();
+
 		double robotYaw = _robot->getEstimateLocation().GetYawPoint();
 		distanceBetweenYaw = _waypointsManager->calcYaw() - robotYaw;
 
@@ -50,18 +51,21 @@
 			distanceBetweenYaw = abs(distanceBetweenYaw);
 		}
 
+		bool result;
 		if(isRight)
 		{
 			//return (_robot.checkRange(0, distanceBetweenYaw * ONE_DEGREE_INDEXES));
 			//return (_robot->isRangeClear(0, distanceBetweenYaw * 2.4667));
-			return (_robot->isRangeClear(0, distanceBetweenYaw * 2.775));
+			result = (_robot->isRangeClear(0, distanceBetweenYaw * 2.775));
 		}
 		else
 		{
 			//return(_robot.checkRange( _robot->getLaserSpec() - (diffrence * ONE_DEGREE_INDEXES),
-			return(_robot->isRangeClear( _robot->getLaserSpec() - (distanceBetweenYaw * 2.775),
+			result = (_robot->isRangeClear( _robot->getLaserSpec() - (distanceBetweenYaw * 2.775),
 					_robot->getLaserSpec()));
 		}
+		cout << endl << "GoToPoint startCond: " <<result << endl;
+		return result;
 	}
 
 	bool GoToPoint::stopCond()
@@ -85,11 +89,13 @@
 		}
 
 		//absResult <= MAX_YAW_DIFF));
+		cout << "GoToPoint::stopCond , result: " << (!isRangeClear || (absYawDistance <= 3)) << endl;
 		return(!isRangeClear || (absYawDistance <= 3));
 	}
 
 	void GoToPoint::action()
 	{
+		cout << "GoToPoint action" << endl;
 		if(isRight)
 		{
 			_robot->setSpeed(0.0, -0.4);
