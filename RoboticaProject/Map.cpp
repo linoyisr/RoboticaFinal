@@ -27,7 +27,7 @@ Map::Map()
 	setGridMatrix();
 	setBlowMapMatrix();
 	//PrintGridMatrix();
-	PrintBlowMapMatrix();
+	//PrintBlowMapMatrix();
 /*
 	//this code checking converting between image point to grid point
 	//the points i test are black
