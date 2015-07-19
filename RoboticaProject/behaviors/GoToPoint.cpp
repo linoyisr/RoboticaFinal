@@ -68,8 +68,10 @@
 	{
 		bool isRangeClear;
 		int robotYaw = _robot->getEstimateLocation().GetYawPoint();
-		//cout << _robot->getEstimateLocation().GetYawPoint() <<endl;
-		int absYawDistance = abs(robotYaw - _waypointsManager->calcYaw());
+		int waypointYaw = _waypointsManager->calcYaw();
+		cout << robotYaw <<endl;
+
+		int absYawDistance = abs(robotYaw - waypointYaw);
 		if(isRight)
 		{
 			// ONE_DEGREE_INDEXES = 2.4667
@@ -83,7 +85,7 @@
 		}
 
 		//absResult <= MAX_YAW_DIFF));
-		return(!isRangeClear || (absYawDistance <= 2));
+		return(!isRangeClear || (absYawDistance <= 3));
 	}
 
 	void GoToPoint::action()

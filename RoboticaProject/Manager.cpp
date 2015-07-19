@@ -82,18 +82,9 @@ void Manager::run()
 				// Perform the next behavior according to the plan
 				_currBehavior = _currBehavior->selectNextBehavior();
 
-				/*
-				Point robotLocation = new Point(_robot->getRobotLocation().GetPoint().GetX(),
-						 _robot->getRobotLocation().GetPoint().GetY());
-				vector<Point>::iterator wpoint =
-						find(wayPoints.begin(), wayPoints.end(), robotLocation);*/
 				vector<Point>::iterator wpoint;
 				for (vector<Point>::iterator iter = _waypointsManager->wayPoints.begin(); iter != _waypointsManager->wayPoints.end(); iter++)
 				{//iterate through the vector to look for the correct name
-
-					/*
-					if((*iter).GetX() == _robot->getEstimateLocation().GetPoint().GetX() &&
-							(*iter).GetY() == _robot->getEstimateLocation().GetPoint().GetY())*/
 
 					if((*iter).GetX() == _robot->getEstimateLocation().GetPoint().GetX() &&
 						(*iter).GetY() == _robot->getEstimateLocation().GetPoint().GetY())
