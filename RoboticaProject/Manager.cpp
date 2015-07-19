@@ -63,15 +63,15 @@ void Manager::run()
 
 	_robot->Read();
 
-	vector<Point>::iterator it;
-	for (it = (_waypointsManager->wayPoints).begin(); it != (_waypointsManager->wayPoints).end(); ++it)
+	for (int i = 0; i < _waypointsManager->wayPoints.size(); i++)
 	{
-		Point currentWayPoint = *it;
+		Point currentWayPoint = _waypointsManager->wayPoints[i];
 		cout << endl << "Work on Waypoint: x - " << currentWayPoint.GetX() << " y - "
 				<<currentWayPoint.GetY();
 		_robot->Read();
 
-		_waypointsManager->setNextWayPoint(currentWayPoint);
+		if (i < _waypointsManager->wayPoints.size() - 1)
+			_waypointsManager->setNextWayPoint(_waypointsManager->wayPoints[i]);
 		_currBehavior->startCond();
 
 		while (true)

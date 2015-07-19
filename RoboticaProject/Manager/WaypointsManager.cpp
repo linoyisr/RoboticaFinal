@@ -31,7 +31,7 @@ void WaypointsManager::CreateWaypoints()
 		if(i == 0)
 		{
 			currentWayPoint = astarPath[i];
-			nextWayPoint = astarPath[i + numOfJumps];
+			//nextWayPoint = astarPath[i + numOfJumps];
 		}
 		this->wayPoints.push_back(astarPath[i]);
 	}
