@@ -94,8 +94,8 @@ void Manager::run()
 					if((*iter).GetX() == _robot->getEstimateLocation().GetPoint().GetX() &&
 							(*iter).GetY() == _robot->getEstimateLocation().GetPoint().GetY())*/
 
-					if((*iter).GetX() == _robot->getCurrentOdometryLocation().GetPoint().GetX() &&
-						(*iter).GetY() == _robot->getCurrentOdometryLocation().GetPoint().GetY())
+					if((*iter).GetX() == _robot->getEstimateLocation().GetPoint().GetX() &&
+						(*iter).GetY() == _robot->getEstimateLocation().GetPoint().GetY())
 					{
 						wpoint = iter;
 					}
@@ -112,14 +112,14 @@ void Manager::run()
 			_currBehavior->action();
 
 			_robot->Read();
-
+/*
 			Location deltaLocation = _robot->getDeltaLocation();
 			float laserScans[LASERS_NUMBER];
 			getLaserScan(laserScans);
-
+*/
 			//_locManager->Update(deltaLocation, laserScans);
 			//_robot->updateRobotEstimateLocation(_locManager->GetBestLocation());
-			_robot->updateRobotEstimateLocation(_robot->getCurrentOdometryLocation());
+			//_robot->updateRobotEstimateLocation(_robot->getCurrentOdometryLocation());
 		}
 	}
 }

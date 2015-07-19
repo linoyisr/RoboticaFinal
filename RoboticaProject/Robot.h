@@ -29,6 +29,7 @@ public:
 	bool isForwardFree();
 	void updateRobotEstimateLocation(Location loc);
 	Location getCurrentOdometryLocation();
+	Location getOldOdometryLocation();
 	Location getDeltaLocation();
 	Location getEstimateLocation();
 	static Point getObstacleLocation(double xRob, double yRob, double yawRob, double sensorAngle, double distance);

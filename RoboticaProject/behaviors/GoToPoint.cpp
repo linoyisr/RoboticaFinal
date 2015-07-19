@@ -68,6 +68,7 @@
 	{
 		bool isRangeClear;
 		int robotYaw = _robot->getEstimateLocation().GetYawPoint();
+		//cout << _robot->getEstimateLocation().GetYawPoint() <<endl;
 		int absYawDistance = abs(robotYaw - _waypointsManager->calcYaw());
 		if(isRight)
 		{

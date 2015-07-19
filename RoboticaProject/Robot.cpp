@@ -14,15 +14,14 @@ Robot::Robot(char* ip, int port) {
 	_positionP->SetMotorEnable(true);
 
 	//_positionP->SetOdometry(9.05,-7.625, 0.34888888);
-	_player->Read();
 	//until it works!!
 	/*while (_positionP->GetXPos() == 0)
 	{
 	//	_positionP->SetOdometry(9.05,-7.625, 20);
 	}*/
 
-	_oldOdometryLocation.SetLocation(Location(Point(90,76),20));
-	_robotLocation.SetLocation(Location(Point(90,76), 20));
+	//_oldOdometryLocation.SetLocation(Location(Point(_positionP->GetXPos(), _positionP->GetYPos()), _positionP->GetYaw()));
+	//_robotLocation.SetLocation(Location(Point(90,76), 20));
 	//For fixing Player's reading BUG - not delete
 	for(int i=0;i<15;i++)
 			Read();
@@ -45,7 +44,7 @@ Robot::~Robot() {
 
 void Robot::Read()
 {
-	_oldOdometryLocation.SetLocation(Location(Point(_positionP->GetXPos(), _positionP->GetYPos()), _positionP->GetYaw()));
+	//_oldOdometryLocation.SetLocation(Location(Point(_positionP->GetXPos(), _positionP->GetYPos()), _positionP->GetYaw()));
 	_player->Read();
 }
 
@@ -82,18 +81,26 @@ bool Robot::isForwardFree() {
 
 Location Robot::getCurrentOdometryLocation()
 {
-	Read();
-	return Location(_positionP->GetXPos(), _positionP->GetYPos(), _positionP->GetYaw()*180/3.14);
+	//Read();
+	return Location(_positionP->GetXPos(), _positionP->GetYPos(), _positionP->GetYaw() * 180 / 3.14);
+}
+
+Location Robot::getOldOdometryLocation()
+{
+return  Location();
+	//return Location(_oldOdometryLocation.GetPoint(), _oldOdometryLocation.GetYawPoint() * 180 / 3.14);
 }
 
 Location Robot::getDeltaLocation()
-{
+{/*
 	//TODO: check if need change
 	double deltaX =_oldOdometryLocation.GetPoint().GetX() - _positionP->GetXPos();
-	double deltaY = (_oldOdometryLocation.GetPoint().GetY() - _positionP->GetYPos());
+	double deltaY = _oldOdometryLocation.GetPoint().GetY() - _positionP->GetYPos();
 	double deltaYaw = _oldOdometryLocation.GetYawPoint() - _positionP->GetYaw();
 
-	return Location(deltaX, deltaY, deltaYaw);
+	return Location(deltaX, deltaY, deltaYaw);*/
+
+	//return NULL;
 }
 
 void Robot::updateRobotEstimateLocation(Location loc)
@@ -103,6 +110,7 @@ void Robot::updateRobotEstimateLocation(Location loc)
 
 Location Robot::getEstimateLocation()
 {
+	Read();
 	//return _robotLocation;
 	return getCurrentOdometryLocation();
 }
