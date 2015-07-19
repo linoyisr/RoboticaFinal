@@ -101,7 +101,8 @@ void Robot::updateRobotEstimateLocation(Location loc)
 
 Location Robot::getEstimateLocation()
 {
-	return _robotLocation;
+	//return _robotLocation;
+	return getCurrentOdometryLocation();
 }
 
 float Robot::getLaserDistance(int index)
