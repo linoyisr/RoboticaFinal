@@ -13,7 +13,7 @@ Robot::Robot(char* ip, int port) {
 
 	_positionP->SetMotorEnable(true);
 
-	_positionP->SetOdometry(9.05,-7.625, 20);
+	_positionP->SetOdometry(9.05,-7.625, 0.34888888);
 	_player->Read();
 	//until it works!!
 	while (_positionP->GetXPos() == 0)
@@ -82,7 +82,7 @@ bool Robot::isForwardFree() {
 
 Location Robot::getCurrentOdometryLocation()
 {
-	return Location(_positionP->GetXPos(), -_positionP->GetYPos(), _positionP->GetYaw());
+	return Location(_positionP->GetXPos(), -_positionP->GetYPos(), _positionP->GetYaw()*180/3.14);
 }
 
 Location Robot::getDeltaLocation()
