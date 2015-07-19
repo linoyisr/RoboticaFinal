@@ -67,6 +67,8 @@ void Manager::run()
 	for (it = (_waypointsManager->wayPoints).begin(); it != (_waypointsManager->wayPoints).end(); ++it)
 	{
 		Point currentWayPoint = *it;
+		cout << endl << "Work on Waypoint: x - " << currentWayPoint.GetX() << " y - "
+				<<currentWayPoint.GetY();
 		_robot->Read();
 
 		_waypointsManager->setNextWayPoint(currentWayPoint);
@@ -82,6 +84,7 @@ void Manager::run()
 				// Perform the next behavior according to the plan
 				_currBehavior = _currBehavior->selectNextBehavior();
 
+				/*
 				vector<Point>::iterator wpoint;
 				for (vector<Point>::iterator iter = _waypointsManager->wayPoints.begin(); iter != _waypointsManager->wayPoints.end(); iter++)
 				{//iterate through the vector to look for the correct name
@@ -90,15 +93,34 @@ void Manager::run()
 						(*iter).GetY() == _robot->getEstimateLocation().GetPoint().GetY())
 					{
 						wpoint = iter;
+						cout << endl << "robot in waypoint" << endl;
+					}
+				}
+				*/
+
+				Point wpoint(99999,99999);
+				for(int i = 0; i < _waypointsManager->wayPoints.size(); i++)
+				{
+					if((_waypointsManager->wayPoints[i]).GetX() == _robot->getEstimateLocation().GetPoint().GetX() &&
+						(_waypointsManager->wayPoints[i]).GetY() == _robot->getEstimateLocation().GetPoint().GetY())
+					{
+						wpoint = _waypointsManager->wayPoints[i];
+						cout << endl << "robot in waypoint" << endl;
 					}
 				}
 
 				// check if robot location is in waypoints list
-				if (wpoint != wayPoints.end())
+				if (wpoint.GetX() != 99999 || wpoint.GetY() != 99999)
+				{
+					cout << endl << "wayPoints break" << endl;
 					break;
+				}
 
 				if (!_currBehavior)
+				{
+					cout << endl << "behavoir break" << endl;
 					break;
+				}
 			}
 
 			_currBehavior->action();
