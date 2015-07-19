@@ -33,6 +33,7 @@ public:
 	Location getDeltaLocation();
 	Location getEstimateLocation();
 	static Point getObstacleLocation(double xRob, double yRob, double yawRob, double sensorAngle, double distance);
+	void SetOldToCurrent();
 	virtual ~Robot();
 
 	float getLaserDistance(int index);
