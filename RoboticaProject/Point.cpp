@@ -9,28 +9,28 @@ Point::Point()
 	_x = 0;
 	_y = 0;
 }
-Point::Point(int x, int y)
+Point::Point(double x, double y)
 {
 	_x = x;
 	_y = y;
 }
 
-int Point::GetX()
+double Point::GetX()
 {
 	return _x;
 }
 
-int Point::GetY()
+double Point::GetY()
 {
 	return _y;
 }
 
-void Point::SetX(int x)
+void Point::SetX(double x)
 {
 	_x = x;
 }
 
-void Point::SetY(int y)
+void Point::SetY(double y)
 {
 	_y = y;
 }

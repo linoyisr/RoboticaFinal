@@ -14,7 +14,7 @@ class Location {
 public:
 	Location();
 	Location(Point p, int yaw);
-	Location(int x ,int y, int yaw);
+	Location(double x ,double y, double yaw);
 	virtual ~Location();
 
 	Point GetPoint();

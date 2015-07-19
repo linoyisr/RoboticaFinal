@@ -12,17 +12,17 @@ using namespace std;
 class Point {
 
 private:
-	int _x;
-	int _y;
+	double _x;
+	double _y;
 
 public:
 	Point();
-	Point(int x, int y);
+	Point(double x, double y);
 	virtual ~Point();
-	int GetX();
-	int GetY();
-	void SetX(int x);
-	void SetY(int y);
+	double GetX();
+	double GetY();
+	void SetX(double x);
+	void SetY(double y);
 	void PrintPoint();
 };
 

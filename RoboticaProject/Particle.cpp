@@ -16,7 +16,7 @@ using namespace std;
 //#define TRUST_ISSUES 0.3
 //#define UNLIKELY_ANGLE M_PI / 2
 
-#define RADIUS 4
+#define RADIUS 0.1
 #define MAX_ANGLE 360
 #define BEAM_MAX_DISTANCE 3.5
 
@@ -57,9 +57,13 @@ Map* Particle::getMap()
 double Particle::Update(double deltaX, double deltaY, double deltaYaw, float* laserScans)
 {
 	// Update particle location
-	_x += deltaX;
-	_y += deltaY;
-	_yaw += deltaYaw;
+
+	_x = ChangeByLimits(_x + deltaX, 0, (map->mapWidth - 1));
+	_y = ChangeByLimits(_y + deltaY, 0, (map->mapHeight - 1));
+
+	float currYaw = _yaw + deltaYaw;
+	//change negative yaw to be positive (yaw between -180 to 180 - > yae between 0 to 360)
+	_yaw = (currYaw > 0 ? currYaw : 2 * M_PI + currYaw);
 
 	// Calculate predicted belief by previous belief and probability by move
 	 double predictedBelief = belief * ProbByMove(deltaX, deltaY, deltaYaw);
@@ -145,18 +149,18 @@ double Particle::ProbByMeasure(float* laserScans)
 	}
 */
 
-	double numOfErrors = 0;
+	/*double numOfErrors = 0;
 	double numOfHits = 0;
 
 	for (int i=0; i< LASERS_NUMBER; i+= (beamsInAngle*2))
 	{
 		double laserAngle = laserIndexToLaserAngle(i);
-		double distanceFromObstacle = laserScans[i] / 4;
+		double distanceFromObstacle = laserScans[i] /10/ 4;
 		double obstacleXPos = (_x) + (distanceFromObstacle * cos(_yaw + laserAngle));
 		double obstacleYPos = (_y) + (distanceFromObstacle * sin(_yaw + laserAngle));
 
 		//check if it really obstacle
-		int obstacleCellValue = map->getBlowMapMatrix()[obstacleYPos][obstacleXPos];
+		int obstacleCellValue = map->getMapMatrix()[obstacleYPos][obstacleXPos];
 
 		// If the distance is tot much big, probably is not really obstacle
 		// If the distance is too much small it can be the robot
@@ -176,9 +180,104 @@ double Particle::ProbByMeasure(float* laserScans)
 		}
 	}
 	//TODO:delete
-	return 1;
+	return 1;*/
+
+	double numOfErrors = 0;
+	double numOfHits = 0;
+	float obstacleXPos,obstacleYPos;
+
+	for (int i = 0; i < LASERS_NUMBER; i+= 12)
+	{
+		float distance = ChangeByLimits(laserScans[i], 0.06, 4.095);
+		if (distance > 3)
+		{
+			for (float j = 0.5; j <= 3; j += map->gridResolution)
+			{
+				obstacleXPos = ChangeByLimits((j * cos(DegreeToRadian(SpecimenToDegree((float)i)) + _yaw)) + _x,0.0, map->gridHeight - 1);
+				obstacleYPos = ChangeByLimits((j * sin(DegreeToRadian(SpecimenToDegree((float)i)) + _yaw)) + _y, 0.0, map->gridWidth - 1);
+				Location obstacleLocation(obstacleXPos, obstacleYPos,0);
+				Point obstacleGridPoint = map->getGridPointBy(obstacleLocation.GetPoint());
+				if (map->getGridValueAt(obstacleGridPoint) != OCCUPIED)
+				{
+					numOfHits++;
+				}
+				else
+				{
+					numOfErrors++;
+				}
+			}
+		}
+		else
+		{
+			obstacleXPos = ChangeByLimits((distance * cos(DegreeToRadian(SpecimenToDegree((float)i)) + _yaw)) + _x,0.0, map->gridHeight - 1);
+
+			obstacleYPos = ChangeByLimits((distance * sin(DegreeToRadian(SpecimenToDegree((float)i)) + _yaw)) + _x, 0.0, map->gridWidth - 1);
+			Location obstacleLocation (obstacleXPos, obstacleYPos,0);
+			Point obstacleGridPoint = map->getGridPointBy(obstacleLocation.GetPoint());
+
+			if (map->getGridValueAt(obstacleGridPoint) == OCCUPIED)
+			{
+					numOfHits++;
+			}
+			else
+			{
+				numOfErrors++;
+			}
+
+			for(float j = 0.5; j < distance ; j += map->gridHeight)
+			{
+				obstacleXPos = ChangeByLimits((j * cos(DegreeToRadian(SpecimenToDegree((float)i)) + _yaw)) + _x,0.0, map->gridHeight - 1);
+				obstacleYPos = ChangeByLimits((j * sin(DegreeToRadian(SpecimenToDegree((float)i)) + _yaw)) + _y, 0.0, map->gridWidth - 1);
+				Location obstacleLocation(obstacleXPos, obstacleYPos,0);
+				Point obstacleGridPoint = map->getGridPointBy(obstacleLocation.GetPoint());
+
+				if (map->getGridValueAt(obstacleGridPoint)== OCCUPIED)
+				{
+					numOfHits++;
+				}
+				else
+				{
+					numOfErrors++;
+				}
+			}
+		}
+	}
+
 	// Returns the number of hits from the total
 	return (numOfHits / (numOfHits + numOfErrors));
+}
+
+float Particle::DegreeToRadian(float  degree)
+{
+	return ((degree) * M_PI / HALF_CYCLE);
+}
+
+float Particle::SpecimenToDegree(float specimen)
+{
+	return ((specimen - (LASERS_NUMBER / 2)) * BEAM_FOREACH_ANGLE);
+}
+
+float Particle::DegreeToSpecimen(float degree)
+{
+	return ((degree / BEAM_FOREACH_ANGLE) + (LASERS_NUMBER / 2));
+}
+
+float Particle::ChangeByLimits(float value, float minValue, float maxValue)
+{
+	if ((value >= minValue) && (value <= maxValue))
+	{
+		return value;
+	}
+	else if (value < minValue)
+	{
+		return minValue;
+	}
+
+	//(value > maxValue )
+	else
+	{
+		return maxValue;
+	}
 }
 
 double Particle::getAngleByIndex(int index)
@@ -199,8 +298,8 @@ double Particle::laserIndexToLaserAngle(int index)
 //Create next generation for good particle
 Particle Particle::genereateNewParticle()
 {
-	int randomX = getRandomXInRadius();
-	int randomY = getRandomYInRadius();
+	double randomX = getRandomXInRadius();
+	double randomY = getRandomYInRadius();
 	int randomYaw = getRandomYaw();
 
 	//Create particle with random position in the radius and same map and belief
@@ -210,13 +309,21 @@ Particle Particle::genereateNewParticle()
 double Particle::getRandomXInRadius()
 {
 	//Add to current x number between -radius and radius
-	return _x +(rand() % (2*RADIUS)) - RADIUS;
+	return _x + getRandom();
 }
+
 double Particle::getRandomYInRadius()
 {
 	//Add to current y number between 0 and radius
-	return _y +(rand() % (2*RADIUS)) - RADIUS;
+	return (_y + getRandom());
 }
+
+double Particle::getRandom()
+{
+    double d = (double)rand() / RAND_MAX;
+    return -RADIUS + d * (2*RADIUS);
+}
+
 //Return an number between 1 and 360
 double Particle::getRandomYaw()
 {

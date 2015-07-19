@@ -4,6 +4,7 @@
 
 #include "Robot.h"
 #include "Point.h"
+#include "Location.h"
 
 Robot::Robot(char* ip, int port) {
 	_player = new PlayerClient(ip,port);
@@ -11,12 +12,20 @@ Robot::Robot(char* ip, int port) {
 	_laserP = new LaserProxy(_player);
 
 	_positionP->SetMotorEnable(true);
-	//_positionP->SetOdometry(0,0,0);
-	_positionP->SetOdometry(90,76,20);
 
+	_positionP->SetOdometry(9.05,-7.625, 20);
+	_player->Read();
+	//until it works!!
+	while (_positionP->GetXPos() == 0)
+	{
+		_positionP->SetOdometry(9.05,-7.625, 20);
+	}
+
+	_oldOdometryLocation.SetLocation(Location(Point(9.05,-7.625),20));
+	_robotLocation.SetLocation(Location(Point(90,76), 20));
 	//For fixing Player's reading BUG - not delete
 	for(int i=0;i<15;i++)
-		Read();
+			Read();
 }
 
 static Point getObstacleLocation(double xRob, double yRob, double yawRob, double sensorAngle, double distance)
@@ -36,6 +45,7 @@ Robot::~Robot() {
 
 void Robot::Read()
 {
+	_oldOdometryLocation.SetLocation(Location(Point(_positionP->GetXPos(), _positionP->GetYPos()), _positionP->GetYaw()));
 	_player->Read();
 }
 
@@ -70,23 +80,28 @@ bool Robot::isForwardFree() {
 		return false;
 }
 
-Location Robot::getRobotLocation()
+Location Robot::getCurrentOdometryLocation()
 {
-	return _robotLocation;
+	return Location(_positionP->GetXPos(), -_positionP->GetYPos(), _positionP->GetYaw());
 }
 
 Location Robot::getDeltaLocation()
 {
-	double deltaX = _positionP->GetXPos() - _robotLocation.GetPoint().GetX();
-	double deltaY = _positionP->GetYPos() - _robotLocation.GetPoint().GetY();
-	double deltaYaw = _positionP->GetYaw() - _robotLocation.GetYawPoint();
+	double deltaX =_oldOdometryLocation.GetPoint().GetX() - _positionP->GetXPos();
+	double deltaY = -(_oldOdometryLocation.GetPoint().GetY() - _positionP->GetYPos());
+	double deltaYaw = _oldOdometryLocation.GetYawPoint() - _positionP->GetYaw();
 
 	return Location(deltaX, deltaY, deltaYaw);
 }
 
-void Robot::updateRobotLocation(Location loc)
+void Robot::updateRobotEstimateLocation(Location loc)
 {
 	_robotLocation.SetLocation(loc);
+}
+
+Location Robot::getEstimateLocation()
+{
+	return _robotLocation;
 }
 
 float Robot::getLaserDistance(int index)

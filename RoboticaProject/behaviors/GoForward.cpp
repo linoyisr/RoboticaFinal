@@ -14,8 +14,8 @@ bool GoForward::startCond() {
 bool GoForward::stopCond() {
 	_robot->Read();
 
-	int xLoc = _robot->getRobotLocation().GetPoint().GetX();
-	int yLoc = _robot->getRobotLocation().GetPoint().GetY();
+	int xLoc = _robot->getEstimateLocation().GetPoint().GetX();
+	int yLoc = _robot->getEstimateLocation().GetPoint().GetY();
 
 	vector<Point>::iterator wpoint;
 	for (vector<Point>::iterator iter = _waypointsManager->wayPoints.begin(); iter != _waypointsManager->wayPoints.end(); iter++)

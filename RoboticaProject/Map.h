@@ -17,7 +17,6 @@ class Map {
 private:
 	string mapPath;
 	double mapResolution;
-	int gridResolution;
 	unsigned int robotWidth;
 	unsigned int robotHeight;
 
@@ -38,6 +37,7 @@ public:
 	unsigned int gridWidth;
 	int blowMapHeight;
 	int blowMapWidth;
+	int gridResolution;
 
 	Map();
 	virtual ~Map();

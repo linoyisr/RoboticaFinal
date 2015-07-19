@@ -9,7 +9,7 @@
 #include <vector>
 
 //TODO:check
-double const lowerThreshold = 0.3;
+double const lowerThreshold = 0.5;
 double const upperThreshold = 0.7;
 
 LocalizationManager::LocalizationManager(Location robotLocation, Map* map)
@@ -22,7 +22,7 @@ LocalizationManager::LocalizationManager(Location robotLocation, Map* map)
 
 	// Create all other particles. Each time we create the particle
 	// as the son of the last one we created.
-	for(int i = 1; i < 50; i++)
+	for(int i = 1; i < 100; i++)
 	{
 		Particle current = first.genereateNewParticle();
 		_particles.push_back(current);

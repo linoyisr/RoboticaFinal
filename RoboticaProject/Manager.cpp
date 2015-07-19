@@ -15,7 +15,7 @@ Manager::Manager(Robot* robot)
 	_waypointsManager = new WaypointsManager(_pathPlanner->GetPathToGoal());
 	_obstacleAvoid = new PlnObstacleAvoid(_robot, _waypointsManager);
 	_currBehavior = _obstacleAvoid->getStartBehavior();
-	_locManager = new LocalizationManager(_robot->getRobotLocation(), _map);
+	_locManager = new LocalizationManager(_robot->getEstimateLocation(), _map);
 }
 
 void Manager::getLaserScan(float* laserScans)
@@ -40,7 +40,7 @@ void Manager::setStartAndGoal()
 	int yawStart = startArray[2];
 	Location loc(_map->getGridPointBy(_startPoint), yawStart);
 	_location = loc;
-	_robot->updateRobotLocation(loc);
+	_robot->updateRobotEstimateLocation(loc);
 
 	string goalString = cfg.getValueOfKey("goal");
 	vector<int> goalArray = cfg.ConvertStringToIntArray(goalString);
@@ -62,8 +62,6 @@ void Manager::run()
 	}
 
 	_robot->Read();
-
-	double dTeta = _robot->getRobotLocation().GetYawPoint();
 
 	vector<Point>::iterator it;
 	for (it = (_waypointsManager->wayPoints).begin(); it != (_waypointsManager->wayPoints).end(); ++it)
@@ -91,8 +89,8 @@ void Manager::run()
 				vector<Point>::iterator wpoint;
 				for (vector<Point>::iterator iter = _waypointsManager->wayPoints.begin(); iter != _waypointsManager->wayPoints.end(); iter++)
 				{//iterate through the vector to look for the correct name
-					if((*iter).GetX() == _robot->getRobotLocation().GetPoint().GetX() &&
-							(*iter).GetY() == _robot->getRobotLocation().GetPoint().GetY())
+					if((*iter).GetX() == _robot->getEstimateLocation().GetPoint().GetX() &&
+							(*iter).GetY() == _robot->getEstimateLocation().GetPoint().GetY())
 					{
 						wpoint = iter;
 					}
@@ -114,8 +112,9 @@ void Manager::run()
 			float laserScans[LASERS_NUMBER];
 			getLaserScan(laserScans);
 
-			_locManager->Update(deltaLocation, laserScans);
-			_robot->updateRobotLocation(_locManager->GetBestLocation());
+			//_locManager->Update(deltaLocation, laserScans);
+			//_robot->updateRobotEstimateLocation(_locManager->GetBestLocation());
+			_robot->updateRobotEstimateLocation(_robot->getCurrentOdometryLocation());
 		}
 	}
 }

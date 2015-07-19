@@ -16,6 +16,7 @@ private:
 	Position2dProxy* _positionP;
 	LaserProxy* _laserP;
 	Location _robotLocation;
+	Location _oldOdometryLocation;
 
 public:
 	Robot(char* ip, int port);
@@ -26,9 +27,10 @@ public:
 	bool isRightFree() ;
 	bool isLeftFree();
 	bool isForwardFree();
-	void updateRobotLocation(Location loc);
-	Location getRobotLocation();
+	void updateRobotEstimateLocation(Location loc);
+	Location getCurrentOdometryLocation();
 	Location getDeltaLocation();
+	Location getEstimateLocation();
 	static Point getObstacleLocation(double xRob, double yRob, double yawRob, double sensorAngle, double distance);
 	virtual ~Robot();
 

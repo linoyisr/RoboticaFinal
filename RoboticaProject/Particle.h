@@ -36,6 +36,11 @@ private:
 	double getAngleByIndex(int index);
 	double getRadianByIndex(int index);
 	double laserIndexToLaserAngle(int index);
+	double getRandom();
+	float DegreeToRadian(float  degree);
+	float SpecimenToDegree(float specimen);
+	float DegreeToSpecimen(float degree);
+	float ChangeByLimits(float value, float minValue, float maxValue);
 };
 
 #endif /* PARTICLE_H_ */

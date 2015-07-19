@@ -19,7 +19,7 @@
 	bool GoToPoint::startCond()
 	{
 		//_robot->Read();
-		double robotYaw = _robot->getRobotLocation().GetYawPoint();
+		double robotYaw = _robot->getEstimateLocation().GetYawPoint();
 		distanceBetweenYaw = _waypointsManager->calcYaw() - robotYaw;
 
 		if(distanceBetweenYaw == 0)
@@ -67,7 +67,7 @@
 	bool GoToPoint::stopCond()
 	{
 		bool isRangeClear;
-		int absYawDistance = abs(_robot->getRobotLocation().GetYawPoint() - _waypointsManager->calcYaw());
+		int absYawDistance = abs(_robot->getEstimateLocation().GetYawPoint() - _waypointsManager->calcYaw());
 		if(isRight)
 		{
 			// ONE_DEGREE_INDEXES = 2.4667
