@@ -52,3 +52,8 @@ void Location::SetLocation(Location location)
 	point.SetY(location.GetPoint().GetY());
 	yawPoint = location.yawPoint;
 }
+void Location::Print()
+{
+	cout << "[" << point.GetX() << "," << point.GetY() <<  "]" << ", " << yawPoint <<endl;
+
+}

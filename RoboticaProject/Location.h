@@ -23,6 +23,7 @@ public:
 	void SetPoint(Point p);
 	void SetYawPoint(int yaw);
 	void SetLocation(Location location);
+	void Print();
 
 private:
 	Point point;

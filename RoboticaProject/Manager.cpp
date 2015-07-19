@@ -77,6 +77,7 @@ void Manager::run()
 			// If the current behavior can't run
 			if(_currBehavior->stopCond())
 			{
+				_robot->setSpeed(0,0);
 				_robot->Read();
 				// Perform the next behavior according to the plan
 				_currBehavior = _currBehavior->selectNextBehavior();
@@ -112,14 +113,18 @@ void Manager::run()
 			_currBehavior->action();
 
 			_robot->Read();
-/*
+
 			Location deltaLocation = _robot->getDeltaLocation();
 			float laserScans[LASERS_NUMBER];
 			getLaserScan(laserScans);
-*/
-			//_locManager->Update(deltaLocation, laserScans);
-			//_robot->updateRobotEstimateLocation(_locManager->GetBestLocation());
-			//_robot->updateRobotEstimateLocation(_robot->getCurrentOdometryLocation());
+
+			_locManager->Update(deltaLocation, laserScans);
+			_robot->updateRobotEstimateLocation(_locManager->GetBestLocation());
+			cout << "best location: ";
+			_locManager->GetBestLocation().Print();
+			cout << endl;
+			//_robot->updateRobotEstimateLocation(Location(Point(87,73),15));
+			_robot->updateRobotEstimateLocation(_robot->getCurrentOdometryLocation());
 		}
 	}
 }

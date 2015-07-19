@@ -22,7 +22,7 @@ LocalizationManager::LocalizationManager(Location robotLocation, Map* map)
 
 	// Create all other particles. Each time we create the particle
 	// as the son of the last one we created.
-	for(int i = 1; i < 100; i++)
+	for(int i = 1; i < 10; i++)
 	{
 		Particle current = first.genereateNewParticle();
 		_particles.push_back(current);

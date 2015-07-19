@@ -44,7 +44,7 @@ Robot::~Robot() {
 
 void Robot::Read()
 {
-	//_oldOdometryLocation.SetLocation(Location(Point(_positionP->GetXPos(), _positionP->GetYPos()), _positionP->GetYaw()));
+	_oldOdometryLocation.SetLocation(Location(Point(_positionP->GetXPos(), _positionP->GetYPos()), _positionP->GetYaw()));
 	_player->Read();
 }
 
@@ -81,26 +81,23 @@ bool Robot::isForwardFree() {
 
 Location Robot::getCurrentOdometryLocation()
 {
-	//Read();
+	Read();
 	return Location(_positionP->GetXPos(), _positionP->GetYPos(), _positionP->GetYaw() * 180 / 3.14);
 }
 
 Location Robot::getOldOdometryLocation()
 {
-return  Location();
-	//return Location(_oldOdometryLocation.GetPoint(), _oldOdometryLocation.GetYawPoint() * 180 / 3.14);
+//return  Location();
+	return Location(_oldOdometryLocation.GetPoint(), _oldOdometryLocation.GetYawPoint() * 180 / 3.14);
 }
 
 Location Robot::getDeltaLocation()
-{/*
-	//TODO: check if need change
+{
 	double deltaX =_oldOdometryLocation.GetPoint().GetX() - _positionP->GetXPos();
 	double deltaY = _oldOdometryLocation.GetPoint().GetY() - _positionP->GetYPos();
 	double deltaYaw = _oldOdometryLocation.GetYawPoint() - _positionP->GetYaw();
 
-	return Location(deltaX, deltaY, deltaYaw);*/
-
-	//return NULL;
+	return Location(deltaX, deltaY, deltaYaw);
 }
 
 void Robot::updateRobotEstimateLocation(Location loc)
