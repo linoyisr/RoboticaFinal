@@ -67,7 +67,8 @@
 	bool GoToPoint::stopCond()
 	{
 		bool isRangeClear;
-		int absYawDistance = abs(_robot->getEstimateLocation().GetYawPoint() - _waypointsManager->calcYaw());
+		int robotYaw = _robot->getEstimateLocation().GetYawPoint();
+		int absYawDistance = abs(robotYaw - _waypointsManager->calcYaw());
 		if(isRight)
 		{
 			// ONE_DEGREE_INDEXES = 2.4667
