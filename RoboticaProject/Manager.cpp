@@ -79,8 +79,21 @@ void Manager::run()
 			// If the current behavior can't run
 			if(_currBehavior->stopCond())
 			{
+				cout << "robot yaw before stop " << _robot->getEstimateLocation().GetYawPoint()<<endl;
 				_robot->setSpeed(0,0);
+				cout << "robot yaw after stop " << _robot->getEstimateLocation().GetYawPoint()<<endl;
 				_robot->Read();
+				_robot->SetOldToCurrent();
+				Location deltaLocation = _robot->getDeltaLocation();
+				cout << "deltaLocation ";
+				deltaLocation.Print();
+				cout << endl;
+				float laserScans[LASERS_NUMBER];
+				getLaserScan(laserScans);
+
+				_locManager->Update(deltaLocation, laserScans);
+				_robot->updateRobotEstimateLocation(_locManager->GetBestLocation());
+				cout << "robot yaw after update " << _robot->getEstimateLocation().GetYawPoint()<<endl;
 				// Perform the next behavior according to the plan
 				_currBehavior = _currBehavior->selectNextBehavior();
 
@@ -99,14 +112,25 @@ void Manager::run()
 				*/
 
 				Point wpoint(99999,99999);
+				/*
 				for(int i = 0; i < _waypointsManager->wayPoints.size(); i++)
 				{
-					if((_waypointsManager->wayPoints[i]).GetX() == _robot->getEstimateLocation().GetPoint().GetX() &&
-						(_waypointsManager->wayPoints[i]).GetY() == _robot->getEstimateLocation().GetPoint().GetY())
+					int xLoc = _robot->getEstimateLocation().GetPoint().GetX();
+					int yLoc = _robot->getEstimateLocation().GetPoint().GetY();
+					if((_waypointsManager->wayPoints[i]).GetX() == xLoc &&
+						(_waypointsManager->wayPoints[i]).GetY() == yLoc)
 					{
 						wpoint = _waypointsManager->wayPoints[i];
 						cout << endl << "robot in waypoint" << endl;
 					}
+				}*/
+				int xLoc = _robot->getEstimateLocation().GetPoint().GetX();
+				int yLoc = _robot->getEstimateLocation().GetPoint().GetY();
+				if((_waypointsManager->currentWayPoint).GetX() == xLoc &&
+					(_waypointsManager->currentWayPoint).GetY() == yLoc)
+				{
+					wpoint = _waypointsManager->currentWayPoint;
+					cout << endl << "robot in waypoint" << endl;
 				}
 
 				// check if robot location is in waypoints list

@@ -31,6 +31,7 @@ bool GoForward::stopCond() {
 	}
 	*/
 	Point wpoint(99999,99999);
+	/*
 	for(int i = 0; i < _waypointsManager->wayPoints.size(); i++)
 	{
 		if( (_waypointsManager->wayPoints[i]).GetX() == xLoc &&
@@ -38,6 +39,11 @@ bool GoForward::stopCond() {
 		{
 			wpoint = _waypointsManager->wayPoints[i];
 		}
+	}*/
+	if( (_waypointsManager->currentWayPoint).GetX() == xLoc &&
+		(_waypointsManager->currentWayPoint).GetY() == yLoc)
+	{
+		wpoint = _waypointsManager->currentWayPoint;
 	}
 
 	// check if robot location is in waypoints list

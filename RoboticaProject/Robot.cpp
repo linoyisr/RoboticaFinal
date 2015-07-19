@@ -91,6 +91,10 @@ Location Robot::getOldOdometryLocation()
 //return  Location();
 	return Location(_oldOdometryLocation.GetPoint(), _oldOdometryLocation.GetYawPoint() * 180 / 3.14);
 }
+void Robot::SetOldToCurrent()
+{
+	_oldOdometryLocation.SetLocation(Location(Point(_positionP->GetXPos(), _positionP->GetYPos()), _positionP->GetYaw()));
+}
 
 Location Robot::getDeltaLocation()
 {
