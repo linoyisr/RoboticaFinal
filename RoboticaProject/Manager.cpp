@@ -54,7 +54,7 @@ void Manager::setStartAndGoal()
 void Manager::run()
 {
 	wayPoints = _waypointsManager->wayPoints;
-
+	//_map->WithWayPoints(wayPoints);
 	cout << "Way points:" <<endl;
 	for (unsigned int i = 0; i< wayPoints.size(); i++)
 	{

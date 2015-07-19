@@ -17,6 +17,7 @@ typedef basic_stringstream<char> stringstream;
 
 const int numOfCellsForeachPixel = 4;
 const string blowMapPath = "resources/blowMap.png";
+const string wayPointsPath = "resources/withWayPoints.png";
 
 Map::Map()
 {
@@ -75,6 +76,54 @@ void Map::pngToVector()
 	{
 		cout << "decoder error #" << error << ": " << lodepng_error_text(error) << endl;
 		return;
+	}
+}
+
+void Map::WithWayPoints(vector<Point> wayPoints)
+{
+	vector<unsigned char> withWayPoints;
+	withWayPoints.resize(gridHeight * gridWidth *  4);
+
+	withWayPoints.resize(gridHeight * gridWidth *  4);
+	withWayPoints = gridVector;
+	for (unsigned int y = 0; y < gridHeight; y++)
+		{
+			for (unsigned int x = 0; x < gridWidth; x++)
+			{
+				int currPixel =(y * gridWidth *4) + (x *4);
+					if (gridVector[currPixel] == WHITE)
+					{
+						withWayPoints[currPixel + ROFFSET] = BLACK;
+						withWayPoints[currPixel + GOFFSET] = BLACK;
+						withWayPoints[currPixel + BOFFSET] = BLACK;
+						withWayPoints[currPixel + LOFFSET] = WHITE;
+					}
+					else
+					{
+						withWayPoints[currPixel + ROFFSET] = WHITE;
+						withWayPoints[currPixel + GOFFSET] = WHITE;
+						withWayPoints[currPixel + BOFFSET] = WHITE;
+						withWayPoints[currPixel + LOFFSET] = WHITE;
+					}
+			}
+		}
+
+	for (unsigned int i=0; i <  wayPoints.size(); i++)
+	{
+		int currPixel =(wayPoints[i].GetY() * gridWidth * 4) + (wayPoints[i].GetX() *4);
+
+		withWayPoints[currPixel +ROFFSET] = 100;
+		withWayPoints[currPixel +GOFFSET] = 0;
+		withWayPoints[currPixel +BOFFSET] = 0;
+		withWayPoints[currPixel +LOFFSET] = WHITE;
+	}
+
+	int encodeError = lodepng::encode(wayPointsPath, withWayPoints, gridWidth, gridHeight);
+
+	if (encodeError)
+	{
+		cout << "encoder error " << encodeError << ": "
+				<< lodepng_error_text(encodeError) << endl;
 	}
 }
 

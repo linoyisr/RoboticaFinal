@@ -54,6 +54,7 @@ public:
 	Point getRealPointBy(Point gridPoint);
 	Point getImagePointBy(Point gridPoint);
 	Point getGridPointBy(Point imagePoint);
+	void WithWayPoints(vector<Point> wayPoints);
 	int getGridValueAt(Point gridPoint);
 
 };
