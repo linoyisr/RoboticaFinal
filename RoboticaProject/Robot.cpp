@@ -13,15 +13,15 @@ Robot::Robot(char* ip, int port) {
 
 	_positionP->SetMotorEnable(true);
 
-	_positionP->SetOdometry(9.05,-7.625, 0.34888888);
+	//_positionP->SetOdometry(9.05,-7.625, 0.34888888);
 	_player->Read();
 	//until it works!!
-	while (_positionP->GetXPos() == 0)
+	/*while (_positionP->GetXPos() == 0)
 	{
-		_positionP->SetOdometry(9.05,-7.625, 20);
-	}
+	//	_positionP->SetOdometry(9.05,-7.625, 20);
+	}*/
 
-	_oldOdometryLocation.SetLocation(Location(Point(9.05,-7.625),20));
+	_oldOdometryLocation.SetLocation(Location(Point(90,76),20));
 	_robotLocation.SetLocation(Location(Point(90,76), 20));
 	//For fixing Player's reading BUG - not delete
 	for(int i=0;i<15;i++)
@@ -82,13 +82,15 @@ bool Robot::isForwardFree() {
 
 Location Robot::getCurrentOdometryLocation()
 {
-	return Location(_positionP->GetXPos(), -_positionP->GetYPos(), _positionP->GetYaw()*180/3.14);
+	Read();
+	return Location(_positionP->GetXPos(), _positionP->GetYPos(), _positionP->GetYaw()*180/3.14);
 }
 
 Location Robot::getDeltaLocation()
 {
+	//TODO: check if need change
 	double deltaX =_oldOdometryLocation.GetPoint().GetX() - _positionP->GetXPos();
-	double deltaY = -(_oldOdometryLocation.GetPoint().GetY() - _positionP->GetYPos());
+	double deltaY = (_oldOdometryLocation.GetPoint().GetY() - _positionP->GetYPos());
 	double deltaYaw = _oldOdometryLocation.GetYawPoint() - _positionP->GetYaw();
 
 	return Location(deltaX, deltaY, deltaYaw);
