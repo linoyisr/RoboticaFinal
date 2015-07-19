@@ -132,10 +132,10 @@ void Manager::run()
 			getLaserScan(laserScans);
 
 			_locManager->Update(deltaLocation, laserScans);
-			_robot->updateRobotEstimateLocation(_locManager->GetBestLocation());
-			cout << "best location: ";
-			_locManager->GetBestLocation().Print();
-			cout << endl;
+			//_robot->updateRobotEstimateLocation(_locManager->GetBestLocation());
+			//cout << "best location: ";
+			//_locManager->GetBestLocation().Print();
+			//cout << endl;
 			//_robot->updateRobotEstimateLocation(Location(Point(87,73),15));
 			_robot->updateRobotEstimateLocation(_robot->getCurrentOdometryLocation());
 		}

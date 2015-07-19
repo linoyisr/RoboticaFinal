@@ -21,7 +21,7 @@ bool GoForward::stopCond() {
 	int yLoc = _robot->getEstimateLocation().GetPoint().GetY();
 
 	cout << "GoForward::stopCond , robotLocx: " << xLoc << " robotLocy: " << yLoc;;
-
+/*
 	vector<Point>::iterator wpoint;
 	for (vector<Point>::iterator iter = _waypointsManager->wayPoints.begin(); iter != _waypointsManager->wayPoints.end(); iter++)
 	{//iterate through the vector to look for the correct name
@@ -30,12 +30,22 @@ bool GoForward::stopCond() {
 			wpoint = iter;
 		}
 	}
+	*/
+	Point wpoint(99999,99999);
+	for(int i = 0; i < _waypointsManager->wayPoints.size(); i++)
+	{
+		if((_waypointsManager->wayPoints[i]).GetX() == xLoc &&
+			(_waypointsManager->wayPoints[i]).GetY() == yLoc)
+		{
+			wpoint = _waypointsManager->wayPoints[i];
+		}
+	}
 
 	// check if robot location is in waypoints list
 	//if (wpoint != _waypointsManager.wayPoints.end())
 
 	bool isRangeClear = startCond();
-	bool locationInWaypoints = (wpoint != _waypointsManager->wayPoints.end());
+	bool locationInWaypoints = (wpoint.GetX() != 99999 || wpoint.GetY() != 99999);
 	cout << "GoForward::stopCond , isRangeClear: " << isRangeClear << " location In Waypoints: " << locationInWaypoints << endl;;
 	return (!isRangeClear || locationInWaypoints);
 
@@ -44,7 +54,7 @@ bool GoForward::stopCond() {
 void GoForward::action() {
 	//_robot.setSpeed(MOVE_SPEED, 0.0);
 	cout << endl << "GoForward start run" << endl;
-	_robot->setSpeed(0.3, 0.0);
+	_robot->setSpeed(0.4, 0.0);
 }
 
 GoForward::GoForward(Robot* robot, WaypointsManager* waypointsManager) :

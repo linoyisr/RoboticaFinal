@@ -28,7 +28,7 @@ LocalizationManager::LocalizationManager(Location robotLocation, Map* map)
 		_particles.push_back(current);
 	}
 
-	PrintParticles();
+	//PrintParticles();
 }
 
 LocalizationManager::~LocalizationManager()
@@ -66,7 +66,7 @@ void LocalizationManager::Update(Location deltaLocation, float* laserScans)
 		}
 	}
 
-	PrintParticles();
+	//PrintParticles();
 }
 
 Particle LocalizationManager::GetBestParticle()
