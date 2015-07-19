@@ -67,7 +67,7 @@ double Particle::Update(double deltaX, double deltaY, double deltaYaw, float* la
 
 	// Calculate predicted belief by previous belief and probability by move
 	 double predictedBelief = belief * ProbByMove(deltaX, deltaY, deltaYaw);
-
+return	predictedBelief;
 	// Calculate new belief by normalization, predicted belief and probability by measure
 	double newBelief = normalizationFactor *  predictedBelief * ProbByMeasure(laserScans);
 	if (newBelief > 1)
@@ -332,7 +332,7 @@ double Particle::getRandomYaw()
 
 Location Particle::getLocation()
 {
-	return Location(_x,_y,_yaw);
+	return Location(Point(_x,_y),_yaw);
 }
 
 void Particle::print()
