@@ -89,8 +89,13 @@ void Manager::run()
 				vector<Point>::iterator wpoint;
 				for (vector<Point>::iterator iter = _waypointsManager->wayPoints.begin(); iter != _waypointsManager->wayPoints.end(); iter++)
 				{//iterate through the vector to look for the correct name
+
+					/*
 					if((*iter).GetX() == _robot->getEstimateLocation().GetPoint().GetX() &&
-							(*iter).GetY() == _robot->getEstimateLocation().GetPoint().GetY())
+							(*iter).GetY() == _robot->getEstimateLocation().GetPoint().GetY())*/
+
+					if((*iter).GetX() == _robot->getCurrentOdometryLocation().GetPoint().GetX() &&
+						(*iter).GetY() == _robot->getCurrentOdometryLocation().GetPoint().GetY())
 					{
 						wpoint = iter;
 					}
