@@ -7,8 +7,9 @@
 
 #include "WaypointsManager.h"
 
-WaypointsManager::WaypointsManager(vector<Point> path)
+WaypointsManager::WaypointsManager(vector<Point> path, Robot* r)
 {
+	_robot = r;
 	initPointsFirstTime = true;
 	astarPath = path;
 	minDistance = 99999;
@@ -62,16 +63,16 @@ void WaypointsManager::setNextWayPoint(Point next)
 double WaypointsManager::calcYaw()
 {
 	cout << endl <<"current waypoint : " ;
-	currentWayPoint.PrintPoint();
+	_robot->getEstimateLocation().GetPoint().PrintPoint();
 	cout << endl <<"next waypoint : " ;
 	nextWayPoint.PrintPoint() ;
 	cout << endl;
 	double angle;
 
-	cout << endl << "atan Y " << -(nextWayPoint.GetY() - currentWayPoint.GetY());
-	cout << endl << "atan X " << (nextWayPoint.GetX() - currentWayPoint.GetX());
-	angle = atan2(-(nextWayPoint.GetY() - currentWayPoint.GetY()) ,
-			(nextWayPoint.GetX() - currentWayPoint.GetX()));
+	cout << endl << "atan Y " << -(nextWayPoint.GetY() - _robot->getEstimateLocation().GetPoint().GetY());
+	cout << endl << "atan X " << (nextWayPoint.GetX() - _robot->getEstimateLocation().GetPoint().GetX());
+	angle = atan2(-(nextWayPoint.GetY() - _robot->getEstimateLocation().GetPoint().GetY()) ,
+			(nextWayPoint.GetX() - _robot->getEstimateLocation().GetPoint().GetX()));
 
 	return angle *180/M_PI;
 }

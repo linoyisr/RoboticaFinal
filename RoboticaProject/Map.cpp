@@ -133,8 +133,8 @@ void Map::blowMap()
 	blowMapVector.resize(mapWidth * mapHeight * numOfCellsForeachPixel);
 
 	// the really point of the robot is at the center
-	int xPixelsToBlowing = int(robotWidth / mapResolution) / 2;
-	int yPixelsToBlowing = int(robotHeight / mapResolution) / 2;
+	int xPixelsToBlowing = (int(robotWidth / mapResolution) / 2)+4;
+	int yPixelsToBlowing = (int(robotHeight / mapResolution) / 2)+4;
 
 	for (unsigned int y = 0; y < mapHeight; y++)
 	{

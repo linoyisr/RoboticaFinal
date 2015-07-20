@@ -52,7 +52,7 @@ bool GoForward::stopCond() {
 
 void GoForward::action() {
 	cout << endl << "GoForward start run" << endl;
-	_robot->setSpeed(0.4, 0.0);
+	_robot->setSpeed(0.2, 0.0);
 }
 
 GoForward::GoForward(Robot* robot, WaypointsManager* waypointsManager) :

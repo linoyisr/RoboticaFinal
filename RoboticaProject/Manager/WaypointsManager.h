@@ -10,12 +10,13 @@
 
 #include <vector>
 #include <cmath>
+#include "../Robot.h"
 #include "../Point.h"
 using namespace std;
 
 class WaypointsManager {
 public:
-	WaypointsManager(vector<Point> path);
+	WaypointsManager(vector<Point> path, Robot* r);
 	WaypointsManager();
 	~WaypointsManager();
 	void CreateWaypoints();
@@ -34,6 +35,7 @@ public:
 	bool isVerticle;
 	bool initPointsFirstTime;
 	double minDistance;
+	Robot* _robot;
 };
 
 #endif /* WAYPOINTSMANAGER_H_ */

@@ -12,7 +12,7 @@ Manager::Manager(Robot* robot)
 	setStartAndGoal();
 	_pathPlanner = new PathPlanner();
 	_pathPlanner->FindPath(_map->getBlowMapMatrix(), _map->getGridPointBy(_startPoint), _map->getGridPointBy(_goalPoint));
-	_waypointsManager = new WaypointsManager(_pathPlanner->GetPathToGoal());
+	_waypointsManager = new WaypointsManager(_pathPlanner->GetPathToGoal(), _robot);
 	_obstacleAvoid = new PlnObstacleAvoid(_robot, _waypointsManager);
 	_currBehavior = _obstacleAvoid->getStartBehavior();
 	_locManager = new LocalizationManager(_robot->getEstimateLocation(), _map);
