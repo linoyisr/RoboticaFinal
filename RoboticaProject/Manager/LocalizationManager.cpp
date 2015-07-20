@@ -22,7 +22,7 @@ LocalizationManager::LocalizationManager(Location robotLocation, Map* map)
 
 	// Create all other particles. Each time we create the particle
 	// as the son of the last one we created.
-	/*for(int i = 1; i < 10; i++)
+	/*for(int i = 1; i < 100; i++)
 	{
 		Particle current = first.genereateNewParticle();
 		_particles.push_back(current);
@@ -62,19 +62,19 @@ void LocalizationManager::Update(Location deltaLocation, float* laserScans)
 						laserScans
 				);
 
-		if(currentBelief < lowerThreshold)
+		if(currentBelief < lowerThreshold )
 		{
 			_particles.erase(_particles.begin() + i);
 		}
 
-		 else if ((currentBelief > upperThreshold) && _particles.size() < 50)
+		 else if ((currentBelief > upperThreshold) && _particles.size() < 100)
 		{
 			Particle newChild = _particles[i].genereateNewParticle();
 			_particles.push_back(newChild);
 		}
 	}
-*/
-	//PrintParticles();
+
+	//PrintParticles();*/
 }
 
 Particle LocalizationManager::GetBestParticle()
