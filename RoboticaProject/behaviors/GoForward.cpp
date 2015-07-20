@@ -19,27 +19,9 @@ bool GoForward::stopCond() {
 	double xLoc = _robot->getEstimateLocation().GetPoint().GetX();
 	double yLoc = _robot->getEstimateLocation().GetPoint().GetY();
 
-	//cout << "GoForward::stopCond , robotLocx: " << xLoc << " robotLocy: " << yLoc;
-/*
-	vector<Point>::iterator wpoint;
-	for (vector<Point>::iterator iter = _waypointsManager->wayPoints.begin(); iter != _waypointsManager->wayPoints.end(); iter++)
-	{//iterate through the vector to look for the correct name
-		if((*iter).GetX() == xLoc && (*iter).GetY() == yLoc)
-		{
-			wpoint = iter;
-		}
-	}
-	*/
+
 	Point wpoint(99999,99999);
-	/*
-	for(int i = 0; i < _waypointsManager->wayPoints.size(); i++)
-	{
-		if( (_waypointsManager->wayPoints[i]).GetX() == xLoc &&
-			(_waypointsManager->wayPoints[i]).GetY() == yLoc)
-		{
-			wpoint = _waypointsManager->wayPoints[i];
-		}
-	}*/
+
 	double waypointX =  (_waypointsManager->currentWayPoint.GetX());
 	double waypointY =  (_waypointsManager->currentWayPoint.GetY());
 	cout << "waypointX " << waypointX;
@@ -51,22 +33,13 @@ bool GoForward::stopCond() {
 	cout << "powX " << powX << " powY " << powY << endl;
 	double distance = sqrt(powX + powY);
 	cout << "distance " << distance << endl;
-	//if(abs(waypointX - xLoc) < 1 && abs(waypointY - yLoc) < 1)
-			//waypointY == yLoc)
-	//if (distance < _waypointsManager->minDistance)
-	//{
-	//	_waypointsManager->minDistance = distance;
-	//}
-	//else
-	//if(abs(waypointX - xLoc) < 1 && abs(waypointY - yLoc) < 1)
+
 	if (distance < sqrt(1.6))
 	{
 		cout << "Is Innnn" << endl;
 		wpoint = _waypointsManager->currentWayPoint;
 	}
 
-	// check if robot location is in waypoints list
-	//if (wpoint != _waypointsManager.wayPoints.end())
 
 	bool isRangeClear = startCond();
 	bool locationInWaypoints = (wpoint.GetX() != 99999 || wpoint.GetY() != 99999);
@@ -78,7 +51,6 @@ bool GoForward::stopCond() {
 }
 
 void GoForward::action() {
-	//_robot.setSpeed(MOVE_SPEED, 0.0);
 	cout << endl << "GoForward start run" << endl;
 	_robot->setSpeed(0.4, 0.0);
 }

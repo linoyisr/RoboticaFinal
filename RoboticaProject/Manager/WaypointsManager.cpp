@@ -66,7 +66,6 @@ double WaypointsManager::calcYaw()
 	cout << endl <<"next waypoint : " ;
 	nextWayPoint.PrintPoint() ;
 	cout << endl;
-	//double m = calcIncline();
 	double angle;
 
 	cout << endl << "atan Y " << -(nextWayPoint.GetY() - currentWayPoint.GetY());
@@ -75,58 +74,6 @@ double WaypointsManager::calcYaw()
 			(nextWayPoint.GetX() - currentWayPoint.GetX()));
 
 	return angle *180/M_PI;
-
-/*
-	if(!isVerticle)
-	{
-		angle = 180 * atan(m) / M_PI;
-	}
-
-	if (isVerticle)
-	{
-		if (nextWayPoint.GetY() > currentWayPoint.GetY())
-		{
-			return (270);
-		}
-		else
-		{
-			return (90);
-		}
-	}
-	else if ( m == 0)
-	{
-		if (nextWayPoint.GetX() > currentWayPoint.GetX())
-		{
-			return (angle);
-		}
-		else
-		{
-			return (180 + angle);
-		}
-	}
-	else if (m > 0)
-	{
-		if (nextWayPoint.GetY() > currentWayPoint.GetY())
-		{
-			return (360 - angle);
-		}
-		else
-		{
-			return (180 - angle);
-		}
-	}
-	else
-	{
-		if (nextWayPoint.GetY() > currentWayPoint.GetY())
-		{
-			return (180 + angle);
-		}
-		else
-		{
-			return (angle);
-		}
-	}
-	*/
 }
 
 double WaypointsManager::calcIncline()
@@ -135,7 +82,6 @@ double WaypointsManager::calcIncline()
 	if(currentWayPoint.GetX() == nextWayPoint.GetX())
 	{
 		isVerticle = 1;
-		// TODO- CHECK if ok
 		return(9999);
 	}
 	else

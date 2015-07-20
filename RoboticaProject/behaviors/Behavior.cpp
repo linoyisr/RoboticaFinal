@@ -14,11 +14,7 @@ Behavior::Behavior(Robot* robot)
 Behavior* Behavior::addNextBehavior(Behavior* behavior){
 
 	Behavior** behaviors = new Behavior*[_behaviorsCount + 1];
-/*
-	if (!behaviors) {
-		return NULL;
-	}
-*/
+
 	for (int i = 0; i < _behaviorsCount; ++i)
 	{
 		behaviors[i] = _nextBehavior[i];

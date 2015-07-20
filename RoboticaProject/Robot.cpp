@@ -116,7 +116,6 @@ Location Robot::getEstimateLocation()
 {
 	Read();
 	return _robotLocation;
-	//return getCurrentOdometryLocation();
 }
 
 float Robot::getLaserDistance(int index)
@@ -130,7 +129,6 @@ bool Robot::isRangeClear(int start, int end)
 
     for (int index = start; (index <= end) && (rangeClear); index++)
     {
-//    	is_dis_Good = (this->getLaserDistance(index) > DISTANCE_TOLERANCE);
     	rangeClear = (this->getLaserDistance(index) > 0.2);
     }
 

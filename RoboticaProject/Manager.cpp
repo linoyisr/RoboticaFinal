@@ -98,38 +98,8 @@ void Manager::run()
 				// Perform the next behavior according to the plan
 				_currBehavior = _currBehavior->selectNextBehavior();
 
-				/*
-				vector<Point>::iterator wpoint;
-				for (vector<Point>::iterator iter = _waypointsManager->wayPoints.begin(); iter != _waypointsManager->wayPoints.end(); iter++)
-				{//iterate through the vector to look for the correct name
-
-					if((*iter).GetX() == _robot->getEstimateLocation().GetPoint().GetX() &&
-						(*iter).GetY() == _robot->getEstimateLocation().GetPoint().GetY())
-					{
-						wpoint = iter;
-						cout << endl << "robot in waypoint" << endl;
-					}
-				}
-				*/
-
 				Point wpoint(99999,99999);
-				/*
-				for(int i = 0; i < _waypointsManager->wayPoints.size(); i++)
-				{
-					int xLoc = _robot->getEstimateLocation().GetPoint().GetX();
-					int yLoc = _robot->getEstimateLocation().GetPoint().GetY();
-					if((_waypointsManager->wayPoints[i]).GetX() == xLoc &&
-						(_waypointsManager->wayPoints[i]).GetY() == yLoc)
-					{
-						wpoint = _waypointsManager->wayPoints[i];
-						cout << endl << "robot in waypoint" << endl;
-					}
-				}*/
-				/*
-				int xLoc = _robot->getEstimateLocation().GetPoint().GetX();
-				int yLoc = _robot->getEstimateLocation().GetPoint().GetY();
-				if((_waypointsManager->currentWayPoint).GetX() == xLoc &&
-					(_waypointsManager->currentWayPoint).GetY() == yLoc)*/
+
 				double xLoc = _robot->getEstimateLocation().GetPoint().GetX();
 				double yLoc = _robot->getEstimateLocation().GetPoint().GetY();
 				double waypointX =  (_waypointsManager->currentWayPoint.GetX());
@@ -138,7 +108,7 @@ void Manager::run()
 				double powX = (pow(waypointX - xLoc, 2));
 				double powY = (pow(waypointY - yLoc, 2));
 				double distance = sqrt(powX + powY);
-				//if(abs(waypointX - xLoc) < 1 && abs(waypointY - yLoc) < 1)
+
 				if (distance < sqrt(1.6))
 				{
 					wpoint = _waypointsManager->currentWayPoint;
@@ -169,11 +139,6 @@ void Manager::run()
 
 			_locManager->Update(deltaLocation, laserScans);
 			_robot->updateRobotEstimateLocation(_locManager->GetBestLocation());
-			//cout << "best location: ";
-			//_locManager->GetBestLocation().Print();
-			//cout << endl;
-			//_robot->updateRobotEstimateLocation(Location(Point(87,73),15));
-			//_robot->updateRobotEstimateLocation(_robot->getCurrentOdometryLocation());
 		}
 	}
 }
