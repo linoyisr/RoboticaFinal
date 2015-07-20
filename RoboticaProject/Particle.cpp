@@ -101,7 +101,6 @@ double Particle::probByMeasure(float* laserScans)
 	// Not necessary to move of all the beams, read  all 2 degrees
 	for (int currBeam = 0; currBeam < LASERS_NUMBER; currBeam += 10)
 	{
-		//TODO: check if work!!!
 		double angleForLaser = LaserHelper::indexToRad(currBeam) + _yaw;
 
 		double xForLaser = _x + cos(angleForLaser);
