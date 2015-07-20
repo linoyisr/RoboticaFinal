@@ -31,16 +31,13 @@ private:
 	double _yaw;
 	double belief;
 	Map * map;
-	double ProbByMove(double deltaX, double deltaY, double deltaYaw);
-	double ProbByMeasure(float* laserScans);
+	double probByMove(double deltaX, double deltaY, double deltaYaw);
+	double probByMeasure(float* laserScans);
 	double getAngleByIndex(int index);
 	double getRadianByIndex(int index);
 	double laserIndexToLaserAngle(int index);
 	double getRandom();
-	float DegreeToRadian(float  degree);
-	float SpecimenToDegree(float specimen);
-	float DegreeToSpecimen(float degree);
-	float ChangeByLimits(float value, float minValue, float maxValue);
+	float fixValueByLimits(float value, float minValue, float maxValue);
 };
 
 #endif /* PARTICLE_H_ */
