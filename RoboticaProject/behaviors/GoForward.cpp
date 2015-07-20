@@ -16,8 +16,8 @@ bool GoForward::startCond() {
 bool GoForward::stopCond() {
 	_robot->Read();
 
-	int xLoc = _robot->getEstimateLocation().GetPoint().GetX();
-	int yLoc = _robot->getEstimateLocation().GetPoint().GetY();
+	double xLoc = _robot->getEstimateLocation().GetPoint().GetX();
+	double yLoc = _robot->getEstimateLocation().GetPoint().GetY();
 
 	//cout << "GoForward::stopCond , robotLocx: " << xLoc << " robotLocy: " << yLoc;
 /*
@@ -40,9 +40,28 @@ bool GoForward::stopCond() {
 			wpoint = _waypointsManager->wayPoints[i];
 		}
 	}*/
-	if( (_waypointsManager->currentWayPoint).GetX() == xLoc &&
-		(_waypointsManager->currentWayPoint).GetY() == yLoc)
+	double waypointX =  (_waypointsManager->currentWayPoint.GetX());
+	double waypointY =  (_waypointsManager->currentWayPoint.GetY());
+	cout << "waypointX " << waypointX;
+	cout << " waypointY " <<waypointY << endl;
+	cout << "x sum " << waypointX - xLoc << " y sum " <<waypointY - yLoc <<endl;
+	cout << "x abs " << abs(waypointX - xLoc) << " y abs " << abs(waypointY - yLoc) << endl;
+	double powX = (pow(waypointX - xLoc, 2));
+	double powY = (pow(waypointY - yLoc, 2));
+	cout << "powX " << powX << " powY " << powY << endl;
+	double distance = sqrt(powX + powY);
+	cout << "distance " << distance << endl;
+	//if(abs(waypointX - xLoc) < 1 && abs(waypointY - yLoc) < 1)
+			//waypointY == yLoc)
+	//if (distance < _waypointsManager->minDistance)
+	//{
+	//	_waypointsManager->minDistance = distance;
+	//}
+	//else
+	//if(abs(waypointX - xLoc) < 1 && abs(waypointY - yLoc) < 1)
+	if (distance < sqrt(1.6))
 	{
+		cout << "Is Innnn" << endl;
 		wpoint = _waypointsManager->currentWayPoint;
 	}
 

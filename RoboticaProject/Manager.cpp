@@ -94,6 +94,7 @@ void Manager::run()
 				_locManager->Update(deltaLocation, laserScans);
 				_robot->updateRobotEstimateLocation(_locManager->GetBestLocation());
 				cout << "robot yaw after update " << _robot->getEstimateLocation().GetYawPoint()<<endl;
+				cout << "robot yaw after update 1 " << _robot->getCurrentOdometryLocation().GetYawPoint()<<endl;
 				// Perform the next behavior according to the plan
 				_currBehavior = _currBehavior->selectNextBehavior();
 
@@ -124,10 +125,21 @@ void Manager::run()
 						cout << endl << "robot in waypoint" << endl;
 					}
 				}*/
+				/*
 				int xLoc = _robot->getEstimateLocation().GetPoint().GetX();
 				int yLoc = _robot->getEstimateLocation().GetPoint().GetY();
 				if((_waypointsManager->currentWayPoint).GetX() == xLoc &&
-					(_waypointsManager->currentWayPoint).GetY() == yLoc)
+					(_waypointsManager->currentWayPoint).GetY() == yLoc)*/
+				double xLoc = _robot->getEstimateLocation().GetPoint().GetX();
+				double yLoc = _robot->getEstimateLocation().GetPoint().GetY();
+				double waypointX =  (_waypointsManager->currentWayPoint.GetX());
+				double waypointY =  (_waypointsManager->currentWayPoint.GetY());
+
+				double powX = (pow(waypointX - xLoc, 2));
+				double powY = (pow(waypointY - yLoc, 2));
+				double distance = sqrt(powX + powY);
+				//if(abs(waypointX - xLoc) < 1 && abs(waypointY - yLoc) < 1)
+				if (distance < sqrt(1.6))
 				{
 					wpoint = _waypointsManager->currentWayPoint;
 					cout << endl << "robot in waypoint" << endl;

@@ -11,12 +11,14 @@ WaypointsManager::WaypointsManager(vector<Point> path)
 {
 	initPointsFirstTime = true;
 	astarPath = path;
+	minDistance = 99999;
 	CreateWaypoints();
 }
 
 WaypointsManager::WaypointsManager()
 {
 	initPointsFirstTime = true;
+	minDistance = 99999;
 }
 
 vector<Point> WaypointsManager::getWaypointsList()
@@ -67,6 +69,8 @@ double WaypointsManager::calcYaw()
 	//double m = calcIncline();
 	double angle;
 
+	cout << endl << "atan Y " << -(nextWayPoint.GetY() - currentWayPoint.GetY());
+	cout << endl << "atan X " << (nextWayPoint.GetX() - currentWayPoint.GetX());
 	angle = atan2(-(nextWayPoint.GetY() - currentWayPoint.GetY()) ,
 			(nextWayPoint.GetX() - currentWayPoint.GetX()));
 

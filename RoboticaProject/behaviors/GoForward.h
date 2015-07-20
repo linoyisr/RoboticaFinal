@@ -15,6 +15,7 @@
 #include "../Location.h"
 #include <vector>
 #include <iterator>
+
 using namespace std;
 
 class GoForward: public Behavior {

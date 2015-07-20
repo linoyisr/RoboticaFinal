@@ -33,6 +33,7 @@ public:
 	Point nextWayPoint;
 	bool isVerticle;
 	bool initPointsFirstTime;
+	double minDistance;
 };
 
 #endif /* WAYPOINTSMANAGER_H_ */
